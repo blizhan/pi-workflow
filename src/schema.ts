@@ -62,6 +62,7 @@ const OUTPUT_FORMATS = new Set(["text", "json", "markdown"]);
 const OUTPUT_ON_INVALID = new Set(["fail", "warn"]);
 const OUTPUT_CONTRACT_KEYS = new Set(["requiredPaths", "arrays", "maxStringChars"]);
 const SOURCE_CONTEXT_KEYS = new Set(["maxPreviewChars", "maxStructuredChars", "maxStructuredCharsByStage", "structuredOutputPathsByStage", "maxPacketChars"]);
+const TRANSFORM_STAGE_KEYS = new Set(["id", "type", "from", "helper", "options", "sourcePolicy"]);
 
 export interface LoadedWorkflowSpec extends ResolvedWorkflowSpecRef {
   spec: WorkflowSpec;
@@ -533,6 +534,12 @@ export function parseStageFirstWorkflowSpec(value: unknown): any {
     }
     if (stage.type === "foreach" && stage.each?.inject !== undefined) {
       throw new WorkflowValidationError([{ path: `$.workflow.stages[${index}].each.inject`, message: "unknown field" }]);
+    }
+    if (stage.type === "transform") {
+      rejectUnknownKeys(stage, TRANSFORM_STAGE_KEYS, `$.workflow.stages[${index}]`, issues);
+      requiredString(stage, "id", `$.workflow.stages[${index}].id`, issues);
+      requiredString(stage, "helper", `$.workflow.stages[${index}].helper`, issues);
+      if (stage.options !== undefined) objectAt(stage.options, `$.workflow.stages[${index}].options`, issues);
     }
   }
   if (issues.length > 0) throw new WorkflowValidationError(issues);

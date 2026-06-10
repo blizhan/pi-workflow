@@ -1,4 +1,5 @@
-import { readFile } from "node:fs/promises";
+import { mkdir, readFile, stat, writeFile } from "node:fs/promises";
+import { dirname, join } from "node:path";
 
 import { compileWorkflow, compileWorkflowSpec } from "./compiler.js";
 import { loadWorkflowSpec } from "./schema.js";
@@ -18,6 +19,7 @@ import {
   supervisorPath,
   updateIndex,
   withRunLease,
+  workflowRunDir,
   writeJsonAtomic,
   writeRunRecord,
   writeStaticRunArtifacts,
@@ -25,6 +27,7 @@ import {
 import { resolveWorkflowBackend } from "./backend.js";
 import { ensureManagedWorktree } from "./worktree.js";
 import { buildJsonOutputRetryInstructions } from "./result.js";
+import { loadWorkflowHelper } from "./workflow-helpers.js";
 import { buildSourceContextPacket, formatOutputTemplateSection, summarizeWorkflowTelemetry, type SourceContextPacketOptions } from "./workflow-artifacts.js";
 import { extractStageFirstForeachItems } from "./workflow-runtime.js";
 import { CompiledTask, CompiledWorkflow, STAGE_FIRST_RUN_TYPE, WorkflowIndexRecord, WorkflowRunRecord, WorkflowTaskRunRecord } from "./types.js";
@@ -534,6 +537,9 @@ async function launchPendingTaskAt(
   if (task.outputRetry) launchTask = await prepareOutputRetryTask(cwd, task, launchTask);
 
   try {
+    if (launchTask.kind === "transform") {
+      return await executeTransformTask(cwd, run, task, launchTask);
+    }
     await ensureManagedWorktree(cwd, run, task, launchTask);
     await writeRunRecord(cwd, run);
     const launch = await resolveWorkflowBackend(run).launchTask(cwd, run, task, launchTask);
@@ -551,6 +557,73 @@ async function launchPendingTaskAt(
     }
     return false;
   }
+}
+
+async function executeTransformTask(
+  cwd: string,
+  run: WorkflowRunRecord,
+  task: WorkflowTaskRunRecord,
+  compiledTask: CompiledWorkflow["tasks"][number],
+): Promise<boolean> {
+  if (!compiledTask.transform) {
+    throw new Error("transform metadata is missing");
+  }
+  task.status = "running";
+  task.statusDetail = "running";
+  task.startedAt = task.startedAt ?? new Date().toISOString();
+  await writeRunRecord(cwd, run);
+
+  const sources = await readTransformSources(cwd, run, compiledTask.dependsOn ?? []);
+  const helperSpecPath = await transformHelperSpecPath(cwd, run);
+  const helper = await loadWorkflowHelper(compiledTask.transform.helper, helperSpecPath);
+  const structuredOutput = await helper({
+    sources,
+    options: compiledTask.transform.options,
+    context: {
+      specPath: helperSpecPath,
+      originalSpecPath: run.specPath,
+      stageId: task.stageId,
+      taskId: task.taskId,
+      runId: run.runId,
+      cwd,
+    },
+  });
+
+  await mkdir(dirname(fromProjectPath(cwd, task.files.output)), { recursive: true });
+  await writeFile(fromProjectPath(cwd, task.files.output), `${JSON.stringify(structuredOutput, null, 2)}\n`, "utf8");
+  await writeFile(fromProjectPath(cwd, task.files.stderr), "", "utf8");
+  await writeJsonAtomic(fromProjectPath(cwd, task.files.result), {
+    status: "completed",
+    structuredOutput,
+  });
+  setTaskTerminal(task, "completed", "completed", { lastMessage: "transform completed" });
+  await writeRunRecord(cwd, run);
+  return true;
+}
+
+async function transformHelperSpecPath(cwd: string, run: WorkflowRunRecord): Promise<string> {
+  const artifactSpecPath = join(workflowRunDir(cwd, run.runId), "bundle", "spec.json");
+  try {
+    if ((await stat(artifactSpecPath)).isFile()) return artifactSpecPath;
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
+  }
+  return run.specPath;
+}
+
+async function readTransformSources(cwd: string, run: WorkflowRunRecord, dependsOn: string[]): Promise<Record<string, unknown>> {
+  const sources: Record<string, unknown> = {};
+  for (const specId of dependsOn) {
+    const source = run.tasks.find((candidate) => candidate.specId === specId);
+    if (!source) continue;
+    const result = await readJson<{ structuredOutput?: unknown }>(fromProjectPath(cwd, source.files.result)).catch(() => undefined);
+    if (result && Object.prototype.hasOwnProperty.call(result, "structuredOutput")) {
+      sources[source.specId] = result.structuredOutput;
+    } else {
+      sources[source.specId] = (await readOutputText(cwd, source.files.output)).text;
+    }
+  }
+  return sources;
 }
 
 async function prepareChainTask(

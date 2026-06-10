@@ -41,7 +41,7 @@
           "path": "$.reviewLenses",
           "mode": "concat"
         },
-        "maxConcurrency": 5,
+        "maxConcurrency": 10,
         "output": {
           "format": "json",
           "onInvalid": "fail",
@@ -68,7 +68,7 @@
           "path": "$.findings",
           "mode": "concat"
         },
-        "maxConcurrency": 5,
+        "maxConcurrency": 10,
         "output": {
           "format": "json",
           "onInvalid": "fail",

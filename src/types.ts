@@ -196,6 +196,10 @@ export interface CompiledTask {
     injectRuntimeTask: boolean;
     roleText?: string;
   };
+  transform?: {
+    helper: string;
+    options?: Record<string, unknown>;
+  };
 }
 
 export type TaskRunStatus = "pending" | "running" | "blocked" | "completed" | "failed" | "skipped" | "interrupted";

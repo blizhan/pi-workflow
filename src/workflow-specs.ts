@@ -109,13 +109,13 @@ export async function listWorkflows(cwd: string): Promise<WorkflowSpecRecord[]> 
   const nested = await Promise.all(roots.map(async (root) => {
     const files = await listSpecFiles(root.path);
     return files.map((file) => {
-      const aliases = aliasesFor(file);
+      const aliases = aliasesFor(file, root.path);
       return {
         name: aliases[1] ?? aliases[0]!,
         fileName: basename(file),
         aliases,
         specPath: file,
-        workflowRoot: root.path,
+        workflowRoot: workflowRootFor(file, root.path),
         legacy: root.legacy,
       };
     });
@@ -204,7 +204,7 @@ async function findWorkflowCandidates(name: string, cwd: string): Promise<Workfl
   const roots = workflowRoots(cwd);
   const nested = await Promise.all(roots.map(async (root) => {
     const files = await listSpecFiles(root.path);
-    return files.flatMap((file) => aliasesFor(file).includes(name) ? [{ name, file, root: root.path }] : []);
+    return files.flatMap((file) => aliasesFor(file, root.path).includes(name) ? [{ name, file, root: workflowRootFor(file, root.path) }] : []);
   }));
   return nested.flat().sort((left, right) => left.file.localeCompare(right.file));
 }
@@ -218,15 +218,33 @@ async function listSpecFiles(root: string): Promise<string[]> {
     throw error;
   }
 
-  return entries
+  const flatFiles = entries
     .filter((entry) => entry.isFile() && isSpecFileName(entry.name))
     .map((entry) => join(root, entry.name));
+
+  const bundleSpecs = await Promise.all(entries
+    .filter((entry) => entry.isDirectory())
+    .map(async (entry) => {
+      const bundleSpec = join(root, entry.name, "spec.json");
+      return (await isFile(bundleSpec)) ? bundleSpec : null;
+    }));
+
+  return [...flatFiles, ...bundleSpecs.filter((spec): spec is string => spec !== null)];
 }
 
-function aliasesFor(file: string): string[] {
+function isBundleSpec(file: string, searchRoot: string): boolean {
+  return basename(file) === "spec.json" && resolve(dirname(file)) !== resolve(searchRoot);
+}
+
+function aliasesFor(file: string, searchRoot: string): string[] {
   const name = basename(file);
   const extension = extname(name);
+  if (isBundleSpec(file, searchRoot)) return [basename(dirname(file))];
   return [name, name.slice(0, -extension.length)];
+}
+
+function workflowRootFor(file: string, searchRoot: string): string {
+  return isBundleSpec(file, searchRoot) ? dirname(file) : searchRoot;
 }
 
 async function isFile(path: string): Promise<boolean> {

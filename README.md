@@ -42,6 +42,7 @@ Stage order controls scheduling, but a plain later `task` does **not** automatic
 | `parallel` | Static fan-out | fixed task list -> multiple subagents, bounded concurrency |
 | `foreach` | Dynamic fan-out | read an array from prior JSON output -> one subagent task per item |
 | `reduce` | Fan-in / synthesis | selected prior stage context -> one subagent |
+| `transform` | Deterministic local post-processing | selected prior structured outputs -> directory-local `.mjs` helper -> structured output |
 
 `reduce` is not an automatic merge function. In the diagrams, **Supervisor** means the workflow runtime that gathers prior subagent outputs and passes bounded source context into a reduce subagent. It is not a user-defined agent.
 
@@ -88,13 +89,10 @@ The package includes built-in workflow definitions in [`workflows/`](./workflows
 
 | Workflow | Shape | Use when |
 |---|---|---|
-| `deep-research` | task -> foreach -> reduce -> foreach -> reduce | Source-backed research, claim verification, citations, or follow-up rounds. |
+| `deep-research` | task -> foreach -> reduce -> foreach -> transform -> reduce | Source-backed research, claim verification, deterministic evidence gating, citations, or follow-up suggestions. |
 | `deep-review` | task -> foreach -> foreach -> reduce | Panel-style review where findings should be challenged before final synthesis. |
-| `migration` | parallel -> reduce -> foreach -> reduce | Large migration/refactor planning with ordered phases and risks. |
-| `implement` | task -> reduce -> foreach -> reduce | Bounded implementation batches with validation expectations and managed worktrees. |
-| `best-of-n-fix` | task -> foreach -> reduce | Multiple isolated fix attempts when uncertainty justifies the cost. |
-| `revise-loop` | task -> reduce -> reduce -> reduce -> reduce | Improve a draft artifact with one bounded evaluator-optimizer pass. |
-| `decision-debate` | task -> parallel -> reduce -> reduce | Stress-test a tradeoff-heavy decision with opposed positions and a judge. |
+
+Other workflow shapes such as migration planning, implementation batches, best-of-N fixes, revise loops, and decision debates are intentionally deferred until stronger task-fit evidence exists.
 
 ### `deep-research` at a glance
 
@@ -122,9 +120,15 @@ The package includes built-in workflow definitions in [`workflows/`](./workflows
         "from": { "stage": "normalize-claims", "path": "$.claimsForVerification" }
       },
       {
+        "id": "audit-claims",
+        "type": "transform",
+        "from": "verify-claims",
+        "helper": "./helpers/claim-evidence-gate.mjs"
+      },
+      {
         "id": "final",
         "type": "reduce",
-        "from": ["plan", "research-questions", "normalize-claims", "verify-claims"]
+        "from": ["plan", "research-questions", "normalize-claims", "audit-claims"]
       }
     ]
   }
@@ -135,7 +139,7 @@ The snippet above is intentionally abbreviated. Runnable workflow definitions al
 
 > **Continuation status:** continuation is currently a documented/experimental workflow-level control-policy field, not a task/stage type. The parser preserves it in workflow definitions, but the compiler/runtime do not yet execute follow-up rounds automatically. Treat any `nextWorkflow`/continuation output as a parent-facing suggestion until bounded continuation support is implemented.
 
-JSON outputs are validated with `output.contract` (for example `requiredPaths`, array bounds, and string length caps). To give models a shape hint without duplicating validation rules inline, use `output.template` for small one-off shapes or `output.templateRef` for reusable templates. `templateRef` supports internal refs such as `#/outputTemplates/final` and relative JSON files such as `./templates/deep-research.json#/final`.
+JSON outputs are validated with `output.contract` (for example `requiredPaths`, array bounds, and string length caps). To give models a shape hint without duplicating validation rules inline, use `output.template` for small one-off shapes or `output.templateRef` for reusable templates. `templateRef` supports internal refs such as `#/outputTemplates/final` and relative JSON files such as `./templates.json#/final` inside workflow bundles.
 
 ## Create or customize workflows with `workflow-guide`
 

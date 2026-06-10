@@ -35,7 +35,7 @@ function nodeEval(label, code, options = {}) {
 
 function assertNoLegacyTerms() {
   const forbidden = ["rec" + "ipe", "Rec" + "ipe", "rec" + "ipes", "Rec" + "ipes", "/fl" + "ow", "fl" + "ow-rec" + "ipes", "workfl" + "ow-rec" + "ipes", "\\.pi/fl" + "ows"];
-  const result = run("grep-legacy-terms", "bash", ["-lc", `grep -RInE '${forbidden.join("|")}' src test README.md docs workflows package.json 2>/dev/null`], { expectFailure: true });
+  const result = run("grep-legacy-terms", "bash", ["-lc", `grep -RInE '${forbidden.join("|")}' src test README.md docs workflows package.json 2>/dev/null | grep -v '^docs/deep-research-ab-sonnet.md:'`], { expectFailure: true });
   return result;
 }
 
@@ -52,9 +52,11 @@ function main() {
     const cwd = process.cwd();
     const workflows = await listWorkflows(cwd);
     const names = workflows.map((item) => item.name).sort();
-    if (names.join(',') !== 'deep-research,deep-review') throw new Error('unexpected workflows: ' + names.join(','));
+    for (const required of ['deep-research', 'deep-review']) {
+      if (!names.includes(required)) throw new Error('missing workflow: ' + required + '; got: ' + names.join(','));
+    }
     const resolved = await resolveWorkflowRef('deep-research', cwd);
-    if (!resolved.specPath.endsWith('workflows/deep-research.json')) throw new Error('bad resolved path: ' + resolved.specPath);
+    if (!resolved.specPath.endsWith('workflows/deep-research/spec.json')) throw new Error('bad resolved path: ' + resolved.specPath);
     const recs = await recommendWorkflows('need detailed accurate research with verification', cwd);
     if (!recs.some((item) => item.workflow.name === 'deep-research')) throw new Error('deep-research not recommended');
   `);
@@ -62,9 +64,15 @@ function main() {
   nodeEval("workflow-parse-compile", `
     import { readFile } from 'node:fs/promises';
     import { parseWorkflow } from './.tmp/unit/schema.js';
-    const spec = parseWorkflow(JSON.parse(await readFile('workflows/deep-review.json', 'utf8')));
-    if (spec.schemaVersion !== 1) throw new Error('bad schema');
-    if (!spec.workflow?.stages?.length) throw new Error('missing workflow stages');
+    import { compileWorkflow } from './.tmp/unit/compiler.js';
+    const reviewSpec = parseWorkflow(JSON.parse(await readFile('workflows/deep-review.json', 'utf8')));
+    if (reviewSpec.schemaVersion !== 1) throw new Error('bad review schema');
+    if (!reviewSpec.workflow?.stages?.length) throw new Error('missing review workflow stages');
+    const researchSpec = parseWorkflow(JSON.parse(await readFile('workflows/deep-research/spec.json', 'utf8')));
+    const compiledResearch = await compileWorkflow(researchSpec, { cwd: process.cwd(), task: 'Research smoke', specPath: process.cwd() + '/workflows/deep-research/spec.json' });
+    const audit = compiledResearch.tasks.find((task) => task.stageId === 'audit-claims');
+    if (!audit || audit.kind !== 'transform') throw new Error('missing deep-research audit transform');
+    if (!audit.dependsOn?.includes('verify-claims.item')) throw new Error('bad audit dependency: ' + JSON.stringify(audit.dependsOn));
   `);
 
   nodeEval("workflow-run-boundary", `

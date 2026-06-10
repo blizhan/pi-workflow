@@ -18,6 +18,7 @@ import { canStageProceedAfterPreviousFailure, extractStageFirstForeachItems, sho
 import { deriveWorkflowStatus, isActiveTaskStatus, isNonCompletedTerminalTaskStatus, summarizeTasks } from "../.tmp/unit/status.js";
 import { assertWorkflowActionAllowedForRole, assertWorkflowToolAllowedForRole, getWorkflowProcessRole, isWorkflowSupervisorEnabled, workflowWorkerEnvPrefix } from "../.tmp/unit/process-role.js";
 import { buildSourceContextPacket, summarizeWorkflowTelemetry, validateStructuredContract } from "../.tmp/unit/workflow-artifacts.js";
+import { loadWorkflowHelper, resolveWorkflowHelperRef } from "../.tmp/unit/workflow-helpers.js";
 import { refreshRunFromSubagentArtifacts, setSubagentApiForTests } from "../.tmp/unit/subagent-backend.js";
 
 function makeProject() {
@@ -581,6 +582,44 @@ test("schema and compiler accept partial sourcePolicy on foreach", async () => {
   }
 });
 
+test("schema and compiler accept transform stages", async () => {
+  const cwd = makeProject();
+  try {
+    writeAgent(cwd, "unit-scout", "read");
+    const spec = workflowSpec("unit-scout", {
+      workflow: {
+        stages: [
+          { id: "verify", type: "task", output: { format: "json" }, prompt: "Verify claims" },
+          { id: "audit", type: "transform", from: "verify", helper: "./helpers/audit.mjs", options: { strict: true } },
+        ],
+      },
+    });
+
+    const parsed = parseWorkflow(spec);
+    assert.equal(parsed.workflow.stages[1].helper, "./helpers/audit.mjs");
+    const compiled = await compileWorkflow(spec, { cwd, task: "Research" });
+    const transformTask = compiled.tasks.find((task) => task.stageId === "audit");
+    assert.ok(transformTask);
+    assert.equal(transformTask.kind, "transform");
+    assert.deepEqual(transformTask.dependsOn, ["verify.main"]);
+    assert.deepEqual(transformTask.transform, { helper: "./helpers/audit.mjs", options: { strict: true } });
+  } finally {
+    rmSync(cwd, { recursive: true, force: true });
+  }
+});
+
+test("schema rejects invalid transform stages", () => {
+  const missingHelper = assertThrowsFlow(() => parseWorkflow(workflowSpec("unit-scout", {
+    workflow: { stages: [{ id: "audit", type: "transform", from: "verify" }] },
+  })));
+  assertIssue(missingHelper, "$.workflow.stages[0].helper", "required");
+
+  const unknownKey = assertThrowsFlow(() => parseWorkflow(workflowSpec("unit-scout", {
+    workflow: { stages: [{ id: "audit", type: "transform", from: "verify", helper: "./helpers/audit.mjs", prompt: "No prompt" }] },
+  })));
+  assertIssue(unknownKey, "$.workflow.stages[0].prompt", "unknown field");
+});
+
 test("compiler injects output JSON template from output protocol", async () => {
   const cwd = makeProject();
   try {
@@ -662,6 +701,74 @@ test("compiler resolves internal and external output template refs", async () =>
   } finally {
     rmSync(cwd, { recursive: true, force: true });
   }
+});
+
+test("workflow helper loader resolves directory-local helpers", async () => {
+  const cwd = makeProject();
+  try {
+    const workflowDir = join(cwd, "workflows", "bundle");
+    mkdirSync(join(workflowDir, "helpers"), { recursive: true });
+    const specPath = join(workflowDir, "spec.json");
+    const helperPath = join(workflowDir, "helpers", "audit.mjs");
+    writeFileSync(specPath, JSON.stringify(workflowSpec("unit-scout")));
+    writeFileSync(helperPath, "export default async function helper(input) { return { ok: true, sources: input.sources }; }\n");
+
+    const resolved = await resolveWorkflowHelperRef("./helpers/audit.mjs", specPath);
+    assert.equal(resolved.path.endsWith("/workflows/bundle/helpers/audit.mjs"), true);
+
+    const helper = await loadWorkflowHelper("./helpers/audit.mjs", specPath);
+    assert.deepEqual(await helper({ sources: { verify: { ok: true } }, context: { specPath, cwd } }), {
+      ok: true,
+      sources: { verify: { ok: true } },
+    });
+  } finally {
+    rmSync(cwd, { recursive: true, force: true });
+  }
+});
+
+test("workflow helper loader rejects external or invalid helper refs", async () => {
+  const cwd = makeProject();
+  try {
+    const workflowDir = join(cwd, "workflows", "bundle");
+    mkdirSync(join(workflowDir, "helpers"), { recursive: true });
+    const specPath = join(workflowDir, "spec.json");
+    writeFileSync(specPath, JSON.stringify(workflowSpec("unit-scout")));
+    writeFileSync(join(workflowDir, "helpers", "not-function.mjs"), "export default 1;\n");
+
+    await assert.rejects(() => resolveWorkflowHelperRef("../outside.mjs", specPath), /parent-directory/);
+    await assert.rejects(() => resolveWorkflowHelperRef("/tmp/outside.mjs", specPath), /directory-local/);
+    await assert.rejects(() => resolveWorkflowHelperRef("file://helpers/audit.mjs", specPath), /directory-local/);
+    await assert.rejects(() => resolveWorkflowHelperRef("npm:pkg", specPath), /directory-local/);
+    await assert.rejects(() => resolveWorkflowHelperRef("~/.pi/helper.mjs", specPath), /directory-local/);
+    await assert.rejects(() => resolveWorkflowHelperRef("./helpers/audit.js", specPath), /relative \.mjs file/);
+    await assert.rejects(() => loadWorkflowHelper("./helpers/not-function.mjs", specPath), /default-export a function/);
+  } finally {
+    rmSync(cwd, { recursive: true, force: true });
+  }
+});
+
+test("deep-research claim evidence gate downgrades unsupported verified claims", async () => {
+  const { default: helper } = await import(`../workflows/deep-research/helpers/claim-evidence-gate.mjs?test=${Date.now()}`);
+
+  const result = await helper({
+    sources: {
+      "verify-claims.item-001": {
+        auditedClaims: [
+          { id: "claim-001", status: "verified", text: "The benchmark improved by 42%." },
+          { id: "claim-002", status: "verified", text: "The release exists.", evidence: [{ url: "https://example.com/release", fetched: true }] },
+        ],
+      },
+    },
+    options: { downgradeExactQuantitativeWithoutSource: true, requireFetchedEvidenceForVerified: true },
+    context: {},
+  });
+
+  assert.equal(result.gateSummary.total, 2);
+  assert.equal(result.gateSummary.downgraded, 1);
+  assert.equal(result.auditedClaims[0].status, "partially_supported");
+  assert.equal(result.auditedClaims[0].evidenceGate.previous, "verified");
+  assert.equal(result.auditedClaims[1].status, "verified");
+  assert.deepEqual(result.auditedClaims[1].sourceUrls, ["https://example.com/release"]);
 });
 
 test("JSON output extraction tolerates prose and fenced JSON", () => {
@@ -1004,6 +1111,81 @@ test("successive foreach materialization keeps task ids unique", async () => {
     const taskIds = current.tasks.map((task) => task.taskId);
     assert.equal(new Set(taskIds).size, taskIds.length);
     assert.deepEqual(current.tasks.filter((task) => task.stageId === "verify").map((task) => task.specId), ["verify.item-001", "verify.item-002"]);
+  } finally {
+    rmSync(cwd, { recursive: true, force: true });
+  }
+});
+
+test("stage-first transform executes helper and writes artifacts", async () => {
+  const cwd = makeProject();
+  try {
+    writeAgent(cwd, "unit-scout", "read");
+    const workflowDir = join(cwd, "workflows", "bundle");
+    mkdirSync(join(workflowDir, "helpers"), { recursive: true });
+    const specPath = join(workflowDir, "spec.json");
+    writeFileSync(join(workflowDir, "helpers", "audit.mjs"), "export default async function helper({ sources, options, context }) { return { audited: sources['extract.main'].claims.length, strict: options.strict, stageId: context.stageId }; }\n");
+    const spec = workflowSpec("unit-scout", {
+      flow: {
+        stages: [
+          { id: "extract", type: "task", output: { format: "json" }, prompt: "Extract" },
+          { id: "audit", type: "transform", from: "extract", helper: "./helpers/audit.mjs", options: { strict: true } },
+        ],
+      },
+    });
+    writeFileSync(specPath, JSON.stringify(spec));
+    const compiled = await compileWorkflow(spec, { cwd, task: "Check claims", specPath });
+    const { run } = await createStageFirstRunRecord(cwd, compiled, specPath);
+    await writeStaticRunArtifacts(cwd, run, compiled, spec);
+    writeFileSync(join(workflowDir, "helpers", "audit.mjs"), "export default async function helper() { throw new Error('live helper should not run'); }\n");
+    setTaskTerminal(run.tasks[0], "completed", "completed", { exitCode: 0, lastMessage: "completed" });
+    await writeJsonAtomic(join(cwd, run.tasks[0].files.result), { status: "completed", structuredOutput: { claims: ["a", "b"] } });
+    await writeRunRecord(cwd, run);
+
+    await scheduleRun(cwd, run.runId);
+    const updated = await readRunRecord(cwd, run.runId);
+    const transform = updated.tasks.find((task) => task.specId === "audit.main");
+    assert.equal(transform?.status, "completed");
+    assert.equal(transform?.lastMessage, "transform completed");
+    assert.deepEqual(JSON.parse(readFileSync(join(cwd, transform.files.result), "utf8")).structuredOutput, {
+      audited: 2,
+      strict: true,
+      stageId: "audit",
+    });
+  } finally {
+    rmSync(cwd, { recursive: true, force: true });
+  }
+});
+
+test("stage-first transform marks helper errors as failed", async () => {
+  const cwd = makeProject();
+  try {
+    writeAgent(cwd, "unit-scout", "read");
+    const workflowDir = join(cwd, "workflows", "bundle");
+    mkdirSync(join(workflowDir, "helpers"), { recursive: true });
+    const specPath = join(workflowDir, "spec.json");
+    writeFileSync(join(workflowDir, "helpers", "fail.mjs"), "export default async function helper() { throw new Error('helper boom'); }\n");
+    const spec = workflowSpec("unit-scout", {
+      flow: {
+        stages: [
+          { id: "extract", type: "task", output: { format: "json" }, prompt: "Extract" },
+          { id: "audit", type: "transform", from: "extract", helper: "./helpers/fail.mjs" },
+        ],
+      },
+    });
+    writeFileSync(specPath, JSON.stringify(spec));
+    const compiled = await compileWorkflow(spec, { cwd, task: "Check claims", specPath });
+    const { run } = await createStageFirstRunRecord(cwd, compiled, specPath);
+    await writeStaticRunArtifacts(cwd, run, compiled, spec);
+    setTaskTerminal(run.tasks[0], "completed", "completed", { exitCode: 0, lastMessage: "completed" });
+    await writeJsonAtomic(join(cwd, run.tasks[0].files.result), { status: "completed", structuredOutput: { claims: ["a"] } });
+    await writeRunRecord(cwd, run);
+
+    await scheduleRun(cwd, run.runId);
+    const updated = await readRunRecord(cwd, run.runId);
+    const transform = updated.tasks.find((task) => task.specId === "audit.main");
+    assert.equal(transform?.status, "failed");
+    assert.equal(transform?.statusDetail, "launch_failed");
+    assert.match(transform?.lastMessage ?? "", /helper boom/);
   } finally {
     rmSync(cwd, { recursive: true, force: true });
   }
@@ -1478,6 +1660,29 @@ test("run boundary requires runtime task", async () => {
   }
 });
 
+test("static run artifacts preserve workflow bundle files", async () => {
+  const cwd = makeProject();
+  try {
+    writeAgent(cwd, "unit-scout", "read");
+    const workflowDir = join(cwd, "workflows", "bundle");
+    mkdirSync(join(workflowDir, "helpers"), { recursive: true });
+    const specPath = join(workflowDir, "spec.json");
+    const spec = workflowSpec("unit-scout", { name: "bundle" });
+    writeFileSync(specPath, JSON.stringify(spec));
+    writeFileSync(join(workflowDir, "templates.json"), JSON.stringify({ audit: { ok: true } }));
+    writeFileSync(join(workflowDir, "helpers", "audit.mjs"), "export default () => ({ ok: true });\n");
+
+    const compiled = await compileWorkflow(spec, { cwd, task: "Summarize", specPath });
+    const { run } = await createStageFirstRunRecord(cwd, compiled, specPath);
+    await writeStaticRunArtifacts(cwd, run, compiled, spec);
+
+    assert.equal(readFileSync(join(cwd, ".pi", "workflows", run.runId, "bundle", "templates.json"), "utf8"), JSON.stringify({ audit: { ok: true } }));
+    assert.match(readFileSync(join(cwd, ".pi", "workflows", run.runId, "bundle", "helpers", "audit.mjs"), "utf8"), /export default/);
+  } finally {
+    rmSync(cwd, { recursive: true, force: true });
+  }
+});
+
 test("run records use workflow-v1 type and derive completion", async () => {
   const cwd = makeProject();
   try {
@@ -1516,6 +1721,50 @@ test("workflow registry resolves exact names and recommendation metadata", async
     assert.equal(loaded.spec.name, "review");
     const recs = await recommendWorkflows("please review this change", cwd);
     assert.equal(recs[0].workflow.name, "review");
+  } finally {
+    rmSync(cwd, { recursive: true, force: true });
+  }
+});
+
+test("workflow registry resolves bundle specs and sets correct workflowRoot", async () => {
+  const cwd = makeProject();
+  try {
+    mkdirSync(join(cwd, "workflows", "bundle-wf"), { recursive: true });
+    writeFileSync(join(cwd, "workflows", "bundle-wf", "spec.json"), JSON.stringify(workflowSpec("unit-scout", {
+      name: "bundle-wf",
+      catalog: { useWhen: ["bundle testing"] },
+    })));
+
+    const workflows = await listWorkflows(cwd);
+    const bundleRecord = workflows.find((workflow) => workflow.name === "bundle-wf");
+    assert.ok(bundleRecord);
+    assert.equal(bundleRecord.specPath, join(cwd, "workflows", "bundle-wf", "spec.json"));
+    assert.equal(bundleRecord.workflowRoot, join(cwd, "workflows", "bundle-wf"));
+    assert.deepEqual(bundleRecord.aliases, ["bundle-wf"]);
+
+    const resolved = await resolveWorkflowRef("bundle-wf", cwd);
+    assert.equal(resolved.workflowName, "bundle-wf");
+    assert.equal(resolved.workflowRoot, join(cwd, "workflows", "bundle-wf"));
+
+    const loaded = await loadWorkflow("bundle-wf", cwd);
+    assert.equal(loaded.spec.name, "bundle-wf");
+    assert.equal(loaded.specPath, join(cwd, "workflows", "bundle-wf", "spec.json"));
+  } finally {
+    rmSync(cwd, { recursive: true, force: true });
+  }
+});
+
+test("workflow registry fails closed when flat and bundle specs conflict", async () => {
+  const cwd = makeProject();
+  try {
+    mkdirSync(join(cwd, "workflows", "ambiguous"), { recursive: true });
+    writeFileSync(join(cwd, "workflows", "ambiguous.json"), JSON.stringify(workflowSpec("unit-scout", { name: "ambiguous" })));
+    writeFileSync(join(cwd, "workflows", "ambiguous", "spec.json"), JSON.stringify(workflowSpec("unit-scout", { name: "ambiguous" })));
+
+    await assert.rejects(
+      () => resolveWorkflowRef("ambiguous", cwd),
+      /ambiguous workflow name/,
+    );
   } finally {
     rmSync(cwd, { recursive: true, force: true });
   }

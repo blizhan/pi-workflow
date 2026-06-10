@@ -1,6 +1,6 @@
 import { AsyncLocalStorage } from "node:async_hooks";
-import { mkdir, open, readdir, readFile, rename, stat, unlink, utimes, writeFile } from "node:fs/promises";
-import { dirname, isAbsolute, join, relative, resolve } from "node:path";
+import { cp, mkdir, open, readdir, readFile, rename, stat, unlink, utimes, writeFile } from "node:fs/promises";
+import { basename, dirname, isAbsolute, join, relative, resolve } from "node:path";
 import { randomBytes } from "node:crypto";
 
 import {
@@ -268,6 +268,19 @@ export async function writeStaticRunArtifacts(cwd: string, run: WorkflowRunRecor
   const runDir = workflowRunDir(cwd, run.runId);
   await writeJsonAtomic(join(runDir, "spec.json"), originalSpec);
   await writeJsonAtomic(join(runDir, "compiled.json"), compiled);
+  await copyWorkflowBundleArtifacts(run.specPath, join(runDir, "bundle"));
+}
+
+async function copyWorkflowBundleArtifacts(specPath: string, targetDir: string): Promise<void> {
+  if (basename(specPath) !== "spec.json") return;
+  const sourceDir = dirname(specPath);
+  if (resolve(sourceDir) === resolve(targetDir)) return;
+  await cp(sourceDir, targetDir, {
+    recursive: true,
+    force: true,
+    errorOnExist: false,
+    filter: (source) => !relative(sourceDir, source).split(/[\\/]/).includes("node_modules"),
+  });
 }
 
 async function assertActiveRunLease(cwd: string, runId: string): Promise<void> {

@@ -549,6 +549,10 @@ export async function compileWorkflow(spec: any, options: CompileOptions & { tas
           injectRuntimeTask: injectTask,
           roleText,
         } : undefined,
+        transform: stage.type === "transform" ? {
+          helper: String(stage.helper),
+          options: stage.options,
+        } : undefined,
       });
       currentStageTaskKeys.push(key);
     };
@@ -556,6 +560,8 @@ export async function compileWorkflow(spec: any, options: CompileOptions & { tas
       for (const item of stage.tasks) addTask(item.id ?? `item-${tasks.length + 1}`, item.prompt ?? "");
     } else if (stage.type === "foreach") {
       addTask("item", stage.each?.prompt ?? stage.prompt ?? "");
+    } else if (stage.type === "transform") {
+      addTask("main", `Run transform helper ${stage.helper}.`);
     } else {
       addTask("main", stage.prompt ?? "");
     }
