@@ -1,0 +1,781 @@
+{
+  "digest": "Standard-depth audited handoff: practical RAG evaluation should combine retrieval diagnostics, groundedness/answer checks, calibrated LLM judges, curated offline tests, online trace monitoring, and privacy/security controls; 13 claims verified, 3 partial, no unsupported/conflicting.",
+  "finalReport": {
+    "summary": "Working conclusion: for a small SaaS team, the best-supported production RAG quality program is layered rather than single-metric: keep retrieval metrics for root-cause diagnosis, evaluate groundedness/answer quality separately, use LLM-as-judge only with rubrics and human calibration, maintain curated regression datasets, monitor production traces and drift, and treat telemetry as sensitive data. The small-team stack recommendation is a practical synthesis, not a directly vendor-mandated pattern.",
+    "researchMetadata": {
+      "taskType": "research_survey",
+      "expectedFinalShape": "research_brief",
+      "depth": "standard",
+      "researchQuestions": 7,
+      "plannedFactSlots": 13,
+      "filledFactSlots": 6,
+      "partialFactSlots": 7,
+      "missingFactSlots": 0,
+      "claimsVerified": 13,
+      "claimsPartiallySupported": 3,
+      "claimsUnsupported": 0,
+      "claimsConflicting": 0,
+      "sourcePolicy": "Primary/official docs and recognized security guidance preferred; audit-claims verifier verdicts are authoritative; partial claims remain caveated rather than promoted."
+    },
+    "coverageSummary": {
+      "depth": "standard",
+      "researchQuestions": 7,
+      "rawClaimsApprox": 16,
+      "verificationCandidates": 16,
+      "preserved": 8,
+      "unverifiedButRelevant": 6,
+      "coverageGaps": 6,
+      "verified": 13,
+      "partiallySupported": 3,
+      "unsupported": 0,
+      "conflicting": 0
+    },
+    "factSlotCoverage": [
+      {
+        "slotId": "slot-001",
+        "status": "partial",
+        "bestValue": "Retrieval metrics cover coverage/noise/ranking; context precision/recall, MAP, nDCG, and MRR have support, but exact recall@k/hit-rate/MRR formulas need stronger primary verification.",
+        "evidenceStatus": "partial",
+        "sourceUrls": [
+          "https://nlp.stanford.edu/IR-book/html/htmledition/evaluation-of-ranked-retrieval-results-1.html",
+          "https://docs.ragas.io/en/latest/concepts/metrics/available_metrics/context_precision/"
+        ],
+        "parentImpact": "High: metric definitions anchor the evaluation brief."
+      },
+      {
+        "slotId": "slot-002",
+        "status": "filled",
+        "bestValue": "Retrieval-only metrics diagnose retriever/context quality but do not guarantee final answer quality.",
+        "evidenceStatus": "verified",
+        "sourceUrls": [
+          "https://docs.ragas.io/en/latest/concepts/metrics/available_metrics/context_precision/",
+          "https://arxiv.org/abs/2309.15217"
+        ],
+        "parentImpact": "High: prevents overclaiming retrieval scores."
+      },
+      {
+        "slotId": "slot-003",
+        "status": "filled",
+        "bestValue": "Groundedness can be checked by claim-level support against retrieved context; citation validation is stronger when paired with context/ranking checks, but the combined prescription is partial synthesis.",
+        "evidenceStatus": "verified_plus_partial",
+        "sourceUrls": [
+          "https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/faithfulness",
+          "https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/context_precision",
+          "https://docs.confident-ai.com/docs/metrics-contextual-precision"
+        ],
+        "parentImpact": "Critical: central to hallucination/citation trust."
+      },
+      {
+        "slotId": "slot-004",
+        "status": "filled",
+        "bestValue": "LLM judges can be useful but are biased and setup-dependent; use explicit rubrics and human corrections/few-shot calibration.",
+        "evidenceStatus": "verified",
+        "sourceUrls": [
+          "https://arxiv.org/abs/2306.05685",
+          "https://docs.smith.langchain.com/evaluation/how_to_guides/llm_as_judge"
+        ],
+        "parentImpact": "High: judge scores may drive gates and alerts."
+      },
+      {
+        "slotId": "slot-005",
+        "status": "partial",
+        "bestValue": "Online evaluation of live interactions complements offline datasets; human review is useful for calibration and risky/escalated cases, but sampling rates/cadences are not standardized here.",
+        "evidenceStatus": "partial",
+        "sourceUrls": [
+          "https://docs.smith.langchain.com/evaluation/concepts",
+          "https://docs.smith.langchain.com/evaluation/how_to_guides/llm_as_judge"
+        ],
+        "parentImpact": "Medium: affects operational staffing."
+      },
+      {
+        "slotId": "slot-006",
+        "status": "filled",
+        "bestValue": "Maintain stable curated datasets for repeatable offline regression tests before shipping.",
+        "evidenceStatus": "verified",
+        "sourceUrls": [
+          "https://docs.smith.langchain.com/evaluation/how_to_guides/manage_datasets_in_application",
+          "https://docs.smith.langchain.com/evaluation/concepts"
+        ],
+        "parentImpact": "High: basis for release gates."
+      },
+      {
+        "slotId": "slot-007",
+        "status": "partial",
+        "bestValue": "Synthetic tests can broaden coverage via knowledge graphs, personas/scenarios, and query synthesis; do not treat them as a replacement for real/golden data without local validation.",
+        "evidenceStatus": "verified_plus_gap",
+        "sourceUrls": [
+          "https://docs.ragas.io/en/stable/concepts/test_data_generation/rag",
+          "https://genai.owasp.org/llmrisk/llm01-prompt-injection"
+        ],
+        "parentImpact": "Medium: improves coverage but can misrepresent production."
+      },
+      {
+        "slotId": "slot-008",
+        "status": "partial",
+        "bestValue": "Monitor trace-derived quality/performance metrics and distribution drift against baselines; RAG-specific drift signals are synthesized from general docs.",
+        "evidenceStatus": "partial",
+        "sourceUrls": [
+          "https://docs.smith.langchain.com/observability/how_to_guides/monitor_performance",
+          "https://docs.evidentlyai.com/metrics/explainer_drift"
+        ],
+        "parentImpact": "High: determines production alerts."
+      },
+      {
+        "slotId": "slot-009",
+        "status": "filled",
+        "bestValue": "RAG telemetry can expose prompts, retrieved docs, outputs, and metadata; evaluate indirect prompt injection, poisoning, and exfiltration risks; use masking/minimization.",
+        "evidenceStatus": "verified",
+        "sourceUrls": [
+          "https://docs.smith.langchain.com/observability/how_to_guides/mask_inputs_outputs",
+          "https://genai.owasp.org/llmrisk/llm01-prompt-injection",
+          "https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html"
+        ],
+        "parentImpact": "Critical: unsafe telemetry can create security/privacy exposure."
+      },
+      {
+        "slotId": "slot-010",
+        "status": "partial",
+        "bestValue": "Ragas/TruLens/LangSmith/Phoenix/DeepEval cover overlapping eval/observability capabilities; current-doc validation is needed before procurement or ranking.",
+        "evidenceStatus": "verified_high_level_partial_matrix",
+        "sourceUrls": [
+          "https://docs.ragas.io/en/stable/concepts/metrics/available_metrics",
+          "https://www.trulens.org/getting_started/core_concepts/rag_triad",
+          "https://docs.smith.langchain.com/evaluation",
+          "https://docs.smith.langchain.com/observability",
+          "https://arize.com/docs/phoenix",
+          "https://deepeval.com/docs/getting-started"
+        ],
+        "parentImpact": "Medium: affects tooling choice."
+      },
+      {
+        "slotId": "slot-011",
+        "status": "filled",
+        "bestValue": "A feasible small-team pattern is offline metric/regression gates plus always-on tracing/operational metrics, sampled quality evals, and privacy controls; feasibility/sampling are synthesized.",
+        "evidenceStatus": "partial_synthesis_with_verified_components",
+        "sourceUrls": [
+          "https://docs.ragas.io/en/stable/concepts/metrics/available_metrics",
+          "https://docs.smith.langchain.com/observability",
+          "https://arize.com/docs/phoenix",
+          "https://deepeval.com/docs/getting-started"
+        ],
+        "parentImpact": "High: main rollout recommendation."
+      },
+      {
+        "slotId": "slot-012",
+        "status": "partial",
+        "bestValue": "Use trace dashboards, aggregate quality/performance metrics, drift alerts, and CI/release gates on curated datasets; exact alert/review cadence is local policy.",
+        "evidenceStatus": "partial",
+        "sourceUrls": [
+          "https://docs.smith.langchain.com/observability/how_to_guides/monitor_performance",
+          "https://docs.evidentlyai.com/metrics/explainer_drift",
+          "https://docs.confident-ai.com/docs/metrics-introduction"
+        ],
+        "parentImpact": "Medium: operationalizes monitoring."
+      },
+      {
+        "slotId": "slot-013",
+        "status": "partial",
+        "bestValue": "Handle uncertainty by treating judge/faithfulness scores as calibrated signals, using rubrics, human corrections, and escalation for low/conflicting/risky outputs; no universal numeric thresholds were verified.",
+        "evidenceStatus": "partial",
+        "sourceUrls": [
+          "https://arxiv.org/abs/2306.05685",
+          "https://docs.smith.langchain.com/evaluation/how_to_guides/llm_as_judge",
+          "https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/faithfulness/"
+        ],
+        "parentImpact": "Medium: affects safe deployment decisions."
+      }
+    ],
+    "mainFindings": [
+      {
+        "finding": "Retrieval metrics are necessary diagnostics but not final RAG quality guarantees.",
+        "evidenceStatus": "verified",
+        "sources": [
+          "Ragas context precision/relevance/faithfulness docs",
+          "RAGAS paper https://arxiv.org/abs/2309.15217"
+        ],
+        "implication": "Separate retriever debugging from final-answer acceptance."
+      },
+      {
+        "finding": "Groundedness/faithfulness can be evaluated at claim level against retrieved context.",
+        "evidenceStatus": "verified",
+        "sources": [
+          "https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/faithfulness"
+        ],
+        "implication": "Use claim support rate as a core hallucination signal."
+      },
+      {
+        "finding": "LLM-as-judge is scalable but must be calibrated and bias-aware.",
+        "evidenceStatus": "verified",
+        "sources": [
+          "https://arxiv.org/abs/2306.05685",
+          "https://docs.smith.langchain.com/evaluation/how_to_guides/llm_as_judge"
+        ],
+        "implication": "Do not use judge output as unreviewed ground truth for critical decisions."
+      },
+      {
+        "finding": "Curated offline datasets plus online production evaluation are complementary.",
+        "evidenceStatus": "verified",
+        "sources": [
+          "https://docs.smith.langchain.com/evaluation/concepts",
+          "https://docs.smith.langchain.com/evaluation/how_to_guides/manage_datasets_in_application"
+        ],
+        "implication": "Use offline regression gates before release and online signals after release."
+      },
+      {
+        "finding": "RAG observability introduces privacy/security risk because traces can contain sensitive inputs, retrieved content, outputs, and metadata.",
+        "evidenceStatus": "verified",
+        "sources": [
+          "https://docs.smith.langchain.com/observability/how_to_guides/mask_inputs_outputs",
+          "https://genai.owasp.org/llmrisk/llm01-prompt-injection"
+        ],
+        "implication": "Logging design and masking are part of the quality program, not optional add-ons."
+      }
+    ],
+    "recommendations": [
+      {
+        "recommendation": "Adopt a layered eval design: retriever metrics, answer groundedness/relevance, calibrated LLM judge checks, and operational traces should be reported separately.",
+        "evidenceStatus": "verified_plus_partial",
+        "evidence": [
+          "Ragas metric docs",
+          "RAGAS paper",
+          "LangSmith LLM-as-judge docs"
+        ],
+        "caveat": "The exact dashboard grouping is implementation guidance; the underlying metric separation is verified."
+      },
+      {
+        "recommendation": "Make curated offline regression datasets the release gate, then use online trace evaluation for production issue detection.",
+        "evidenceStatus": "verified",
+        "evidence": [
+          "LangSmith evaluation concepts and dataset docs"
+        ],
+        "caveat": "No universal pass/fail thresholds were verified; set thresholds from local baseline behavior."
+      },
+      {
+        "recommendation": "Use LLM-as-judge only with explicit rubrics, human corrections/few-shot calibration, and periodic audit sampling.",
+        "evidenceStatus": "verified",
+        "evidence": [
+          "https://docs.smith.langchain.com/evaluation/how_to_guides/llm_as_judge",
+          "https://arxiv.org/abs/2306.05685"
+        ],
+        "caveat": "Judge reliability is task- and setup-dependent."
+      },
+      {
+        "recommendation": "For a small team, start with local/open eval metrics plus hosted or self-hosted tracing, but validate vendor capabilities immediately before choosing a tool.",
+        "evidenceStatus": "partial_synthesis",
+        "evidence": [
+          "Ragas, DeepEval, LangSmith, Phoenix, TruLens official docs"
+        ],
+        "caveat": "Small-team feasibility and sampling strategy are synthesized, not directly established by a single source."
+      },
+      {
+        "recommendation": "Minimize and mask telemetry before sending it to hosted observability backends; include prompt-injection/RAG-poisoning/exfiltration cases in security evaluation.",
+        "evidenceStatus": "verified",
+        "evidence": [
+          "LangSmith masking docs",
+          "OWASP LLM01 and Prompt Injection Prevention Cheat Sheet"
+        ],
+        "caveat": "Specific masking rules must be adapted to the team’s data classes and compliance needs."
+      }
+    ],
+    "actionPlan": [
+      {
+        "step": "Define metric taxonomy and dashboard sections: retrieval, groundedness/answer quality, judge confidence/caveats, operational latency/cost, and security/privacy events.",
+        "evidenceStatus": "verified_plus_partial",
+        "sources": [
+          "Ragas docs",
+          "RAGAS paper",
+          "LangSmith observability docs"
+        ]
+      },
+      {
+        "step": "Create a small curated regression dataset from known customer intents and failure modes; include inputs, expected/reference outputs where useful, retrieved-context expectations, and security/adversarial cases.",
+        "evidenceStatus": "verified_plus_synthesis",
+        "sources": [
+          "LangSmith dataset/evaluation docs",
+          "OWASP LLM01"
+        ]
+      },
+      {
+        "step": "Implement claim-level faithfulness checks and context precision/recall/ranking diagnostics in CI or pre-release experiments.",
+        "evidenceStatus": "verified",
+        "sources": [
+          "Ragas faithfulness/context docs",
+          "Stanford IR book"
+        ]
+      },
+      {
+        "step": "Add production tracing with masking/minimization, then sample traces into online eval and human review queues.",
+        "evidenceStatus": "verified_plus_partial",
+        "sources": [
+          "LangSmith observability/masking/evaluation docs"
+        ]
+      },
+      {
+        "step": "Run a short tool bake-off using current docs for Ragas, DeepEval, LangSmith, Phoenix, and TruLens; compare privacy controls, self-hosting/hosted workflow, CI fit, tracing integration, and cost.",
+        "evidenceStatus": "partial_tool_matrix",
+        "sources": [
+          "Official tool docs listed in slot-010"
+        ]
+      }
+    ],
+    "caveatedFindings": [
+      {
+        "finding": "Production RAG should track retrieval metrics separately from answer metrics.",
+        "status": "partially_supported",
+        "caveat": "Sources support the metric taxonomy and separate RAG dimensions; the production-specific 'should track separately' wording is best-practice synthesis."
+      },
+      {
+        "finding": "Citation/source validation should combine answer support checks with retrieved-context usefulness/ranking checks.",
+        "status": "partially_supported",
+        "caveat": "Docs support separate faithfulness and context precision metrics; no inspected source mandated this exact combined citation-validation method."
+      },
+      {
+        "finding": "Small SaaS teams should use offline/local eval libraries plus hosted/self-hosted tracing and sampled quality evals.",
+        "status": "partially_supported",
+        "caveat": "Components are supported by official docs; feasibility and sampling policy require local validation."
+      }
+    ],
+    "contestedAreas": [],
+    "notableUnsupportedClaims": [],
+    "unverifiedButRelevant": [
+      {
+        "id": "preserved-002",
+        "claim": "ALCE defines automatic metrics for fluency, correctness, and citation quality for cited-answer systems.",
+        "evidenceStatus": "preserved_unverified",
+        "sourceUrls": [
+          "https://arxiv.org/abs/2305.14627"
+        ],
+        "whyItMatters": "Could strengthen citation-specific evaluation guidance."
+      },
+      {
+        "id": "preserved-004",
+        "claim": "Production traces can be collected into datasets and reused downstream for testing.",
+        "evidenceStatus": "preserved_unverified",
+        "sourceUrls": [
+          "https://docs.smith.langchain.com/evaluation/how_to_guides/manage_datasets_in_application"
+        ],
+        "whyItMatters": "Useful lifecycle loop from production to regression data."
+      },
+      {
+        "id": "preserved-005",
+        "claim": "CI-friendly evaluation frameworks can make minimal RAG eval feasible for small teams.",
+        "evidenceStatus": "preserved_unverified",
+        "sourceUrls": [
+          "https://docs.confident-ai.com/docs/evaluation-datasets-golden-datasets",
+          "https://docs.confident-ai.com/docs/metrics-introduction"
+        ],
+        "whyItMatters": "Could support implementation rollout."
+      },
+      {
+        "id": "preserved-006",
+        "claim": "Small teams should prefer minimization, redaction, least privilege, output validation, and human review for risky cases over unmanaged comprehensive telemetry.",
+        "evidenceStatus": "preserved_unverified_synthesis",
+        "sourceUrls": [
+          "https://genai.owasp.org/llmrisk/llm01-prompt-injection",
+          "https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html"
+        ],
+        "whyItMatters": "Useful security posture, already partly covered by verified security claims."
+      },
+      {
+        "id": "preserved-007",
+        "claim": "DeepEval predefined metrics are largely LLM-as-judge metrics returning 0–1 scores with reasoning.",
+        "evidenceStatus": "preserved_unverified",
+        "sourceUrls": [
+          "https://deepeval.com/docs/metrics-introduction"
+        ],
+        "whyItMatters": "Tool-specific detail for a comparison table."
+      },
+      {
+        "id": "preserved-008",
+        "claim": "Phoenix eval workflows can run built-in templates on trace-derived data and log structured quality signals back to Phoenix.",
+        "evidenceStatus": "preserved_unverified",
+        "sourceUrls": [
+          "https://arize.com/docs/phoenix/evaluation"
+        ],
+        "whyItMatters": "Tool-specific operational detail."
+      }
+    ],
+    "parentDecisionNotes": [
+      {
+        "note": "Choose whether the immediate deliverable is an evaluation architecture or a vendor/tool recommendation.",
+        "whyItMatters": "The evidence strongly supports architectural layers; tool ranking is only high-level and time-sensitive.",
+        "evidenceStatus": "verified_architecture_partial_tools",
+        "suggestedParentDecision": "If selecting tools, run a current-doc bake-off before committing."
+      },
+      {
+        "note": "Do not set numeric thresholds for pass/fail, drift, abstention, or sampling from this research alone.",
+        "whyItMatters": "No universal numeric thresholds were verified; using invented thresholds would create false precision.",
+        "evidenceStatus": "coverage_gap",
+        "suggestedParentDecision": "Derive thresholds from baseline data and human-reviewed calibration samples."
+      },
+      {
+        "note": "Decide acceptable telemetry exposure before enabling production tracing.",
+        "whyItMatters": "Quality monitoring can log sensitive prompts, retrieved docs, outputs, and metadata.",
+        "evidenceStatus": "verified",
+        "suggestedParentDecision": "Require masking/minimization and access controls as launch criteria."
+      },
+      {
+        "note": "Treat synthetic tests as coverage expansion, not as a substitute for real/golden cases.",
+        "whyItMatters": "Synthetic generation methods are sourced, but representativeness caveats are thin.",
+        "evidenceStatus": "partial",
+        "suggestedParentDecision": "Blend synthetic/adversarial cases with curated production-derived cases."
+      }
+    ],
+    "researchScopeCoverage": {
+      "covered": [
+        "retrieval metrics and limitations",
+        "groundedness/faithfulness",
+        "LLM-as-judge bias/calibration",
+        "offline and online evaluation lifecycle",
+        "production observability/drift",
+        "privacy/security risks",
+        "tool landscape",
+        "small-team rollout synthesis"
+      ],
+      "partial": [
+        "exact retrieval formulas",
+        "human review sampling/cadence",
+        "synthetic-data limitations",
+        "RAG-specific drift signal taxonomy",
+        "tool feature matrix freshness",
+        "uncertainty thresholds"
+      ],
+      "missing": []
+    },
+    "remainingGaps": {
+      "blocking": [
+        {
+          "gap": "Current vendor/tool capability validation before procurement or final stack ranking.",
+          "whyItMatters": "Tool docs change quickly and the audited comparison is high-level, not an exhaustive matrix.",
+          "relatedSlots": [
+            "slot-010",
+            "slot-011"
+          ]
+        },
+        {
+          "gap": "Local thresholds for release gates, alerts, abstention, and sampling.",
+          "whyItMatters": "No universal numeric thresholds were verified; thresholds affect false positives, cost, and safety.",
+          "relatedSlots": [
+            "slot-005",
+            "slot-012",
+            "slot-013"
+          ]
+        }
+      ],
+      "nonBlockingCaveats": [
+        {
+          "gap": "Exact formulas for recall@k, hit rate, and some ranking measures need stronger primary verification before publishing formula tables.",
+          "whyItMatters": "Does not block architecture, but matters for implementation docs.",
+          "relatedSlots": [
+            "slot-001"
+          ]
+        },
+        {
+          "gap": "Synthetic data caveats need stronger independent evidence.",
+          "whyItMatters": "Affects how much weight synthetic tests should receive.",
+          "relatedSlots": [
+            "slot-007"
+          ]
+        },
+        {
+          "gap": "RAG-specific drift signals such as corpus/query/retrieval/feedback drift are synthesized from general monitoring/drift docs.",
+          "whyItMatters": "Use cautious wording and validate against observed production signals.",
+          "relatedSlots": [
+            "slot-008"
+          ]
+        }
+      ]
+    }
+  },
+  "claimVerdictIndex": {
+    "claims": [
+      {
+        "id": "claim-001",
+        "status": "partially_supported",
+        "confidence": 0.82,
+        "sourceUrls": [
+          "https://docs.ragas.io/en/latest/concepts/metrics/available_metrics/context_precision/",
+          "https://docs.ragas.io/en/latest/concepts/metrics/available_metrics/context_recall",
+          "https://nlp.stanford.edu/IR-book/html/htmledition/evaluation-of-ranked-retrieval-results-1.html",
+          "https://www.evidentlyai.com/ranking-metrics/mean-reciprocal-rank-mrr"
+        ],
+        "factSlotIds": [
+          "slot-001",
+          "slot-002"
+        ],
+        "support": "Metric taxonomy supported; production separation is inferred.",
+        "caveat": "Use narrower wording for hard claims.",
+        "correctionOrCounterclaim": "RAG retrieval evaluation can include context recall/precision and MAP/nDCG/MRR; separate tracking is best-practice synthesis."
+      },
+      {
+        "id": "claim-002",
+        "status": "verified",
+        "confidence": 0.86,
+        "sourceUrls": [
+          "https://docs.ragas.io/en/latest/concepts/metrics/available_metrics/context_precision",
+          "https://arxiv.org/abs/2309.15217",
+          "https://docs.ragas.io/en/latest/concepts/metrics/available_metrics/answer_relevance",
+          "https://docs.ragas.io/en/latest/concepts/metrics/available_metrics/faithfulness"
+        ],
+        "factSlotIds": [
+          "slot-002"
+        ],
+        "support": "Retrieval metrics are distinct from generation faithfulness/relevance dimensions.",
+        "caveat": "Citation correctness/safety are inferred outside retrieval scope.",
+        "correctionOrCounterclaim": ""
+      },
+      {
+        "id": "claim-003",
+        "status": "verified",
+        "confidence": 0.98,
+        "sourceUrls": [
+          "https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/faithfulness"
+        ],
+        "factSlotIds": [
+          "slot-003"
+        ],
+        "support": "Ragas directly describes claim extraction, support checking, and supported/total formula.",
+        "caveat": "Verifies Ragas faithfulness metric, not all groundedness methods.",
+        "correctionOrCounterclaim": ""
+      },
+      {
+        "id": "claim-004",
+        "status": "partially_supported",
+        "confidence": 0.78,
+        "sourceUrls": [
+          "https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/context_precision",
+          "https://docs.confident-ai.com/docs/metrics-contextual-precision",
+          "https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/faithfulness",
+          "https://docs.confident-ai.com/docs/metrics-faithfulness"
+        ],
+        "factSlotIds": [
+          "slot-003"
+        ],
+        "support": "Separate faithfulness and context precision checks are supported.",
+        "caveat": "Combined citation-validation prescription is synthesis.",
+        "correctionOrCounterclaim": "Pairing answer support with retrieval/context checks can strengthen citation validation; not a mandated procedure in inspected docs."
+      },
+      {
+        "id": "claim-005",
+        "status": "verified",
+        "confidence": 0.86,
+        "sourceUrls": [
+          "https://arxiv.org/abs/2306.05685"
+        ],
+        "factSlotIds": [
+          "slot-004"
+        ],
+        "support": "Strong LLM judges approximate human preferences in benchmark settings with limitations.",
+        "caveat": "Benchmark-specific; not universal.",
+        "correctionOrCounterclaim": ""
+      },
+      {
+        "id": "claim-006",
+        "status": "verified",
+        "confidence": 0.95,
+        "sourceUrls": [
+          "https://arxiv.org/abs/2306.05685"
+        ],
+        "factSlotIds": [
+          "slot-004",
+          "slot-013"
+        ],
+        "support": "Position, verbosity, self-enhancement biases and reasoning limitations are directly identified.",
+        "caveat": "No severity quantification in handoff.",
+        "correctionOrCounterclaim": ""
+      },
+      {
+        "id": "claim-007",
+        "status": "verified",
+        "confidence": 0.94,
+        "sourceUrls": [
+          "https://docs.smith.langchain.com/evaluation/how_to_guides/llm_as_judge",
+          "https://docs.smith.langchain.com/evaluation/how_to_guides/create_few_shot_evaluators"
+        ],
+        "factSlotIds": [
+          "slot-004",
+          "slot-013"
+        ],
+        "support": "LangSmith docs support rubrics/scoring criteria plus human corrections/few-shot calibration.",
+        "caveat": "Framework guidance, not universal standard.",
+        "correctionOrCounterclaim": ""
+      },
+      {
+        "id": "claim-008",
+        "status": "verified",
+        "confidence": 0.96,
+        "sourceUrls": [
+          "https://docs.smith.langchain.com/evaluation/concepts"
+        ],
+        "factSlotIds": [
+          "slot-005",
+          "slot-011"
+        ],
+        "support": "Offline curated datasets and online production evaluation are explicitly distinguished and complementary.",
+        "caveat": "",
+        "correctionOrCounterclaim": ""
+      },
+      {
+        "id": "claim-009",
+        "status": "verified",
+        "confidence": 0.93,
+        "sourceUrls": [
+          "https://docs.smith.langchain.com/evaluation/how_to_guides/manage_datasets_in_application",
+          "https://docs.smith.langchain.com/evaluation/concepts"
+        ],
+        "factSlotIds": [
+          "slot-006",
+          "slot-011"
+        ],
+        "support": "Curated datasets enable repeatable pre-shipping comparisons/regression tests.",
+        "caveat": "Docs say datasets/curated datasets rather than exact phrase golden datasets.",
+        "correctionOrCounterclaim": ""
+      },
+      {
+        "id": "claim-010",
+        "status": "verified",
+        "confidence": 0.88,
+        "sourceUrls": [
+          "https://docs.ragas.io/en/stable/concepts/test_data_generation/rag"
+        ],
+        "factSlotIds": [
+          "slot-007"
+        ],
+        "support": "Ragas docs support knowledge-graph/scenario/persona/query-synthesis approach.",
+        "caveat": "Persona availability may vary by version.",
+        "correctionOrCounterclaim": ""
+      },
+      {
+        "id": "claim-011",
+        "status": "verified",
+        "confidence": 0.9,
+        "sourceUrls": [
+          "https://docs.smith.langchain.com/observability/how_to_guides/monitor_performance",
+          "https://docs.smith.langchain.com/observability/how_to_guides/dashboards"
+        ],
+        "factSlotIds": [
+          "slot-008",
+          "slot-012"
+        ],
+        "support": "Traces can be aggregated into performance/quality metrics, dashboards, and alerts.",
+        "caveat": "Exact retention wording is inferred from trace data docs.",
+        "correctionOrCounterclaim": ""
+      },
+      {
+        "id": "claim-012",
+        "status": "verified",
+        "confidence": 0.9,
+        "sourceUrls": [
+          "https://docs.evidentlyai.com/metrics/explainer_drift",
+          "https://docs.evidentlyai.com/docs/platform/alerts"
+        ],
+        "factSlotIds": [
+          "slot-008",
+          "slot-012"
+        ],
+        "support": "Drift compares reference/current distributions and can alert on configured drifting-signal share.",
+        "caveat": "Built-in alerting documented as Pro/Cloud/Enterprise feature.",
+        "correctionOrCounterclaim": ""
+      },
+      {
+        "id": "claim-013",
+        "status": "verified",
+        "confidence": 0.94,
+        "sourceUrls": [
+          "https://docs.smith.langchain.com/observability/how_to_guides/mask_inputs_outputs",
+          "https://docs.smith.langchain.com/observability/concepts",
+          "https://docs.smith.langchain.com/observability/how_to_guides/log_retriever_trace"
+        ],
+        "factSlotIds": [
+          "slot-009",
+          "slot-010"
+        ],
+        "support": "Traces may include sensitive data and retrieved documents; client-side masking can reduce hosted-backend exposure.",
+        "caveat": "",
+        "correctionOrCounterclaim": ""
+      },
+      {
+        "id": "claim-014",
+        "status": "verified",
+        "confidence": 0.92,
+        "sourceUrls": [
+          "https://genai.owasp.org/llmrisk/llm01-prompt-injection",
+          "https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html"
+        ],
+        "factSlotIds": [
+          "slot-009"
+        ],
+        "support": "OWASP supports indirect prompt injection, RAG poisoning, and exfiltration risk cases.",
+        "caveat": "Security eval inclusion is supported by testing/monitoring guidance rather than one exact sentence.",
+        "correctionOrCounterclaim": ""
+      },
+      {
+        "id": "claim-015",
+        "status": "verified",
+        "confidence": 0.84,
+        "sourceUrls": [
+          "https://docs.ragas.io/en/stable/concepts/metrics/available_metrics",
+          "https://www.trulens.org/getting_started/core_concepts/rag_triad",
+          "https://docs.smith.langchain.com/evaluation",
+          "https://docs.smith.langchain.com/observability",
+          "https://arize.com/docs/phoenix",
+          "https://deepeval.com/docs/getting-started"
+        ],
+        "factSlotIds": [
+          "slot-010"
+        ],
+        "support": "Official docs support high-level tool capability comparison.",
+        "caveat": "Not exhaustive and should be refreshed before vendor decisions.",
+        "correctionOrCounterclaim": ""
+      },
+      {
+        "id": "claim-016",
+        "status": "partially_supported",
+        "confidence": 0.8,
+        "sourceUrls": [
+          "https://docs.ragas.io/en/stable/concepts/metrics/available_metrics",
+          "https://deepeval.com/docs/getting-started",
+          "https://docs.smith.langchain.com/observability",
+          "https://arize.com/docs/phoenix"
+        ],
+        "factSlotIds": [
+          "slot-011",
+          "slot-012"
+        ],
+        "support": "Local metrics and hosted/self-hosted tracing components are supported.",
+        "caveat": "Small-SaaS feasibility and sampled judging policy are synthesis.",
+        "correctionOrCounterclaim": "Combine local metric evals with observability/tracing; justify sampling separately."
+      },
+      {
+        "id": "preserved-002",
+        "status": "unverified_relevant",
+        "confidence": null,
+        "sourceUrls": [
+          "https://arxiv.org/abs/2305.14627"
+        ],
+        "factSlotIds": [
+          "slot-003"
+        ],
+        "support": "Preserved citation-specific benchmark lead.",
+        "caveat": "Not verifier-adjudicated.",
+        "correctionOrCounterclaim": ""
+      },
+      {
+        "id": "preserved-006",
+        "status": "unverified_relevant",
+        "confidence": null,
+        "sourceUrls": [
+          "https://genai.owasp.org/llmrisk/llm01-prompt-injection",
+          "https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html"
+        ],
+        "factSlotIds": [
+          "slot-009",
+          "slot-011"
+        ],
+        "support": "Preserved security posture synthesis.",
+        "caveat": "Core security facts verified elsewhere; this exact recommendation was not adjudicated.",
+        "correctionOrCounterclaim": ""
+      }
+    ]
+  }
+}

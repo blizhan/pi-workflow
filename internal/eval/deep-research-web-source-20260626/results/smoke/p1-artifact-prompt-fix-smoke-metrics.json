@@ -1,0 +1,507 @@
+{
+  "schema": "deep-research-eval-metrics-v2",
+  "label": "p1-artifact-prompt-fix-smoke",
+  "root": "/Users/toby/pi/pi-subagent-flow-web-source-context",
+  "runId": "workflow_mqv92w15_ee0d5a",
+  "status": "completed",
+  "createdAt": "2026-06-26T18:14:13.673Z",
+  "updatedAt": "2026-06-26T18:32:28.777Z",
+  "wallClockMs": 1095104,
+  "wallClockMinutes": 18.25,
+  "taskCount": 29,
+  "taskSummary": {
+    "total": 29,
+    "pending": 0,
+    "running": 0,
+    "blocked": 0,
+    "completed": 29,
+    "failed": 0,
+    "skipped": 0,
+    "interrupted": 0
+  },
+  "statusCounts": {
+    "completed": 29
+  },
+  "outputRetries": 0,
+  "launchRetries": 0,
+  "resumeEvents": 0,
+  "taskTiming": {
+    "byStage": {
+      "plan": {
+        "taskCount": 1,
+        "earliestStart": "2026-06-26T18:14:13.710Z",
+        "latestEnd": "2026-06-26T18:16:40.426Z",
+        "spanMs": 146716,
+        "spanMinutes": 2.45,
+        "maxTaskDurationMs": 146716,
+        "maxTaskDurationMinutes": 2.45,
+        "slowestTaskId": "task-1"
+      },
+      "research-questions": {
+        "taskCount": 6,
+        "earliestStart": "2026-06-26T18:16:41.183Z",
+        "latestEnd": "2026-06-26T18:22:53.718Z",
+        "spanMs": 372535,
+        "spanMinutes": 6.21,
+        "maxTaskDurationMs": 372520,
+        "maxTaskDurationMinutes": 6.21,
+        "slowestTaskId": "task-11"
+      },
+      "normalize-input-packet": {
+        "taskCount": 1,
+        "earliestStart": "2026-06-26T18:22:54.225Z",
+        "latestEnd": "2026-06-26T18:22:54.236Z",
+        "spanMs": 11,
+        "spanMinutes": 0,
+        "maxTaskDurationMs": 11,
+        "maxTaskDurationMinutes": 0,
+        "slowestTaskId": "task-3"
+      },
+      "normalize-claims": {
+        "taskCount": 1,
+        "earliestStart": "2026-06-26T18:22:54.244Z",
+        "latestEnd": "2026-06-26T18:26:46.192Z",
+        "spanMs": 231948,
+        "spanMinutes": 3.87,
+        "maxTaskDurationMs": 231948,
+        "maxTaskDurationMinutes": 3.87,
+        "slowestTaskId": "task-4"
+      },
+      "verify-claims": {
+        "taskCount": 16,
+        "earliestStart": "2026-06-26T18:26:46.978Z",
+        "latestEnd": "2026-06-26T18:28:20.626Z",
+        "spanMs": 93648,
+        "spanMinutes": 1.56,
+        "maxTaskDurationMs": 93129,
+        "maxTaskDurationMinutes": 1.55,
+        "slowestTaskId": "task-27"
+      },
+      "audit-claims": {
+        "taskCount": 1,
+        "earliestStart": "2026-06-26T18:28:21.248Z",
+        "latestEnd": "2026-06-26T18:28:21.258Z",
+        "spanMs": 10,
+        "spanMinutes": 0,
+        "maxTaskDurationMs": 10,
+        "maxTaskDurationMinutes": 0,
+        "slowestTaskId": "task-6"
+      },
+      "final-audit-packet": {
+        "taskCount": 1,
+        "earliestStart": "2026-06-26T18:28:21.262Z",
+        "latestEnd": "2026-06-26T18:28:21.271Z",
+        "spanMs": 9,
+        "spanMinutes": 0,
+        "maxTaskDurationMs": 9,
+        "maxTaskDurationMinutes": 0,
+        "slowestTaskId": "task-7"
+      },
+      "final-audit": {
+        "taskCount": 1,
+        "earliestStart": "2026-06-26T18:28:21.281Z",
+        "latestEnd": "2026-06-26T18:32:28.714Z",
+        "spanMs": 247433,
+        "spanMinutes": 4.12,
+        "maxTaskDurationMs": 247433,
+        "maxTaskDurationMinutes": 4.12,
+        "slowestTaskId": "task-8"
+      },
+      "final": {
+        "taskCount": 1,
+        "earliestStart": "2026-06-26T18:32:28.766Z",
+        "latestEnd": "2026-06-26T18:32:28.777Z",
+        "spanMs": 11,
+        "spanMinutes": 0,
+        "maxTaskDurationMs": 11,
+        "maxTaskDurationMinutes": 0,
+        "slowestTaskId": "task-9"
+      }
+    }
+  },
+  "toolTelemetry": {
+    "available": true,
+    "jsonlFiles": 24,
+    "summaryFiles": 24,
+    "totalCalls": 134,
+    "callsByTool": {
+      "workflow_artifact": 23,
+      "workflow_web_search": 28,
+      "workflow_web_fetch_source": 15,
+      "workflow_web_source_read": 68
+    },
+    "errorsByTool": {
+      "workflow_artifact": 1
+    },
+    "statusCounts": {
+      "completed": 133,
+      "failed": 1
+    },
+    "durationMsByTool": {
+      "workflow_artifact": 267,
+      "workflow_web_search": 45,
+      "workflow_web_fetch_source": 38757,
+      "workflow_web_source_read": 826
+    },
+    "resultStringCharsByTool": {
+      "workflow_artifact": 210099,
+      "workflow_web_search": 13740,
+      "workflow_web_fetch_source": 69166,
+      "workflow_web_source_read": 206174
+    },
+    "failedCallFingerprints": {
+      "workflow_artifact:action+source+artifact+path+maxChars": 1
+    },
+    "summaryAggregate": {
+      "totalCalls": 134,
+      "callsByTool": {
+        "workflow_artifact": 23,
+        "workflow_web_search": 28,
+        "workflow_web_fetch_source": 15,
+        "workflow_web_source_read": 68
+      },
+      "errorsByTool": {
+        "workflow_artifact": 1
+      },
+      "statusCounts": {
+        "completed": 133,
+        "failed": 1,
+        "incomplete": 0
+      }
+    }
+  },
+  "modelTelemetry": {
+    "available": true,
+    "resultFiles": 25,
+    "usageRecords": 25,
+    "contextLengthExceeded": 0,
+    "providers": {
+      "openai-codex": 25
+    },
+    "models": {
+      "gpt-5.5": 25
+    },
+    "usage": {
+      "input": 54701,
+      "output": 57427,
+      "cacheRead": 219136,
+      "cacheWrite": 0,
+      "totalTokens": 331264,
+      "cost": {
+        "input": 0.273505,
+        "output": 1.72281,
+        "cacheRead": 0.109568,
+        "cacheWrite": 0,
+        "total": 2.105883
+      }
+    }
+  },
+  "authoritative": {
+    "controls": {
+      "plan": ".pi/workflows/workflow_mqv92w15_ee0d5a/tasks/task-1/control.json",
+      "normalize": ".pi/workflows/workflow_mqv92w15_ee0d5a/tasks/task-4/control.json",
+      "audit": ".pi/workflows/workflow_mqv92w15_ee0d5a/tasks/task-6/control.json",
+      "finalAudit": ".pi/workflows/workflow_mqv92w15_ee0d5a/tasks/task-8/control.json",
+      "final": ".pi/workflows/workflow_mqv92w15_ee0d5a/tasks/task-9/control.json"
+    },
+    "audit": {
+      "claimCount": 16,
+      "claimCounts": {
+        "total": 16,
+        "verified": 12,
+        "partially_supported": 4,
+        "unsupported": 0,
+        "conflicting": 0,
+        "unverified": 0,
+        "other": 0
+      },
+      "claimIds": [
+        "claim-001",
+        "claim-002",
+        "claim-003",
+        "claim-004",
+        "claim-005",
+        "claim-006",
+        "claim-007",
+        "claim-008",
+        "claim-009",
+        "claim-010",
+        "claim-011",
+        "claim-012",
+        "claim-013",
+        "claim-014",
+        "claim-015",
+        "claim-016"
+      ],
+      "sourceRefJoinFailures": 0,
+      "remainingGapCount": 1,
+      "claimEvidenceGapCount": 0
+    },
+    "normalize": {
+      "verificationCandidateCount": 16,
+      "verificationCandidateIds": [
+        "claim-001",
+        "claim-002",
+        "claim-003",
+        "claim-004",
+        "claim-005",
+        "claim-006",
+        "claim-007",
+        "claim-008",
+        "claim-009",
+        "claim-010",
+        "claim-011",
+        "claim-012",
+        "claim-013",
+        "claim-014",
+        "claim-015",
+        "claim-016"
+      ]
+    },
+    "finalAudit": {
+      "claimIndexCount": 15,
+      "claimIndexCounts": {
+        "total": 15,
+        "verified": 12,
+        "partially_supported": 3,
+        "unsupported": 0,
+        "conflicting": 0,
+        "unverified": 0,
+        "other": 0
+      },
+      "coverageCounts": {
+        "total": 16,
+        "verified": 12,
+        "partially_supported": 4,
+        "unsupported": 0,
+        "conflicting": 0
+      }
+    },
+    "finalRender": {
+      "claimSummary": {
+        "total": 16,
+        "verified": 12,
+        "partially_supported": 4,
+        "unsupported": 0,
+        "conflicting": 0
+      }
+    },
+    "factSlots": {
+      "planned": 12,
+      "normalized": 12,
+      "final": 12,
+      "missingFromNormalize": [],
+      "missingFromFinal": []
+    }
+  },
+  "executive": {
+    "path": ".pi/workflows/workflow_mqv92w15_ee0d5a/tasks/task-9/control.json",
+    "chars": 2934,
+    "words": 317,
+    "sourceUrlCount": 5,
+    "sourceUrls": [
+      "https://docs.nvidia.com/deploy/nvml-api/group__nvmlDeviceQueries.html",
+      "https://sci.greensoftware.foundation/",
+      "https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/ccft-overview.html",
+      "https://www.cloudcarbonfootprint.org/docs/methodology",
+      "https://developer.nvidia.com/blog/mastering-llm-techniques-inference-optimization"
+    ],
+    "recommendationCount": 3,
+    "recommendationChecks": [
+      {
+        "text": "Adopt a three-tier measurement label: measured for self-managed GPU telemetry plus app counters; modeled for cloud allocation using provider/CCF data; estimated for closed API request/token accounting. (cloudcarbonfootprint.org: https://www.cloudcarbonfootprint.org/docs/methodology)",
+        "hasVisibleUrl": true,
+        "hasEvidenceLabel": false
+      },
+      {
+        "text": "Use SCI-style reporting: state the boundary, functional unit, allocation method, grid-intensity source, whether PUE is included, and uncertainty caveats. (evidence: verified)",
+        "hasVisibleUrl": false,
+        "hasEvidenceLabel": true
+      },
+      {
+        "text": "Instrument application counters before trying to optimize carbon: model/version, endpoint, request count, input/output tokens, latency/runtime, batch/concurrency/scheduler state, region, and hardware/process identifiers where available. (developer.nvidia.com: https://developer.nvidia.com/blog/mastering-llm-techniques-inference-optimization)",
+        "hasVisibleUrl": true,
+        "hasEvidenceLabel": false
+      }
+    ],
+    "openGapSignals": {
+      "finalAuditRemainingGaps": 5,
+      "finalControlRenderedGapBullets": 2,
+      "truncated": false
+    },
+    "pathLeak": false,
+    "claimSummary": {
+      "total": 16,
+      "verified": 12,
+      "partially_supported": 4,
+      "unsupported": 0,
+      "conflicting": 0
+    },
+    "factSlotSummary": {
+      "total": 12,
+      "filled": 9,
+      "partial": 3,
+      "missingOrConflicting": 0
+    }
+  },
+  "qualityChecks": {
+    "passed": true,
+    "failed": [],
+    "warnings": [],
+    "checks": [
+      {
+        "id": "audit-final-count-consistency",
+        "status": "pass",
+        "details": {
+          "auditCounts": {
+            "total": 16,
+            "verified": 12,
+            "partially_supported": 4,
+            "unsupported": 0,
+            "conflicting": 0,
+            "unverified": 0,
+            "other": 0
+          },
+          "finalCounts": {
+            "total": 16,
+            "verified": 12,
+            "partially_supported": 4,
+            "unsupported": 0,
+            "conflicting": 0
+          }
+        }
+      },
+      {
+        "id": "planned-slots-preserved-in-normalize",
+        "status": "pass",
+        "details": {
+          "missing": []
+        }
+      },
+      {
+        "id": "planned-slots-preserved-in-final",
+        "status": "pass",
+        "details": {
+          "missing": []
+        }
+      },
+      {
+        "id": "source-ref-join-failures-zero",
+        "status": "pass",
+        "details": {
+          "sourceRefJoinFailures": 0
+        }
+      },
+      {
+        "id": "visible-recommendation-citation-or-label",
+        "status": "pass",
+        "details": {
+          "uncitedRecommendations": []
+        }
+      },
+      {
+        "id": "open-gaps-visible-in-executive",
+        "status": "pass",
+        "details": {
+          "hasOpenGaps": true,
+          "renderedGapBullets": 2
+        }
+      },
+      {
+        "id": "no-truncated-executive-with-open-gaps",
+        "status": "pass",
+        "details": {
+          "hasOpenGaps": true,
+          "truncated": false
+        }
+      },
+      {
+        "id": "no-local-cache-paths-in-final-control",
+        "status": "pass",
+        "details": {
+          "pathLeak": false
+        }
+      }
+    ]
+  },
+  "goldenSnapshot": {
+    "schema": "deep-research-eval-golden-v1",
+    "auditClaimCounts": {
+      "total": 16,
+      "verified": 12,
+      "partially_supported": 4,
+      "unsupported": 0,
+      "conflicting": 0,
+      "unverified": 0,
+      "other": 0
+    },
+    "auditClaimIds": [
+      "claim-001",
+      "claim-002",
+      "claim-003",
+      "claim-004",
+      "claim-005",
+      "claim-006",
+      "claim-007",
+      "claim-008",
+      "claim-009",
+      "claim-010",
+      "claim-011",
+      "claim-012",
+      "claim-013",
+      "claim-014",
+      "claim-015",
+      "claim-016"
+    ],
+    "normalizedCandidateIds": [
+      "claim-001",
+      "claim-002",
+      "claim-003",
+      "claim-004",
+      "claim-005",
+      "claim-006",
+      "claim-007",
+      "claim-008",
+      "claim-009",
+      "claim-010",
+      "claim-011",
+      "claim-012",
+      "claim-013",
+      "claim-014",
+      "claim-015",
+      "claim-016"
+    ],
+    "plannedFactSlotCount": 12,
+    "missingFromNormalize": [],
+    "missingFromFinal": [],
+    "sourceRefJoinFailures": 0,
+    "finalClaimSummary": {
+      "total": 16,
+      "verified": 12,
+      "partially_supported": 4,
+      "unsupported": 0,
+      "conflicting": 0
+    },
+    "finalFactSlotSummary": {
+      "total": 12,
+      "filled": 9,
+      "partial": 3,
+      "missingOrConflicting": 0
+    },
+    "qualityFailedChecks": []
+  },
+  "goldenComparison": {
+    "available": false,
+    "path": null,
+    "passed": "unknown",
+    "differences": []
+  },
+  "webSourceCache": {
+    "exists": true,
+    "files": 48
+  },
+  "legacyFetchCache": {
+    "exists": false,
+    "files": "unknown"
+  }
+}

@@ -1,0 +1,660 @@
+{
+  "digest": "Standard-depth handoff: most core controls for safely running AI coding agents locally/CI are verified; vendor-specific coverage and incident/small-team synthesis remain caveated.",
+  "finalReport": {
+    "summary": "Working conclusion: adopt a default-deny, least-privilege operating model for AI coding agents. Run local agent work in a sandbox/container/worktree with narrow filesystem mounts, deny network egress unless needed, keep secrets out of agent-reachable environments, require human review for code/dependency/CI/deploy changes, and retain PR/CI/audit evidence for incident response. This is strongly supported for general controls, GitHub Actions, GitLab runner risk, Docker no-network isolation, npm/pip install risks, OWASP prompt-injection defenses, Claude Code settings, and GitHub Copilot firewall/environment behavior. Treat OpenAI Codex, Gemini, small-team cost claims, and full incident-playbook details as caveated unless verified against current primary docs.",
+    "researchMetadata": {
+      "taskType": "implementation_guidance",
+      "expectedFinalShape": "implementation_checklist",
+      "depth": "standard",
+      "researchQuestions": 8,
+      "plannedFactSlots": 12,
+      "filledFactSlots": 9,
+      "partialFactSlots": 3,
+      "missingFactSlots": 0,
+      "claimsVerified": 14,
+      "claimsPartiallySupported": 2,
+      "claimsUnsupported": 0,
+      "claimsConflicting": 0,
+      "sourcePolicy": "Primary vendor/platform/security docs preferred; audit-claims verdicts are authoritative; exact quantitative or vendor-specific claims are not promoted without URL-backed support."
+    },
+    "coverageSummary": {
+      "depth": "standard",
+      "researchQuestions": 8,
+      "rawClaimsApprox": 16,
+      "verificationCandidates": 16,
+      "preserved": 0,
+      "unverifiedButRelevant": 4,
+      "coverageGaps": 5,
+      "verified": 14,
+      "partiallySupported": 2,
+      "unsupported": 0,
+      "conflicting": 0
+    },
+    "factSlotCoverage": [
+      {
+        "slotId": "slot-001",
+        "status": "partial",
+        "bestValue": "Strong primary evidence for Anthropic Claude Code and GitHub Copilot; OpenAI Codex exact details improved but remain too limited for broad OpenAI-specific hardening; Gemini not covered.",
+        "evidenceStatus": "partial",
+        "sourceUrls": [
+          "https://docs.anthropic.com/en/docs/claude-code/settings",
+          "https://docs.github.com/en/copilot/concepts/coding-agent/coding-agent",
+          "https://docs.github.com/en/copilot/how-tos/agents/copilot-coding-agent/customizing-or-disabling-the-firewall-for-copilot-coding-agent",
+          "https://developers.openai.com/codex/config-reference"
+        ],
+        "parentImpact": "High: vendor-specific recommendations must name covered vendors and caveat missing ones."
+      },
+      {
+        "slotId": "slot-002",
+        "status": "filled",
+        "bestValue": "Use sandbox/container/worktree boundaries; avoid broad host/home mounts; mounted workspace files remain accessible inside devcontainers.",
+        "evidenceStatus": "verified/partial for Copilot scoping",
+        "sourceUrls": [
+          "https://docs.anthropic.com/en/docs/claude-code/settings",
+          "https://code.visualstudio.com/docs/devcontainers/containers",
+          "https://docs.github.com/en/copilot/concepts/coding-agent/coding-agent"
+        ],
+        "parentImpact": "High: supports local safe-run checklist."
+      },
+      {
+        "slotId": "slot-003",
+        "status": "filled",
+        "bestValue": "Default-deny local egress with Docker --network none where possible; treat CI runner networks as RCE infrastructure; Copilot firewall is useful but not comprehensive.",
+        "evidenceStatus": "verified",
+        "sourceUrls": [
+          "https://docs.docker.com/engine/network/drivers/none/",
+          "https://docs.gitlab.com/runner/security/",
+          "https://docs.github.com/en/copilot/how-tos/agents/copilot-coding-agent/customizing-or-disabling-the-firewall-for-copilot-coding-agent"
+        ],
+        "parentImpact": "High: reduces exfiltration blast radius."
+      },
+      {
+        "slotId": "slot-004",
+        "status": "filled",
+        "bestValue": "Use least-privilege CI credentials, OIDC instead of long-lived cloud secrets, avoid exposing local/CI secrets to agent code, and rotate secrets if exposed.",
+        "evidenceStatus": "verified plus partial incident synthesis",
+        "sourceUrls": [
+          "https://docs.github.com/en/actions/security-for-github-actions/security-guides/security-hardening-for-github-actions",
+          "https://docs.github.com/en/actions/security-for-github-actions/security-hardening-your-deployments/about-security-hardening-with-openid-connect",
+          "https://csrc.nist.gov/pubs/sp/800/61/r2/final"
+        ],
+        "parentImpact": "Critical: credential exposure is highest-impact failure mode."
+      },
+      {
+        "slotId": "slot-005",
+        "status": "filled",
+        "bestValue": "Treat repo/issues/logs/web/tool output as untrusted data; separate instructions from data; constrain tools with validation, permissions, least privilege, monitoring, and HITL for high-risk actions.",
+        "evidenceStatus": "verified",
+        "sourceUrls": [
+          "https://genai.owasp.org/llmrisk/llm01-prompt-injection",
+          "https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html"
+        ],
+        "parentImpact": "Critical: core AI-agent-specific risk."
+      },
+      {
+        "slotId": "slot-006",
+        "status": "filled",
+        "bestValue": "npm lifecycle scripts execute package-controlled code; ignore-scripts mitigates install scripts with caveats; pip sources and hash requirements should be controlled; dependency changes need review.",
+        "evidenceStatus": "verified for npm/pip, partial for broader frameworks",
+        "sourceUrls": [
+          "https://docs.npmjs.com/cli/v10/using-npm/scripts",
+          "https://docs.npmjs.com/cli/v10/commands/npm-install",
+          "https://pip.pypa.io/en/stable/cli/pip_install/"
+        ],
+        "parentImpact": "High: commands/flags must be exact."
+      },
+      {
+        "slotId": "slot-007",
+        "status": "filled",
+        "bestValue": "Retain PR/commit/review records, CI logs, deployment approvals, and org audit-log actor/action/time exports; log LLM/tool interactions where available.",
+        "evidenceStatus": "verified plus partial incident synthesis",
+        "sourceUrls": [
+          "https://docs.github.com/en/enterprise-cloud@latest/organizations/keeping-your-organization-secure/managing-security-settings-for-your-organization/reviewing-the-audit-log-for-your-organization",
+          "https://docs.github.com/en/actions/managing-workflow-runs/reviewing-deployments",
+          "https://csrc.nist.gov/pubs/sp/800/61/r2/final"
+        ],
+        "parentImpact": "Medium: enables accountability and incident response."
+      },
+      {
+        "slotId": "slot-008",
+        "status": "filled",
+        "bestValue": "Increase approvals with risk: tool permission rules locally, PR review for code changes, environment/deployment reviews for secret/deploy actions, HITL for high-risk LLM actions.",
+        "evidenceStatus": "verified with Copilot over-specific caveat",
+        "sourceUrls": [
+          "https://docs.anthropic.com/en/docs/claude-code/settings",
+          "https://docs.github.com/en/actions/deployment/targeting-different-environments/using-environments-for-deployment",
+          "https://genai.owasp.org/llmrisk/llm01-prompt-injection"
+        ],
+        "parentImpact": "High: defines autonomy policy."
+      },
+      {
+        "slotId": "slot-009",
+        "status": "filled",
+        "bestValue": "Pre-plan incident handling, log/audit review, token revocation/rotation, workflow disablement, rollback, recovery, and post-incident review; some elements need stronger primary sourcing.",
+        "evidenceStatus": "partially_supported",
+        "sourceUrls": [
+          "https://csrc.nist.gov/pubs/sp/800/61/r2/final",
+          "https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions"
+        ],
+        "parentImpact": "High: final checklist can include a practical but caveated playbook."
+      },
+      {
+        "slotId": "slot-010",
+        "status": "partial",
+        "bestValue": "Feasible baseline appears to be PR review, denied secrets paths, allowlisted routine commands, CODEOWNERS/protected environments, and audit-log retention; this is synthesized from built-in controls, not measured cost research.",
+        "evidenceStatus": "partial/inferred",
+        "sourceUrls": [
+          "https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions",
+          "https://docs.anthropic.com/en/docs/claude-code/settings"
+        ],
+        "parentImpact": "Medium: phrase as phased implementation, not proven cost model."
+      },
+      {
+        "slotId": "slot-011",
+        "status": "partial",
+        "bestValue": "OWASP documents prompt-injection impacts; optional incident examples were not verified enough for headline use.",
+        "evidenceStatus": "unverified_but_relevant",
+        "sourceUrls": [
+          "https://genai.owasp.org/llmrisk/llm01-prompt-injection",
+          "https://arxiv.org/abs/2302.12173"
+        ],
+        "parentImpact": "Low: useful for narrative, not needed for implementation checklist."
+      },
+      {
+        "slotId": "slot-012",
+        "status": "filled",
+        "bestValue": "CI jobs are untrusted code execution with access to configured tokens/secrets; use least privilege, avoid dangerous PR triggers, and do not run untrusted jobs on shell/privileged runners.",
+        "evidenceStatus": "verified",
+        "sourceUrls": [
+          "https://docs.github.com/en/actions/security-for-github-actions/security-guides/security-hardening-for-github-actions",
+          "https://docs.gitlab.com/runner/security/"
+        ],
+        "parentImpact": "Critical: governs CI recommendations."
+      }
+    ],
+    "mainFindings": [
+      {
+        "finding": "Network and secret exposure are the highest-risk paths; combine egress denial/allowlists with least-privilege credentials and OIDC where supported.",
+        "evidenceStatus": "verified",
+        "sources": [
+          "Docker network none docs",
+          "GitHub Actions hardening/OIDC docs",
+          "GitLab Runner security docs"
+        ]
+      },
+      {
+        "finding": "Prompt injection is not just chat input: repository content, issues, web pages, tool outputs, and similar context must be treated as untrusted data and separated from trusted instructions.",
+        "evidenceStatus": "verified",
+        "sources": [
+          "OWASP LLM Prompt Injection Cheat Sheet",
+          "OWASP LLM01 Prompt Injection"
+        ]
+      },
+      {
+        "finding": "Local isolation should use explicit sandbox/container boundaries and narrow mounts; devcontainers isolate runtimes but still expose mounted workspace files.",
+        "evidenceStatus": "verified",
+        "sources": [
+          "Anthropic Claude Code settings",
+          "VS Code Dev Containers docs"
+        ]
+      },
+      {
+        "finding": "CI runners should be treated as remote-code-execution infrastructure; shell executors and privileged Docker runners are inappropriate for untrusted/agent-generated jobs.",
+        "evidenceStatus": "verified",
+        "sources": [
+          "GitLab Runner security docs",
+          "GitHub Actions security hardening docs"
+        ]
+      },
+      {
+        "finding": "Dependency installs are executable supply-chain events: npm lifecycle scripts can run during install/ci, and pip can fetch from indexes, VCS, local directories, or archives; use flags and review gates accordingly.",
+        "evidenceStatus": "verified for npm/pip",
+        "sources": [
+          "npm v10 scripts/install docs",
+          "pip install docs"
+        ]
+      },
+      {
+        "finding": "Auditability can be built from existing platform trails: PRs, commits, deployment reviews, CI logs, and GitHub org audit-log exports.",
+        "evidenceStatus": "verified",
+        "sources": [
+          "GitHub audit log docs",
+          "GitHub deployment review docs"
+        ]
+      }
+    ],
+    "recommendations": [
+      {
+        "recommendation": "Adopt a tiered autonomy policy: read-only agents may inspect code; write-capable agents require sandboxed workspace and PR review; shell/network/CI/deploy actions require explicit allowlists and human approval.",
+        "evidenceStatus": "verified/partial",
+        "evidence": [
+          "Anthropic settings for permission/sandbox rules",
+          "OWASP HITL and tool permission guidance",
+          "GitHub environment protection docs"
+        ],
+        "caveat": "Do not encode unsupported vendor-specific rules for Gemini or over-specific Copilot one-PR claims."
+      },
+      {
+        "recommendation": "For local runs, use a disposable worktree/container/devcontainer with no broad home or secrets mounts; use Docker --network none or equivalent when internet is not required.",
+        "evidenceStatus": "verified",
+        "evidence": [
+          "Docker --network none docs",
+          "VS Code Dev Containers docs",
+          "Anthropic Claude Code settings"
+        ]
+      },
+      {
+        "recommendation": "For CI, separate untrusted agent-produced code from privileged jobs, use least-privilege tokens, avoid long-lived cloud secrets via OIDC where available, and gate secret/deploy environments with deployment reviews.",
+        "evidenceStatus": "verified",
+        "evidence": [
+          "GitHub Actions security hardening docs",
+          "GitHub OIDC docs",
+          "GitHub environment/deployment review docs",
+          "GitLab Runner security docs"
+        ]
+      },
+      {
+        "recommendation": "Treat dependency and lockfile changes as high-risk: run install commands in isolated environments, disable package install scripts where compatible, use hash/lock controls for Python where feasible, and require human review for package manager changes.",
+        "evidenceStatus": "verified plus framework gap",
+        "evidence": [
+          "npm scripts/install docs",
+          "pip install docs"
+        ],
+        "caveat": "Broader OpenSSF/SLSA/CISA supply-chain guidance was not fully harvested; cite only npm/pip docs unless follow-up is done."
+      },
+      {
+        "recommendation": "Retain evidence for agent actions: prompt/task transcript where available, tool-call logs, git diff/commit/PR review records, CI logs, deployment approvals, and audit-log exports.",
+        "evidenceStatus": "verified/partial",
+        "evidence": [
+          "GitHub audit log docs",
+          "GitHub deployment review docs",
+          "NIST incident-response landing page"
+        ],
+        "caveat": "Full AI-agent-specific incident evidence-capture guidance remains partially supported."
+      }
+    ],
+    "actionPlan": [
+      {
+        "step": "Inventory agent modes and classify each by capabilities: read, write, shell, network, dependency install, CI edit, secret access, deploy.",
+        "evidenceStatus": "derived from verified autonomy/least-privilege controls"
+      },
+      {
+        "step": "Implement local baseline: disposable branch/worktree, constrained mounts, deny home/secrets paths, default-deny network, and explicit command allowlist.",
+        "evidenceStatus": "verified"
+      },
+      {
+        "step": "Implement CI baseline: least-privilege GITHUB_TOKEN or equivalent, OIDC for cloud access where supported, no secrets on untrusted PR/agent jobs, protected environments for deploy/secret jobs.",
+        "evidenceStatus": "verified"
+      },
+      {
+        "step": "Add dependency-change gate: require reviewer approval for package manifests, lockfiles, install-script enabling, VCS/archive dependency sources, and CI workflow changes.",
+        "evidenceStatus": "verified for package-manager risks"
+      },
+      {
+        "step": "Define incident runbook: pause agent credentials/workflows, preserve logs/PRs/diffs, rotate exposed secrets, audit dependency/action changes, roll back bad changes, and conduct post-incident review.",
+        "evidenceStatus": "partially_supported",
+        "caveat": "Use as a starting runbook; verify full containment/recovery/postmortem requirements against the organization’s IR standard."
+      }
+    ],
+    "caveatedFindings": [
+      {
+        "finding": "GitHub Copilot cloud agent is supported as running in its own ephemeral GitHub Actions-powered environment and making changes on a branch before a PR, but strict repository/branch/one-PR-per-task scoping was over-specific.",
+        "status": "partially_supported",
+        "sourceUrls": [
+          "https://docs.github.com/en/copilot/concepts/coding-agent/coding-agent",
+          "https://docs.github.com/en/copilot/how-tos/agents/copilot-coding-agent/customizing-the-development-environment-for-copilot-coding-agent"
+        ]
+      },
+      {
+        "finding": "An AI-agent compromise playbook is sensible, and NIST/GitHub support planned incident handling, logs, and secret rotation, but inspected evidence did not directly cover every listed playbook element.",
+        "status": "partially_supported",
+        "sourceUrls": [
+          "https://csrc.nist.gov/pubs/sp/800/61/r2/final",
+          "https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions"
+        ]
+      },
+      {
+        "finding": "Small-team feasibility is an inference from built-in controls, not a measured cost or productivity study.",
+        "status": "partial",
+        "sourceUrls": [
+          "https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions",
+          "https://docs.anthropic.com/en/docs/claude-code/settings"
+        ]
+      }
+    ],
+    "contestedAreas": [],
+    "notableUnsupportedClaims": [],
+    "unverifiedButRelevant": [
+      {
+        "item": "Google Gemini CLI/Code Assist sandboxing and approval controls were not covered by verified primary evidence.",
+        "whyRelevant": "Would affect vendor-specific checklist language if the parent uses Gemini."
+      },
+      {
+        "item": "Broader supply-chain frameworks such as SLSA/OpenSSF/CISA were not fully harvested.",
+        "whyRelevant": "Would strengthen enterprise dependency-change policy beyond npm/pip mechanics."
+      },
+      {
+        "item": "Known coding-agent prompt-injection/exfiltration case studies were preserved as optional but not verified for final claims.",
+        "whyRelevant": "Could improve risk communication but should not drive hard controls without verification."
+      },
+      {
+        "item": "GitLab CI secrets/external-secrets exact behavior was not core-selected, though runner-security evidence is strong.",
+        "whyRelevant": "Needed for GitLab-specific secret-handling procedures."
+      }
+    ],
+    "parentDecisionNotes": [
+      {
+        "note": "Decide which AI coding-agent vendors are in scope before publishing vendor-specific controls.",
+        "whyItMatters": "Claude and GitHub Copilot are well supported; OpenAI Codex is partially refreshed; Gemini is absent.",
+        "evidenceStatus": "partial",
+        "suggestedParentDecision": "Use vendor-neutral controls as default and add vendor appendices only after primary-doc verification."
+      },
+      {
+        "note": "Choose whether completeness or strict verification matters more for the incident runbook.",
+        "whyItMatters": "A practical runbook is needed, but some elements are supported by general IR principles rather than AI-agent-specific primary evidence.",
+        "evidenceStatus": "partially_supported",
+        "suggestedParentDecision": "Publish a caveated baseline runbook now, then validate against internal IR policy/NIST full text."
+      },
+      {
+        "note": "Avoid numeric thresholds or hard cost claims for small teams.",
+        "whyItMatters": "No measured small-team feasibility study was verified.",
+        "evidenceStatus": "partial/inferred",
+        "suggestedParentDecision": "Frame as phased adoption using built-in platform controls, not as a guaranteed lightweight program."
+      },
+      {
+        "note": "Do not rely on Copilot firewall as the only egress control.",
+        "whyItMatters": "GitHub docs support the firewall being enabled/recommended but not comprehensive.",
+        "evidenceStatus": "verified",
+        "suggestedParentDecision": "Layer firewall controls with secret separation, review gates, and least-privilege CI."
+      }
+    ],
+    "researchScopeCoverage": {
+      "covered": [
+        "local sandbox/filesystem controls",
+        "network egress controls",
+        "secrets/OIDC/least privilege",
+        "prompt injection defenses",
+        "dependency install risks",
+        "CI runner isolation",
+        "approval gates",
+        "auditability",
+        "incident response baseline"
+      ],
+      "partial": [
+        "OpenAI Codex exact implementation guidance",
+        "small-team feasibility",
+        "AI-agent-specific incident playbook completeness",
+        "case studies"
+      ],
+      "notCovered": [
+        "Google Gemini CLI/Code Assist primary controls",
+        "full OpenSSF/SLSA/CISA supply-chain synthesis"
+      ]
+    },
+    "remainingGaps": {
+      "blocking": [
+        {
+          "gap": "Gemini and some OpenAI Codex vendor-specific controls are not fully verified.",
+          "whyItMatters": "Blocks precise vendor comparison or vendor-specific hardening defaults.",
+          "wouldChange": "Could add or alter sandbox/approval/network settings for those tools."
+        }
+      ],
+      "nonBlockingCaveats": [
+        {
+          "gap": "Supply-chain standards beyond npm/pip were not fully harvested.",
+          "whyItMatters": "Limits broader policy framing but not core package-manager mitigations.",
+          "wouldChange": "Could strengthen dependency-review recommendations with standard terminology."
+        },
+        {
+          "gap": "Small-team feasibility is inferred, not empirically measured.",
+          "whyItMatters": "Avoids overstating effort/cost certainty.",
+          "wouldChange": "Could justify a stricter or more phased rollout."
+        },
+        {
+          "gap": "Incident playbook elements are partially supported.",
+          "whyItMatters": "A runbook is useful but should align with internal IR policy and stronger sources.",
+          "wouldChange": "Could refine containment/evidence/recovery steps."
+        },
+        {
+          "gap": "Optional case studies remain unverified.",
+          "whyItMatters": "Affects narrative examples, not baseline controls.",
+          "wouldChange": "Could improve training material and stakeholder buy-in."
+        }
+      ]
+    }
+  },
+  "claimVerdictIndex": {
+    "claims": [
+      {
+        "id": "claim-001",
+        "status": "verified",
+        "confidence": 0.9,
+        "sourceUrls": [
+          "https://docs.anthropic.com/en/docs/claude-code/settings"
+        ],
+        "factSlotIds": [
+          "slot-001",
+          "slot-002",
+          "slot-003"
+        ],
+        "supportSummary": "Claude Code settings support sandbox filesystem/network rules and sandboxed Bash auto-approval.",
+        "caveat": "Network evidence came from sandbox examples/restrictions."
+      },
+      {
+        "id": "claim-002",
+        "status": "partially_supported",
+        "confidence": 0.72,
+        "sourceUrls": [
+          "https://docs.github.com/en/copilot/concepts/coding-agent/coding-agent",
+          "https://docs.github.com/en/copilot/how-tos/agents/copilot-coding-agent/customizing-the-development-environment-for-copilot-coding-agent"
+        ],
+        "factSlotIds": [
+          "slot-001",
+          "slot-002",
+          "slot-008"
+        ],
+        "supportSummary": "Copilot cloud agent uses an ephemeral GitHub Actions-powered environment and can make branch/PR changes.",
+        "caveat": "Strict repository/branch/one-PR-per-task scoping was not established.",
+        "correctionOrCounterclaim": "Use narrower wording: ephemeral environment and branch/PR workflow."
+      },
+      {
+        "id": "claim-003",
+        "status": "verified",
+        "confidence": 0.97,
+        "sourceUrls": [
+          "https://docs.github.com/en/copilot/how-tos/agents/copilot-coding-agent/customizing-or-disabling-the-firewall-for-copilot-coding-agent"
+        ],
+        "factSlotIds": [
+          "slot-001",
+          "slot-003"
+        ],
+        "supportSummary": "Copilot firewall/recommended allowlist is default but not comprehensive.",
+        "caveat": "Page naming shifted to cloud agent."
+      },
+      {
+        "id": "claim-004",
+        "status": "verified",
+        "confidence": 0.86,
+        "sourceUrls": [
+          "https://developers.openai.com/codex/config-reference",
+          "https://developers.openai.com/codex/config-basic"
+        ],
+        "factSlotIds": [
+          "slot-001"
+        ],
+        "supportSummary": "Primary OpenAI docs define approval_policy and sandbox_mode details relevant to Codex recommendations.",
+        "caveat": "Some snippets were term-matched; avoid over-specific OpenAI guidance without fresh extraction."
+      },
+      {
+        "id": "claim-005",
+        "status": "verified",
+        "confidence": 0.96,
+        "sourceUrls": [
+          "https://code.visualstudio.com/docs/devcontainers/containers"
+        ],
+        "factSlotIds": [
+          "slot-002"
+        ],
+        "supportSummary": "Dev Containers separate runtimes/tools but mounted/copied/cloned workspace files remain accessible.",
+        "caveat": "Workspace access depends on configuration."
+      },
+      {
+        "id": "claim-006",
+        "status": "verified",
+        "confidence": 0.93,
+        "sourceUrls": [
+          "https://docs.docker.com/engine/network/drivers/none/",
+          "https://docs.docker.com/reference/cli/docker/container/run/"
+        ],
+        "factSlotIds": [
+          "slot-003"
+        ],
+        "supportSummary": "Docker --network none isolates container network except loopback.",
+        "caveat": "Default-deny egress is an operational inference."
+      },
+      {
+        "id": "claim-007",
+        "status": "verified",
+        "confidence": 0.89,
+        "sourceUrls": [
+          "https://docs.github.com/en/actions/security-for-github-actions/security-guides/security-hardening-for-github-actions",
+          "https://docs.github.com/en/actions/learn-github-actions/contexts"
+        ],
+        "factSlotIds": [
+          "slot-004",
+          "slot-012"
+        ],
+        "supportSummary": "CI tokens/secrets available to jobs/actions require least privilege and separation from untrusted code.",
+        "caveat": "Docs discuss untrusted code generally, not AI-generated code specifically."
+      },
+      {
+        "id": "claim-008",
+        "status": "verified",
+        "confidence": "high",
+        "sourceUrls": [
+          "https://docs.github.com/en/actions/security-for-github-actions/security-hardening-your-deployments/about-security-hardening-with-openid-connect"
+        ],
+        "factSlotIds": [
+          "slot-004"
+        ],
+        "supportSummary": "GitHub recommends OIDC to avoid long-lived cloud secrets.",
+        "caveat": "Applies when cloud provider supports OIDC."
+      },
+      {
+        "id": "claim-009",
+        "status": "verified",
+        "confidence": 0.93,
+        "sourceUrls": [
+          "https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html",
+          "https://genai.owasp.org/llmrisk/llm01-prompt-injection"
+        ],
+        "factSlotIds": [
+          "slot-005"
+        ],
+        "supportSummary": "OWASP supports treating external/repo/web content as untrusted data separated from instructions.",
+        "caveat": "Logs are supported by broader principle more than named snippet."
+      },
+      {
+        "id": "claim-010",
+        "status": "verified",
+        "confidence": 0.94,
+        "sourceUrls": [
+          "https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html",
+          "https://genai.owasp.org/llmrisk/llm01-prompt-injection"
+        ],
+        "factSlotIds": [
+          "slot-005",
+          "slot-008"
+        ],
+        "supportSummary": "OWASP supports permission checks, session context, parameter validation, least privilege, and HITL for high-risk actions.",
+        "caveat": "Applies to LLM tools/agents generally."
+      },
+      {
+        "id": "claim-011",
+        "status": "verified",
+        "confidence": 0.96,
+        "sourceUrls": [
+          "https://docs.npmjs.com/cli/v10/using-npm/scripts",
+          "https://docs.npmjs.com/cli/v10/commands/npm-install"
+        ],
+        "factSlotIds": [
+          "slot-006"
+        ],
+        "supportSummary": "npm install/ci lifecycle scripts can run; ignore-scripts has explicit-script caveats.",
+        "caveat": "Cited npm docs are v10 pages."
+      },
+      {
+        "id": "claim-012",
+        "status": "verified",
+        "confidence": 0.98,
+        "sourceUrls": [
+          "https://pip.pypa.io/en/stable/cli/pip_install/"
+        ],
+        "factSlotIds": [
+          "slot-006"
+        ],
+        "supportSummary": "pip supports multiple source types and --require-hashes for repeatable hash-checked installs.",
+        "caveat": "Current stable docs, not pinned pip version."
+      },
+      {
+        "id": "claim-013",
+        "status": "verified",
+        "confidence": "high",
+        "sourceUrls": [
+          "https://docs.gitlab.com/runner/security/"
+        ],
+        "factSlotIds": [
+          "slot-012",
+          "slot-003"
+        ],
+        "supportSummary": "GitLab treats pipelines as remote code execution; shell and privileged Docker runners are unsafe for untrusted jobs.",
+        "caveat": "Agent-generated jobs are inferred as untrusted jobs."
+      },
+      {
+        "id": "claim-014",
+        "status": "verified",
+        "confidence": 0.97,
+        "sourceUrls": [
+          "https://docs.github.com/en/actions/deployment/targeting-different-environments/using-environments-for-deployment",
+          "https://docs.github.com/en/actions/managing-workflow-runs/reviewing-deployments"
+        ],
+        "factSlotIds": [
+          "slot-008",
+          "slot-007"
+        ],
+        "supportSummary": "GitHub environments/deployment reviews can gate jobs and environment secrets.",
+        "caveat": "Availability varies by repository visibility and plan."
+      },
+      {
+        "id": "claim-015",
+        "status": "verified",
+        "confidence": 0.93,
+        "sourceUrls": [
+          "https://docs.github.com/en/enterprise-cloud@latest/organizations/keeping-your-organization-secure/managing-security-settings-for-your-organization/reviewing-the-audit-log-for-your-organization"
+        ],
+        "factSlotIds": [
+          "slot-007"
+        ],
+        "supportSummary": "GitHub org audit logs record actor/action/time and export JSON/CSV.",
+        "caveat": "Evidence retention is inferred from export support."
+      },
+      {
+        "id": "claim-016",
+        "status": "partially_supported",
+        "confidence": 0.72,
+        "sourceUrls": [
+          "https://csrc.nist.gov/pubs/sp/800/61/r2/final",
+          "https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions"
+        ],
+        "factSlotIds": [
+          "slot-009",
+          "slot-004",
+          "slot-007"
+        ],
+        "supportSummary": "NIST/GitHub support planned incident handling, logs, and secret rotation.",
+        "caveat": "Full containment/evidence/recovery/post-review list was not directly established.",
+        "correctionOrCounterclaim": "Use narrower wording until full IR sources are verified."
+      }
+    ]
+  }
+}

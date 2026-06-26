@@ -1,0 +1,663 @@
+{
+  "digest": "Standard-depth research supports a practical, standards-aligned AI inference energy/carbon reporting approach: measure owned compute where possible, allocate shared/cloud emissions transparently, and label third-party AI API figures as proxy estimates unless vendors disclose energy telemetry.",
+  "finalReport": {
+    "summary": "Working conclusion: for a small SaaS or applied AI team, the most defensible approach is a layered estimate, not a claim of exact per-request truth. Use hardware/runtime telemetry for owned inference, cloud carbon dashboards or Cloud Carbon Footprint for cloud allocation, request/token/model/customer metadata for attribution, and SCI/GHG Protocol-style disclosures for boundaries, functional units, grid factors, and uncertainty. Third-party AI APIs should be reported as proxy or attributed estimates, not measured provider-side inference energy, unless the vendor provides explicit energy/carbon telemetry and methodology.",
+    "researchMetadata": {
+      "taskType": "research_survey",
+      "expectedFinalShape": "research_brief",
+      "depth": "standard",
+      "researchQuestions": 7,
+      "plannedFactSlots": 10,
+      "filledFactSlots": 5,
+      "partialFactSlots": 5,
+      "missingFactSlots": 0,
+      "claimsVerified": 12,
+      "claimsPartiallySupported": 4,
+      "claimsUnsupported": 0,
+      "claimsConflicting": 0,
+      "sourcePolicy": "Primary official docs, standards, project methodology pages, and selected research/preprint evidence were preferred; audited verifier verdicts are used as status gates."
+    },
+    "coverageSummary": {
+      "depth": "standard",
+      "researchQuestions": 7,
+      "rawClaimsApprox": 52,
+      "verificationCandidates": 16,
+      "preserved": 36,
+      "unverifiedButRelevant": 3,
+      "coverageGaps": 5,
+      "verified": 12,
+      "partiallySupported": 4,
+      "unsupported": 0,
+      "conflicting": 0
+    },
+    "factSlotCoverage": [
+      {
+        "slotId": "slot-001",
+        "status": "partial",
+        "bestValue": "Strong NVIDIA DCGM/NVML and Linux powercap/RAPL evidence; AMD ROCm remains weak.",
+        "evidenceStatus": "verified for NVIDIA/Linux, partial for broader hardware coverage",
+        "sourceUrls": [
+          "https://docs.nvidia.com/datacenter/dcgm/latest/dcgm-api/dcgm-api-field-ids.html",
+          "https://docs.nvidia.com/deploy/nvml-api/group__nvmlDeviceQueries.html",
+          "https://www.kernel.org/doc/html/latest/power/powercap/powercap.html"
+        ],
+        "parentImpact": "Owned NVIDIA GPU and Linux CPU/package measurement is feasible; non-NVIDIA GPU claims need more validation."
+      },
+      {
+        "slotId": "slot-002",
+        "status": "partial",
+        "bestValue": "AWS and Google dashboards support cloud/account/project/product/region/month carbon reporting; Microsoft and AI request/token dashboard granularity remain unresolved.",
+        "evidenceStatus": "verified for Google; partial for AWS exact details; unresolved for Microsoft",
+        "sourceUrls": [
+          "https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/ccft-overview.html",
+          "https://cloud.google.com/carbon-footprint/docs/methodology"
+        ],
+        "parentImpact": "Use dashboards for cloud-level context, not direct AI inference request telemetry."
+      },
+      {
+        "slotId": "slot-003",
+        "status": "filled",
+        "bestValue": "CodeCarbon supports owned compute estimates; Cloud Carbon Footprint supports public-cloud allocation.",
+        "evidenceStatus": "verified",
+        "sourceUrls": [
+          "https://github.com/mlco2/codecarbon",
+          "https://github.com/cloud-carbon-footprint/cloud-carbon-footprint",
+          "https://www.cloudcarbonfootprint.org/docs/methodology"
+        ],
+        "parentImpact": "Enough evidence to recommend a feasible tool stack with caveats."
+      },
+      {
+        "slotId": "slot-004",
+        "status": "partial",
+        "bestValue": "Inference energy varies by model/task; batching and KV-cache affect throughput, while direct energy amortization and quantization evidence are weaker.",
+        "evidenceStatus": "verified for model/task variation; partial for batching-to-energy link",
+        "sourceUrls": [
+          "https://arxiv.org/abs/2311.16863",
+          "https://arxiv.org/abs/2309.06180"
+        ],
+        "parentImpact": "Track model/version, task, token counts, batching/concurrency, latency, and utilization; avoid unsupported quantization energy claims."
+      },
+      {
+        "slotId": "slot-005",
+        "status": "filled",
+        "bestValue": "SCI functional unit/boundary disclosure and reserved/provisioned hardware energy inclusion support average allocation; CCF supports cloud operational allocation.",
+        "evidenceStatus": "verified",
+        "sourceUrls": [
+          "https://sci.greensoftware.foundation/",
+          "https://www.cloudcarbonfootprint.org/docs/methodology"
+        ],
+        "parentImpact": "Supports transparent per-request/token/customer allocation formulas."
+      },
+      {
+        "slotId": "slot-006",
+        "status": "filled",
+        "bestValue": "Use explicit grid-intensity choice, region, PUE, and location/market-based accounting distinctions.",
+        "evidenceStatus": "verified",
+        "sourceUrls": [
+          "https://sci.greensoftware.foundation/",
+          "https://www.cloudcarbonfootprint.org/docs/methodology",
+          "https://ghgprotocol.org/scope-2-guidance"
+        ],
+        "parentImpact": "Prevents conflating physical grid-intensity estimates with market-based renewable/accounting claims."
+      },
+      {
+        "slotId": "slot-007",
+        "status": "filled",
+        "bestValue": "SCI, GHG Protocol Scope 2, ISO 14067, and ISO 14040 provide reporting frames.",
+        "evidenceStatus": "verified",
+        "sourceUrls": [
+          "https://sci.greensoftware.foundation/",
+          "https://ghgprotocol.org/scope-2-guidance",
+          "https://www.iso.org/standard/71206.html",
+          "https://www.iso.org/standard/37456.html"
+        ],
+        "parentImpact": "AI inference reports should be framed as disclosed estimates/intensities, not unaudited precise product LCAs unless the scope supports that."
+      },
+      {
+        "slotId": "slot-008",
+        "status": "partial",
+        "bestValue": "Uncertainty contributors are well identified qualitatively; no robust numeric uncertainty ranges were verified.",
+        "evidenceStatus": "partial/synthesized",
+        "sourceUrls": [
+          "https://docs.nvidia.com/deploy/nvml-api/group__nvmlDeviceQueries.html",
+          "https://github.com/mlco2/codecarbon",
+          "https://www.cloudcarbonfootprint.org/docs/methodology",
+          "https://sci.greensoftware.foundation/",
+          "https://ghgprotocol.org/scope-2-guidance"
+        ],
+        "parentImpact": "Use sensitivity bands and caveats rather than false precision."
+      },
+      {
+        "slotId": "slot-009",
+        "status": "filled",
+        "bestValue": "Practical path: combine cloud dashboards/CCF, CodeCarbon or hardware telemetry, request/token/model/customer tags, SCI functional units, and disclosed assumptions.",
+        "evidenceStatus": "partially supported synthesis from verified components",
+        "sourceUrls": [
+          "https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/ccft-overview.html",
+          "https://cloud.google.com/carbon-footprint/docs/methodology",
+          "https://github.com/mlco2/codecarbon",
+          "https://sci.greensoftware.foundation/",
+          "https://platform.openai.com/docs/api-reference/usage"
+        ],
+        "parentImpact": "Actionable, but should be labeled as a synthesized implementation pattern."
+      },
+      {
+        "slotId": "slot-010",
+        "status": "partial",
+        "bestValue": "OpenAI/Gemini/Anthropic public docs expose usage proxies; fetched snippets did not show provider-side energy/carbon telemetry.",
+        "evidenceStatus": "partial; absence inferred",
+        "sourceUrls": [
+          "https://platform.openai.com/docs/api-reference/usage",
+          "https://ai.google.dev/gemini-api/docs/tokens",
+          "https://docs.anthropic.com/en/docs/about-claude/models/overview"
+        ],
+        "parentImpact": "Third-party API reporting must remain proxy-based unless vendors disclose measured data."
+      }
+    ],
+    "mainFindings": [
+      {
+        "finding": "Owned infrastructure can be measured or estimated with credible low-level telemetry on NVIDIA/Linux stacks.",
+        "evidenceStatus": "verified with hardware/platform caveats",
+        "sources": [
+          "NVIDIA DCGM field IDs",
+          "NVIDIA NVML API",
+          "Linux kernel powercap docs"
+        ]
+      },
+      {
+        "finding": "Cloud provider carbon dashboards are useful for cloud/account/project/product/region/month allocation context, but are not request/token/model-level AI inference meters.",
+        "evidenceStatus": "verified/partial",
+        "sources": [
+          "Google Cloud Carbon Footprint methodology",
+          "AWS CCFT overview"
+        ]
+      },
+      {
+        "finding": "SCI provides the strongest software-specific reporting frame: define a boundary and functional unit, include provisioned hardware energy, and disclose method and assumptions.",
+        "evidenceStatus": "verified",
+        "sources": [
+          "https://sci.greensoftware.foundation/"
+        ]
+      },
+      {
+        "finding": "Model/task choice is a major inference-energy driver; batching/KV-cache evidence supports throughput effects, but direct energy amortization evidence is only partial.",
+        "evidenceStatus": "verified plus partial",
+        "sources": [
+          "https://arxiv.org/abs/2311.16863",
+          "https://arxiv.org/abs/2309.06180"
+        ]
+      },
+      {
+        "finding": "For opaque third-party AI APIs, usage/token/request/model data are available proxies, but provider-side energy/carbon telemetry was not found in fetched docs.",
+        "evidenceStatus": "partial; absence inferred",
+        "sources": [
+          "OpenAI usage API docs",
+          "Gemini token docs",
+          "Anthropic model overview"
+        ]
+      }
+    ],
+    "recommendations": [
+      {
+        "recommendation": "Build reporting as an estimate pipeline with explicit evidence tiers: measured owned hardware, allocated cloud footprint, and proxy third-party API estimates.",
+        "evidenceStatus": "verified components plus partially supported synthesis",
+        "support": [
+          "NVIDIA/NVML/Linux telemetry docs",
+          "Cloud Carbon Footprint methodology",
+          "CodeCarbon README",
+          "SCI specification",
+          "OpenAI usage docs"
+        ]
+      },
+      {
+        "recommendation": "For owned inference, collect request id, customer/tenant, model/version, input/output tokens, latency, batch/concurrency, hardware id, region, GPU power/energy where available, CPU/package energy where relevant, and utilization.",
+        "evidenceStatus": "verified/partial",
+        "support": [
+          "NVIDIA DCGM/NVML docs",
+          "Linux powercap docs",
+          "model/task and KV-cache research evidence"
+        ]
+      },
+      {
+        "recommendation": "Use SCI-style functional units such as per request, per 1,000 tokens, per completed workflow, or per customer-month, and disclose the boundary and allocation driver.",
+        "evidenceStatus": "verified",
+        "support": [
+          "https://sci.greensoftware.foundation/"
+        ]
+      },
+      {
+        "recommendation": "Use cloud dashboards and Cloud Carbon Footprint for account/project/service allocation and reconciliation, not as direct proof of AI request-level energy.",
+        "evidenceStatus": "verified/partial",
+        "support": [
+          "Google Cloud Carbon Footprint methodology",
+          "AWS CCFT overview",
+          "Cloud Carbon Footprint methodology"
+        ]
+      },
+      {
+        "recommendation": "For OpenAI/Gemini/Anthropic-style APIs, publish proxy estimates only, based on usage metrics and declared assumptions, unless the vendor supplies audited energy/carbon data.",
+        "evidenceStatus": "partially supported; absence inferred",
+        "support": [
+          "OpenAI usage API docs",
+          "Gemini token docs",
+          "Anthropic model overview"
+        ]
+      }
+    ],
+    "actionPlan": [
+      {
+        "step": "Define reporting boundary and functional units before instrumentation.",
+        "evidenceStatus": "verified",
+        "support": "SCI specification."
+      },
+      {
+        "step": "Instrument owned compute first: DCGM/NVML for NVIDIA GPUs and Linux powercap/RAPL where applicable; validate device support and sampling semantics.",
+        "evidenceStatus": "verified",
+        "support": "NVIDIA DCGM/NVML and Linux powercap docs."
+      },
+      {
+        "step": "Add application-level attribution: request, token, model/version, tenant/customer, batch/concurrency, latency, and region tags.",
+        "evidenceStatus": "verified/partial",
+        "support": "Usage API docs plus runtime-factor evidence."
+      },
+      {
+        "step": "Reconcile monthly cloud emissions with Google/AWS dashboards or CCF and allocate shared/idle/provisioned energy using a documented driver.",
+        "evidenceStatus": "verified/partial",
+        "support": "Google methodology, AWS overview, CCF methodology, SCI."
+      },
+      {
+        "step": "Publish uncertainty notes and avoid numeric precision beyond the source data; include qualitative uncertainty drivers and sensitivity bands where local measurements permit.",
+        "evidenceStatus": "partial",
+        "support": "NVML sampling caveats, CodeCarbon exclusions, CCF and SCI methodology constraints."
+      }
+    ],
+    "caveatedFindings": [
+      {
+        "finding": "AWS CCFT details were partially supported but failed a strict evidence-row gate, so use AWS dashboard claims cautiously until the exact primary evidence is re-inspected.",
+        "relatedClaims": [
+          "claim-004"
+        ]
+      },
+      {
+        "finding": "KV-cache/batching affects throughput, but the direct energy amortization implication needs additional energy-specific support.",
+        "relatedClaims": [
+          "claim-009"
+        ]
+      },
+      {
+        "finding": "Third-party API docs showed usage proxies and no fetched energy telemetry, but absence is not exhaustively proven.",
+        "relatedClaims": [
+          "claim-015"
+        ]
+      },
+      {
+        "finding": "The small-SaaS implementation path is a synthesis from supported components, not a single prescriptive source.",
+        "relatedClaims": [
+          "claim-016"
+        ]
+      }
+    ],
+    "contestedAreas": [],
+    "notableUnsupportedClaims": [],
+    "unverifiedButRelevant": [
+      {
+        "lead": "AMD ROCm SMI power/energy telemetry may be relevant for non-NVIDIA deployments, but strong primary-source snippets were not secured.",
+        "evidenceStatus": "unverified gap",
+        "parentImpact": "Could change hardware telemetry recommendations for AMD stacks."
+      },
+      {
+        "lead": "Microsoft Emissions Impact Dashboard granularity/methodology was not resolved.",
+        "evidenceStatus": "unverified gap",
+        "parentImpact": "Could affect cloud dashboard comparison for Azure users."
+      },
+      {
+        "lead": "Quantization may affect energy/throughput, but exact inference-energy evidence was not verified.",
+        "evidenceStatus": "unverified gap",
+        "parentImpact": "Should not be used as a quantified reduction lever without local measurement or better sources."
+      }
+    ],
+    "parentDecisionNotes": [
+      {
+        "note": "Choose whether the report is for operational engineering, customer-facing sustainability disclosure, or formal product carbon/LCA reporting.",
+        "whyItMatters": "SCI-style operational intensity is much easier to support than ISO-grade product carbon footprint claims.",
+        "evidenceStatus": "verified standards evidence",
+        "suggestedParentDecision": "Use SCI/GHG language for near-term reporting; reserve ISO/LCA framing for audited or expert-led work."
+      },
+      {
+        "note": "Decide how to treat third-party AI APIs.",
+        "whyItMatters": "Public docs support usage proxies, not measured provider inference energy in fetched evidence.",
+        "evidenceStatus": "partial; absence inferred",
+        "suggestedParentDecision": "Label API emissions as proxy/attributed estimates and separate them from measured owned-compute telemetry."
+      },
+      {
+        "note": "Decide allocation driver for shared/idle/provisioned capacity.",
+        "whyItMatters": "SCI says provisioned hardware energy should be included; allocation can materially shift customer/request intensity.",
+        "evidenceStatus": "verified",
+        "suggestedParentDecision": "Pick and disclose a stable driver such as GPU-seconds, token share, request runtime, or customer usage share."
+      },
+      {
+        "note": "Do not set exact numeric thresholds from this research alone.",
+        "whyItMatters": "No robust numeric uncertainty ranges were verified and several quantitative dashboard details are partial.",
+        "evidenceStatus": "partial",
+        "suggestedParentDecision": "Use local calibration and sensitivity analysis before publishing exact thresholds or targets."
+      }
+    ],
+    "researchScopeCoverage": {
+      "answered": [
+        "hardware telemetry for NVIDIA/Linux",
+        "cloud dashboard capabilities and limits",
+        "open-source tooling",
+        "runtime factors",
+        "allocation and standards",
+        "small-SaaS implementation path",
+        "third-party API limits"
+      ],
+      "partiallyAnswered": [
+        "AMD telemetry",
+        "Microsoft dashboard granularity",
+        "numeric uncertainty ranges",
+        "quantization-specific energy effects",
+        "direct proof of no third-party API energy telemetry"
+      ],
+      "notCovered": [
+        "hands-on benchmark measurements",
+        "vendor private disclosures",
+        "formal legal/accounting review"
+      ]
+    },
+    "remainingGaps": {
+      "blocking": [
+        {
+          "gap": "Third-party AI API measured energy/carbon telemetry was not found; absence is inferred rather than explicitly proven by vendors.",
+          "whyItMatters": "Blocks claims of measured per-request provider-side AI inference energy for opaque APIs.",
+          "nextStep": "Ask vendors for energy/carbon telemetry or methodology; otherwise keep proxy labeling."
+        },
+        {
+          "gap": "No robust numeric uncertainty ranges were verified.",
+          "whyItMatters": "Blocks precise confidence intervals or hard action thresholds.",
+          "nextStep": "Run local sensitivity analysis over telemetry sampling, allocation driver, PUE/grid factors, and token/model mix."
+        }
+      ],
+      "nonBlockingCaveats": [
+        {
+          "gap": "AMD ROCm primary telemetry evidence weak.",
+          "whyItMatters": "Limits advice for AMD GPU deployments.",
+          "nextStep": "Inspect ROCm SMI/API primary docs before recommending AMD instrumentation."
+        },
+        {
+          "gap": "Microsoft cloud emissions dashboard evidence unresolved.",
+          "whyItMatters": "Limits Azure-specific dashboard comparison.",
+          "nextStep": "Fetch official Microsoft methodology/granularity docs."
+        },
+        {
+          "gap": "Quantization energy effect lacks exact support.",
+          "whyItMatters": "Avoid presenting quantization as a verified energy-reduction lever without measurement.",
+          "nextStep": "Benchmark locally or find energy-specific inference studies."
+        },
+        {
+          "gap": "AWS CCFT exact details partially supported but strict audit left one evidence-operability gap.",
+          "whyItMatters": "Avoid using AWS quantitative dashboard details as verified thresholds.",
+          "nextStep": "Re-inspect the AWS overview source before quoting exact dates/resolution."
+        }
+      ]
+    }
+  },
+  "claimVerdictIndex": {
+    "claims": [
+      {
+        "id": "claim-001",
+        "status": "verified",
+        "confidence": 0.99,
+        "sourceUrls": [
+          "https://docs.nvidia.com/datacenter/dcgm/latest/dcgm-api/dcgm-api-field-ids.html"
+        ],
+        "factSlotIds": [
+          "slot-001"
+        ],
+        "supportSummary": "DCGM exposes board power and total GPU energy fields.",
+        "caveat": "",
+        "correctionOrCounterclaim": ""
+      },
+      {
+        "id": "claim-002",
+        "status": "verified",
+        "confidence": 0.95,
+        "sourceUrls": [
+          "https://docs.nvidia.com/deploy/nvml-api/group__nvmlDeviceQueries.html"
+        ],
+        "factSlotIds": [
+          "slot-001",
+          "slot-008"
+        ],
+        "supportSummary": "NVML supports power readings and total energy for supported Volta-or-newer devices; semantics vary by architecture.",
+        "caveat": "Device support and successful NVML calls required.",
+        "correctionOrCounterclaim": ""
+      },
+      {
+        "id": "claim-003",
+        "status": "verified",
+        "confidence": 0.97,
+        "sourceUrls": [
+          "https://www.kernel.org/doc/html/latest/power/powercap/powercap.html"
+        ],
+        "factSlotIds": [
+          "slot-001"
+        ],
+        "supportSummary": "Linux powercap exposes energy_uj under Intel RAPL zones.",
+        "caveat": "",
+        "correctionOrCounterclaim": ""
+      },
+      {
+        "id": "claim-004",
+        "status": "partially_supported",
+        "confidence": 0.96,
+        "sourceUrls": [
+          "https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/ccft-overview.html"
+        ],
+        "factSlotIds": [
+          "slot-002",
+          "slot-009"
+        ],
+        "supportSummary": "AWS CCFT dashboard details partially supported but strict evidence gate prevented verification.",
+        "caveat": "Re-inspect before using exact quantitative/details as verified.",
+        "correctionOrCounterclaim": ""
+      },
+      {
+        "id": "claim-005",
+        "status": "verified",
+        "confidence": 0.97,
+        "sourceUrls": [
+          "https://cloud.google.com/carbon-footprint/docs/methodology"
+        ],
+        "factSlotIds": [
+          "slot-002",
+          "slot-005",
+          "slot-009"
+        ],
+        "supportSummary": "Google reports monthly customer-specific footprint by product/project/region and allocates emissions by usage.",
+        "caveat": "Methodology/data updates may revise historical values.",
+        "correctionOrCounterclaim": ""
+      },
+      {
+        "id": "claim-006",
+        "status": "verified",
+        "confidence": 0.92,
+        "sourceUrls": [
+          "https://github.com/mlco2/codecarbon"
+        ],
+        "factSlotIds": [
+          "slot-003",
+          "slot-008",
+          "slot-009"
+        ],
+        "supportSummary": "CodeCarbon estimates GPU/CPU/RAM electricity and applies regional carbon intensity, with exclusions.",
+        "caveat": "Project-authored docs, not independent validation.",
+        "correctionOrCounterclaim": ""
+      },
+      {
+        "id": "claim-007",
+        "status": "verified",
+        "confidence": 0.94,
+        "sourceUrls": [
+          "https://www.cloudcarbonfootprint.org/docs/methodology",
+          "https://github.com/cloud-carbon-footprint/cloud-carbon-footprint"
+        ],
+        "factSlotIds": [
+          "slot-003",
+          "slot-005",
+          "slot-006",
+          "slot-009"
+        ],
+        "supportSummary": "CCF estimates public-cloud energy/emissions using usage, conversion factors, PUE, and grid factors.",
+        "caveat": "Minor unit wording inconsistency between Wh/kWh references.",
+        "correctionOrCounterclaim": ""
+      },
+      {
+        "id": "claim-008",
+        "status": "verified",
+        "confidence": 0.93,
+        "sourceUrls": [
+          "https://arxiv.org/abs/2311.16863"
+        ],
+        "factSlotIds": [
+          "slot-004"
+        ],
+        "supportSummary": "Study supports large model/task variation in inference energy/carbon.",
+        "caveat": "Preprint/source page rather than peer-reviewed journal evidence.",
+        "correctionOrCounterclaim": ""
+      },
+      {
+        "id": "claim-009",
+        "status": "partially_supported",
+        "confidence": 0.82,
+        "sourceUrls": [
+          "https://arxiv.org/abs/2309.06180"
+        ],
+        "factSlotIds": [
+          "slot-004"
+        ],
+        "supportSummary": "Supports batching/KV-cache memory and throughput issues, not direct energy amortization.",
+        "caveat": "Energy impact is inferred.",
+        "correctionOrCounterclaim": "KV-cache inefficiency can limit batch size and throughput; energy amortization needs separate evidence."
+      },
+      {
+        "id": "claim-010",
+        "status": "verified",
+        "confidence": 0.93,
+        "sourceUrls": [
+          "https://sci.greensoftware.foundation/"
+        ],
+        "factSlotIds": [
+          "slot-005",
+          "slot-007",
+          "slot-009"
+        ],
+        "supportSummary": "SCI defines carbon intensity per functional unit and requires boundary/methodology disclosure steps.",
+        "caveat": "Some elements are procedure requirements rather than separate disclosure labels.",
+        "correctionOrCounterclaim": ""
+      },
+      {
+        "id": "claim-011",
+        "status": "verified",
+        "confidence": 0.96,
+        "sourceUrls": [
+          "https://sci.greensoftware.foundation/"
+        ],
+        "factSlotIds": [
+          "slot-006",
+          "slot-007",
+          "slot-008"
+        ],
+        "supportSummary": "SCI supports region-specific grid intensity and excludes market-based measures for connected grid electricity.",
+        "caveat": "Use SCI exact unit wording gCO2eq/kWh.",
+        "correctionOrCounterclaim": "Use gCO2eq/kWh wording."
+      },
+      {
+        "id": "claim-012",
+        "status": "verified",
+        "confidence": 0.99,
+        "sourceUrls": [
+          "https://sci.greensoftware.foundation/"
+        ],
+        "factSlotIds": [
+          "slot-005",
+          "slot-006",
+          "slot-008"
+        ],
+        "supportSummary": "SCI says include all energy consumed by reserved/provisioned hardware.",
+        "caveat": "",
+        "correctionOrCounterclaim": ""
+      },
+      {
+        "id": "claim-013",
+        "status": "verified",
+        "confidence": 0.97,
+        "sourceUrls": [
+          "https://ghgprotocol.org/scope-2-guidance"
+        ],
+        "factSlotIds": [
+          "slot-007",
+          "slot-006",
+          "slot-008"
+        ],
+        "supportSummary": "GHG Protocol Scope 2 covers purchased/acquired electricity and market-based quality/disclosure criteria.",
+        "caveat": "Source wording says measurement/accounting requirements rather than exact phrase corporate accounting.",
+        "correctionOrCounterclaim": ""
+      },
+      {
+        "id": "claim-014",
+        "status": "verified",
+        "confidence": 0.97,
+        "sourceUrls": [
+          "https://www.iso.org/standard/71206.html",
+          "https://www.iso.org/standard/37456.html"
+        ],
+        "factSlotIds": [
+          "slot-007"
+        ],
+        "supportSummary": "ISO 14067 and 14040 support product carbon footprint/LCA framing.",
+        "caveat": "ISO 14040 is principles/framework; ISO 14044 has detailed requirements.",
+        "correctionOrCounterclaim": ""
+      },
+      {
+        "id": "claim-015",
+        "status": "partially_supported",
+        "confidence": 0.78,
+        "sourceUrls": [
+          "https://platform.openai.com/docs/api-reference/usage",
+          "https://ai.google.dev/gemini-api/docs/tokens",
+          "https://docs.anthropic.com/en/docs/about-claude/models/overview"
+        ],
+        "factSlotIds": [
+          "slot-010",
+          "slot-009",
+          "slot-008"
+        ],
+        "supportSummary": "Docs expose usage/token/limit/pricing proxies; fetched evidence did not show energy/carbon telemetry.",
+        "caveat": "Absence not exhaustively proven.",
+        "correctionOrCounterclaim": "Inspected docs expose usage proxies and did not surface energy/carbon telemetry."
+      },
+      {
+        "id": "claim-016",
+        "status": "partially_supported",
+        "confidence": 0.78,
+        "sourceUrls": [
+          "https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/ccft-overview.html",
+          "https://cloud.google.com/carbon-footprint/docs/methodology",
+          "https://github.com/mlco2/codecarbon",
+          "https://sci.greensoftware.foundation/",
+          "https://platform.openai.com/docs/api-reference/usage"
+        ],
+        "factSlotIds": [
+          "slot-009",
+          "slot-010",
+          "slot-003",
+          "slot-005"
+        ],
+        "supportSummary": "Implementation path is a supported synthesis from dashboards, telemetry/tools, usage metrics, and SCI disclosure.",
+        "caveat": "No single source prescribes this exact small-SaaS stack.",
+        "correctionOrCounterclaim": "Use dashboards, owned telemetry/tools, usage metrics, and explicit assumptions; label API estimates as proxy-based."
+      }
+    ]
+  }
+}

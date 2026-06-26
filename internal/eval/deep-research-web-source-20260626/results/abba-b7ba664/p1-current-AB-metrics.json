@@ -1,0 +1,503 @@
+{
+  "schema": "deep-research-eval-metrics-v2",
+  "label": "p1-current-AB",
+  "root": "/Users/toby/pi/pi-subagent-flow-web-source-context/.tmp/deep-research-abba-20260626/roots/current-b7ba664",
+  "runId": "workflow_mqv5r0kb_0aa7bb",
+  "status": "completed",
+  "createdAt": "2026-06-26T16:41:00.827Z",
+  "updatedAt": "2026-06-26T16:57:26.085Z",
+  "wallClockMs": 985258,
+  "wallClockMinutes": 16.42,
+  "taskCount": 30,
+  "taskSummary": {
+    "total": 30,
+    "pending": 0,
+    "running": 0,
+    "blocked": 0,
+    "completed": 30,
+    "failed": 0,
+    "skipped": 0,
+    "interrupted": 0
+  },
+  "statusCounts": {
+    "completed": 30
+  },
+  "outputRetries": 0,
+  "launchRetries": 0,
+  "resumeEvents": 0,
+  "taskTiming": {
+    "byStage": {
+      "plan": {
+        "taskCount": 1,
+        "earliestStart": "2026-06-26T16:41:00.849Z",
+        "latestEnd": "2026-06-26T16:43:32.365Z",
+        "spanMs": 151516,
+        "spanMinutes": 2.53,
+        "maxTaskDurationMs": 151516,
+        "maxTaskDurationMinutes": 2.53,
+        "slowestTaskId": "task-1"
+      },
+      "research-questions": {
+        "taskCount": 7,
+        "earliestStart": "2026-06-26T16:43:33.353Z",
+        "latestEnd": "2026-06-26T16:47:30.146Z",
+        "spanMs": 236793,
+        "spanMinutes": 3.95,
+        "maxTaskDurationMs": 236679,
+        "maxTaskDurationMinutes": 3.94,
+        "slowestTaskId": "task-16"
+      },
+      "normalize-input-packet": {
+        "taskCount": 1,
+        "earliestStart": "2026-06-26T16:47:30.491Z",
+        "latestEnd": "2026-06-26T16:47:30.499Z",
+        "spanMs": 8,
+        "spanMinutes": 0,
+        "maxTaskDurationMs": 8,
+        "maxTaskDurationMinutes": 0,
+        "slowestTaskId": "task-3"
+      },
+      "normalize-claims": {
+        "taskCount": 1,
+        "earliestStart": "2026-06-26T16:47:30.504Z",
+        "latestEnd": "2026-06-26T16:51:33.626Z",
+        "spanMs": 243122,
+        "spanMinutes": 4.05,
+        "maxTaskDurationMs": 243122,
+        "maxTaskDurationMinutes": 4.05,
+        "slowestTaskId": "task-4"
+      },
+      "verify-claims": {
+        "taskCount": 16,
+        "earliestStart": "2026-06-26T16:51:34.400Z",
+        "latestEnd": "2026-06-26T16:53:24.614Z",
+        "spanMs": 110214,
+        "spanMinutes": 1.84,
+        "maxTaskDurationMs": 109683,
+        "maxTaskDurationMinutes": 1.83,
+        "slowestTaskId": "task-32"
+      },
+      "audit-claims": {
+        "taskCount": 1,
+        "earliestStart": "2026-06-26T16:53:24.875Z",
+        "latestEnd": "2026-06-26T16:53:24.884Z",
+        "spanMs": 9,
+        "spanMinutes": 0,
+        "maxTaskDurationMs": 9,
+        "maxTaskDurationMinutes": 0,
+        "slowestTaskId": "task-6"
+      },
+      "final-audit-packet": {
+        "taskCount": 1,
+        "earliestStart": "2026-06-26T16:53:24.886Z",
+        "latestEnd": "2026-06-26T16:53:24.892Z",
+        "spanMs": 6,
+        "spanMinutes": 0,
+        "maxTaskDurationMs": 6,
+        "maxTaskDurationMinutes": 0,
+        "slowestTaskId": "task-7"
+      },
+      "final-audit": {
+        "taskCount": 1,
+        "earliestStart": "2026-06-26T16:53:24.899Z",
+        "latestEnd": "2026-06-26T16:57:25.648Z",
+        "spanMs": 240749,
+        "spanMinutes": 4.01,
+        "maxTaskDurationMs": 240749,
+        "maxTaskDurationMinutes": 4.01,
+        "slowestTaskId": "task-8"
+      },
+      "final": {
+        "taskCount": 1,
+        "earliestStart": "2026-06-26T16:57:26.080Z",
+        "latestEnd": "2026-06-26T16:57:26.085Z",
+        "spanMs": 5,
+        "spanMinutes": 0,
+        "maxTaskDurationMs": 5,
+        "maxTaskDurationMinutes": 0,
+        "slowestTaskId": "task-9"
+      }
+    }
+  },
+  "toolTelemetry": {
+    "available": true,
+    "jsonlFiles": 25,
+    "summaryFiles": 25,
+    "totalCalls": 143,
+    "callsByTool": {
+      "workflow_artifact": 28,
+      "workflow_web_search": 17,
+      "workflow_web_fetch_source": 18,
+      "workflow_web_source_read": 80
+    },
+    "errorsByTool": {
+      "workflow_artifact": 7
+    },
+    "statusCounts": {
+      "failed": 7,
+      "completed": 136
+    },
+    "durationMsByTool": {
+      "workflow_artifact": 211,
+      "workflow_web_search": 7,
+      "workflow_web_fetch_source": 44169,
+      "workflow_web_source_read": 1318
+    },
+    "resultStringCharsByTool": {
+      "workflow_artifact": 318266,
+      "workflow_web_search": 8779,
+      "workflow_web_fetch_source": 78084,
+      "workflow_web_source_read": 202371
+    },
+    "failedCallFingerprints": {
+      "workflow_artifact:action+source+artifact+maxChars": 7
+    },
+    "summaryAggregate": {
+      "totalCalls": 143,
+      "callsByTool": {
+        "workflow_artifact": 28,
+        "workflow_web_search": 17,
+        "workflow_web_fetch_source": 18,
+        "workflow_web_source_read": 80
+      },
+      "errorsByTool": {
+        "workflow_artifact": 7
+      },
+      "statusCounts": {
+        "completed": 136,
+        "failed": 7,
+        "incomplete": 0
+      }
+    }
+  },
+  "modelTelemetry": {
+    "available": true,
+    "resultFiles": 26,
+    "usageRecords": 26,
+    "contextLengthExceeded": 0,
+    "providers": {
+      "openai-codex": 26
+    },
+    "models": {
+      "gpt-5.5": 26
+    },
+    "usage": {
+      "input": 40428,
+      "output": 58180,
+      "cacheRead": 262656,
+      "cacheWrite": 0,
+      "totalTokens": 361264,
+      "cost": {
+        "input": 0.20214,
+        "output": 1.7454,
+        "cacheRead": 0.131328,
+        "cacheWrite": 0,
+        "total": 2.078868
+      }
+    }
+  },
+  "authoritative": {
+    "controls": {
+      "plan": ".pi/workflows/workflow_mqv5r0kb_0aa7bb/tasks/task-1/control.json",
+      "normalize": ".pi/workflows/workflow_mqv5r0kb_0aa7bb/tasks/task-4/control.json",
+      "audit": ".pi/workflows/workflow_mqv5r0kb_0aa7bb/tasks/task-6/control.json",
+      "finalAudit": ".pi/workflows/workflow_mqv5r0kb_0aa7bb/tasks/task-8/control.json",
+      "final": ".pi/workflows/workflow_mqv5r0kb_0aa7bb/tasks/task-9/control.json"
+    },
+    "audit": {
+      "claimCount": 16,
+      "claimCounts": {
+        "total": 16,
+        "verified": 12,
+        "partially_supported": 4,
+        "unsupported": 0,
+        "conflicting": 0,
+        "unverified": 0,
+        "other": 0
+      },
+      "claimIds": [
+        "claim-001",
+        "claim-002",
+        "claim-003",
+        "claim-004",
+        "claim-005",
+        "claim-006",
+        "claim-007",
+        "claim-008",
+        "claim-009",
+        "claim-010",
+        "claim-011",
+        "claim-012",
+        "claim-013",
+        "claim-014",
+        "claim-015",
+        "claim-016"
+      ],
+      "sourceRefJoinFailures": 0,
+      "remainingGapCount": 1,
+      "claimEvidenceGapCount": 0
+    },
+    "normalize": {
+      "verificationCandidateCount": 16,
+      "verificationCandidateIds": [
+        "claim-001",
+        "claim-002",
+        "claim-003",
+        "claim-004",
+        "claim-005",
+        "claim-006",
+        "claim-007",
+        "claim-008",
+        "claim-009",
+        "claim-010",
+        "claim-011",
+        "claim-012",
+        "claim-013",
+        "claim-014",
+        "claim-015",
+        "claim-016"
+      ]
+    },
+    "finalAudit": {
+      "claimIndexCount": 16,
+      "claimIndexCounts": {
+        "total": 16,
+        "verified": 12,
+        "partially_supported": 4,
+        "unsupported": 0,
+        "conflicting": 0,
+        "unverified": 0,
+        "other": 0
+      },
+      "coverageCounts": {
+        "total": 16,
+        "verified": 12,
+        "partially_supported": 4,
+        "unsupported": 0,
+        "conflicting": 0
+      }
+    },
+    "finalRender": {
+      "claimSummary": {
+        "total": 16,
+        "verified": 12,
+        "partially_supported": 4,
+        "unsupported": 0,
+        "conflicting": 0
+      }
+    },
+    "factSlots": {
+      "planned": 10,
+      "normalized": 10,
+      "final": 10,
+      "missingFromNormalize": [],
+      "missingFromFinal": []
+    }
+  },
+  "executive": {
+    "path": ".pi/workflows/workflow_mqv5r0kb_0aa7bb/tasks/task-9/control.json",
+    "chars": 2440,
+    "words": 303,
+    "sourceUrlCount": 1,
+    "sourceUrls": [
+      "https://sci.greensoftware.foundation/"
+    ],
+    "recommendationCount": 3,
+    "recommendationChecks": [
+      {
+        "text": "Build reporting as an estimate pipeline with explicit evidence tiers: measured owned hardware, allocated cloud footprint, and proxy third-party API estimates. (evidence: verified components plus partially supported synthesis)",
+        "hasVisibleUrl": false,
+        "hasEvidenceLabel": true
+      },
+      {
+        "text": "For owned inference, collect request id, customer/tenant, model/version, input/output tokens, latency, batch/concurrency, hardware id, region, GPU power/energy where available, CPU/package energy where relevant, and utilization. (evidence: verified/partial)",
+        "hasVisibleUrl": false,
+        "hasEvidenceLabel": true
+      },
+      {
+        "text": "Use SCI-style functional units such as per request, per 1,000 tokens, per completed workflow, or per customer-month, and disclose the boundary and allocation driver. (evidence: verified)",
+        "hasVisibleUrl": false,
+        "hasEvidenceLabel": true
+      }
+    ],
+    "openGapSignals": {
+      "finalAuditRemainingGaps": 6,
+      "finalControlRenderedGapBullets": 2,
+      "truncated": false
+    },
+    "pathLeak": false,
+    "claimSummary": {
+      "total": 16,
+      "verified": 12,
+      "partially_supported": 4,
+      "unsupported": 0,
+      "conflicting": 0
+    },
+    "factSlotSummary": {
+      "total": 10,
+      "filled": 5,
+      "partial": 5,
+      "missingOrConflicting": 0
+    }
+  },
+  "qualityChecks": {
+    "passed": true,
+    "failed": [],
+    "warnings": [],
+    "checks": [
+      {
+        "id": "audit-final-count-consistency",
+        "status": "pass",
+        "details": {
+          "auditCounts": {
+            "total": 16,
+            "verified": 12,
+            "partially_supported": 4,
+            "unsupported": 0,
+            "conflicting": 0,
+            "unverified": 0,
+            "other": 0
+          },
+          "finalCounts": {
+            "total": 16,
+            "verified": 12,
+            "partially_supported": 4,
+            "unsupported": 0,
+            "conflicting": 0
+          }
+        }
+      },
+      {
+        "id": "planned-slots-preserved-in-normalize",
+        "status": "pass",
+        "details": {
+          "missing": []
+        }
+      },
+      {
+        "id": "planned-slots-preserved-in-final",
+        "status": "pass",
+        "details": {
+          "missing": []
+        }
+      },
+      {
+        "id": "source-ref-join-failures-zero",
+        "status": "pass",
+        "details": {
+          "sourceRefJoinFailures": 0
+        }
+      },
+      {
+        "id": "visible-recommendation-citation-or-label",
+        "status": "pass",
+        "details": {
+          "uncitedRecommendations": []
+        }
+      },
+      {
+        "id": "open-gaps-visible-in-executive",
+        "status": "pass",
+        "details": {
+          "hasOpenGaps": true,
+          "renderedGapBullets": 2
+        }
+      },
+      {
+        "id": "no-truncated-executive-with-open-gaps",
+        "status": "pass",
+        "details": {
+          "hasOpenGaps": true,
+          "truncated": false
+        }
+      },
+      {
+        "id": "no-local-cache-paths-in-final-control",
+        "status": "pass",
+        "details": {
+          "pathLeak": false
+        }
+      }
+    ]
+  },
+  "goldenSnapshot": {
+    "schema": "deep-research-eval-golden-v1",
+    "auditClaimCounts": {
+      "total": 16,
+      "verified": 12,
+      "partially_supported": 4,
+      "unsupported": 0,
+      "conflicting": 0,
+      "unverified": 0,
+      "other": 0
+    },
+    "auditClaimIds": [
+      "claim-001",
+      "claim-002",
+      "claim-003",
+      "claim-004",
+      "claim-005",
+      "claim-006",
+      "claim-007",
+      "claim-008",
+      "claim-009",
+      "claim-010",
+      "claim-011",
+      "claim-012",
+      "claim-013",
+      "claim-014",
+      "claim-015",
+      "claim-016"
+    ],
+    "normalizedCandidateIds": [
+      "claim-001",
+      "claim-002",
+      "claim-003",
+      "claim-004",
+      "claim-005",
+      "claim-006",
+      "claim-007",
+      "claim-008",
+      "claim-009",
+      "claim-010",
+      "claim-011",
+      "claim-012",
+      "claim-013",
+      "claim-014",
+      "claim-015",
+      "claim-016"
+    ],
+    "plannedFactSlotCount": 10,
+    "missingFromNormalize": [],
+    "missingFromFinal": [],
+    "sourceRefJoinFailures": 0,
+    "finalClaimSummary": {
+      "total": 16,
+      "verified": 12,
+      "partially_supported": 4,
+      "unsupported": 0,
+      "conflicting": 0
+    },
+    "finalFactSlotSummary": {
+      "total": 10,
+      "filled": 5,
+      "partial": 5,
+      "missingOrConflicting": 0
+    },
+    "qualityFailedChecks": []
+  },
+  "goldenComparison": {
+    "available": false,
+    "path": null,
+    "passed": "unknown",
+    "differences": []
+  },
+  "webSourceCache": {
+    "exists": true,
+    "files": 69
+  },
+  "legacyFetchCache": {
+    "exists": false,
+    "files": "unknown"
+  }
+}
