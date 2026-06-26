@@ -123,15 +123,23 @@ function writeAggregate(runRows) {
         (metrics?.toolTelemetry?.callsByTool?.workflow_web_fetch_source ?? 0) +
         (metrics?.toolTelemetry?.callsByTool?.fetch_content ?? 0),
       verified:
+        metrics?.authoritative?.audit?.claimCounts?.verified ??
         metrics?.authoritative?.verdictCounts?.verified ??
         metrics?.executive?.claimCounts?.verified ??
         null,
       partial:
+        metrics?.authoritative?.audit?.claimCounts?.partially_supported ??
         metrics?.authoritative?.verdictCounts?.partiallySupported ??
         metrics?.executive?.claimCounts?.partially_supported ??
         null,
-      unsupported: metrics?.authoritative?.verdictCounts?.unsupported ?? null,
-      conflicting: metrics?.authoritative?.verdictCounts?.conflicting ?? null,
+      unsupported:
+        metrics?.authoritative?.audit?.claimCounts?.unsupported ??
+        metrics?.authoritative?.verdictCounts?.unsupported ??
+        null,
+      conflicting:
+        metrics?.authoritative?.audit?.claimCounts?.conflicting ??
+        metrics?.authoritative?.verdictCounts?.conflicting ??
+        null,
       qualityPassed: metrics?.qualityChecks?.passed ?? null,
       sourceRefJoinFailures: metrics?.authoritative?.sourceRefJoinFailures ?? null,
       verifierIntegrity: metrics?.authoritative?.gateSummary
