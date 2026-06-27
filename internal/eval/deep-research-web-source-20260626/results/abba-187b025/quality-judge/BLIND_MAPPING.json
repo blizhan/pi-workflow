@@ -1,0 +1,38 @@
+[
+  {
+    "prompt": "p1",
+    "candidate": "A",
+    "label": "p1-baseline-AB",
+    "side": "baseline"
+  },
+  {
+    "prompt": "p1",
+    "candidate": "B",
+    "label": "p1-current-AB",
+    "side": "current"
+  },
+  {
+    "prompt": "p2",
+    "candidate": "A",
+    "label": "p2-current-BA",
+    "side": "current"
+  },
+  {
+    "prompt": "p2",
+    "candidate": "B",
+    "label": "p2-baseline-BA",
+    "side": "baseline"
+  },
+  {
+    "prompt": "p3",
+    "candidate": "A",
+    "label": "p3-baseline-AB",
+    "side": "baseline"
+  },
+  {
+    "prompt": "p3",
+    "candidate": "B",
+    "label": "p3-current-AB",
+    "side": "current"
+  }
+]

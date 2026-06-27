@@ -11,7 +11,9 @@ This directory versions the small, reusable evaluation harness and summary artif
 - `BENCHMARK_PROMPTS.md` — benchmark prompts.
 - `HUMAN_SCORE_SHEET.md` — rubric template for human/domain scoring.
 - `results/abba-b7ba664/` — preserved metrics from the b7ba664 current-vs-515adb6 baseline AB/BA run.
+- `results/abba-187b025/` — latest final metrics after packet reorder and overflow-read recovery.
 - `results/smoke/` — selected smoke metrics used while diagnosing workflow_artifact failures and packet shrink attempts.
+- `reviews/` — external model review and blind domain-scoring reports.
 
 ## What remains ignored
 
@@ -36,4 +38,4 @@ The script records metrics after each run so partial benchmark progress is inspe
 
 ## Current interpretation
 
-The preserved b7ba664 AB/BA result showed lower model-visible tool-result characters and clean verifier integrity, but wall-clock time regressed versus baseline. Public speed/quality/context-pressure claims still require larger benchmark cohorts and human/domain scoring.
+The latest 187b025 AB/BA result still shows lower model-visible tool-result characters and cleaner workflow_artifact traces, but wall-clock time regressed versus baseline and blind model-domain scoring preferred baseline on 2 prompts with 1 tie. Do not make public speed or quality-win claims from this cohort.

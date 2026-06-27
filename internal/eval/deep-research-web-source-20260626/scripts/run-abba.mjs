@@ -141,7 +141,8 @@ function writeAggregate(runRows) {
         metrics?.authoritative?.verdictCounts?.conflicting ??
         null,
       qualityPassed: metrics?.qualityChecks?.passed ?? null,
-      sourceRefJoinFailures: metrics?.authoritative?.sourceRefJoinFailures ?? null,
+      sourceRefJoinFailures:
+        metrics?.authoritative?.audit?.sourceRefJoinFailures ?? null,
       verifierIntegrity: metrics?.authoritative?.gateSummary
         ? {
             invalidVerifierRows: metrics.authoritative.gateSummary.invalidVerifierRows,
