@@ -1,0 +1,507 @@
+{
+  "schema": "deep-research-eval-metrics-v2",
+  "label": "p2-baseline-BA",
+  "root": "/Users/toby/pi/pi-subagent-flow-web-source-context/.tmp/deep-research-abba-20260627/roots/baseline-515adb6",
+  "runId": "workflow_mqx3sm1d_e12d90",
+  "status": "completed",
+  "createdAt": "2026-06-28T01:21:48.433Z",
+  "updatedAt": "2026-06-28T01:31:57.528Z",
+  "wallClockMs": 609095,
+  "wallClockMinutes": 10.15,
+  "taskCount": 29,
+  "taskSummary": {
+    "total": 29,
+    "pending": 0,
+    "running": 0,
+    "blocked": 0,
+    "completed": 29,
+    "failed": 0,
+    "skipped": 0,
+    "interrupted": 0
+  },
+  "statusCounts": {
+    "completed": 29
+  },
+  "outputRetries": 0,
+  "launchRetries": 0,
+  "resumeEvents": 0,
+  "taskTiming": {
+    "byStage": {
+      "plan": {
+        "taskCount": 1,
+        "earliestStart": "2026-06-28T01:21:48.455Z",
+        "latestEnd": "2026-06-28T01:23:10.409Z",
+        "spanMs": 81954,
+        "spanMinutes": 1.37,
+        "maxTaskDurationMs": 81954,
+        "maxTaskDurationMinutes": 1.37,
+        "slowestTaskId": "task-1"
+      },
+      "research-questions": {
+        "taskCount": 8,
+        "earliestStart": "2026-06-28T01:23:10.986Z",
+        "latestEnd": "2026-06-28T01:26:36.117Z",
+        "spanMs": 205131,
+        "spanMinutes": 3.42,
+        "maxTaskDurationMs": 205068,
+        "maxTaskDurationMinutes": 3.42,
+        "slowestTaskId": "task-13"
+      },
+      "normalize-claims": {
+        "taskCount": 1,
+        "earliestStart": "2026-06-28T01:26:36.762Z",
+        "latestEnd": "2026-06-28T01:28:41.092Z",
+        "spanMs": 124330,
+        "spanMinutes": 2.07,
+        "maxTaskDurationMs": 124330,
+        "maxTaskDurationMinutes": 2.07,
+        "slowestTaskId": "task-3"
+      },
+      "verify-claims": {
+        "taskCount": 16,
+        "earliestStart": "2026-06-28T01:28:41.870Z",
+        "latestEnd": "2026-06-28T01:29:41.061Z",
+        "spanMs": 59191,
+        "spanMinutes": 0.99,
+        "maxTaskDurationMs": 58864,
+        "maxTaskDurationMinutes": 0.98,
+        "slowestTaskId": "task-30"
+      },
+      "audit-claims": {
+        "taskCount": 1,
+        "earliestStart": "2026-06-28T01:29:41.573Z",
+        "latestEnd": "2026-06-28T01:29:41.581Z",
+        "spanMs": 8,
+        "spanMinutes": 0,
+        "maxTaskDurationMs": 8,
+        "maxTaskDurationMinutes": 0,
+        "slowestTaskId": "task-5"
+      },
+      "final-audit": {
+        "taskCount": 1,
+        "earliestStart": "2026-06-28T01:29:41.588Z",
+        "latestEnd": "2026-06-28T01:31:57.181Z",
+        "spanMs": 135593,
+        "spanMinutes": 2.26,
+        "maxTaskDurationMs": 135593,
+        "maxTaskDurationMinutes": 2.26,
+        "slowestTaskId": "task-6"
+      },
+      "final": {
+        "taskCount": 1,
+        "earliestStart": "2026-06-28T01:31:57.523Z",
+        "latestEnd": "2026-06-28T01:31:57.528Z",
+        "spanMs": 5,
+        "spanMinutes": 0,
+        "maxTaskDurationMs": 5,
+        "maxTaskDurationMinutes": 0,
+        "slowestTaskId": "task-7"
+      }
+    }
+  },
+  "toolTelemetry": {
+    "available": true,
+    "jsonlFiles": 26,
+    "summaryFiles": 26,
+    "totalCalls": 205,
+    "callsByTool": {
+      "workflow_artifact": 27,
+      "web_search": 25,
+      "fetch_content": 147,
+      "grep": 3,
+      "read": 3
+    },
+    "errorsByTool": {
+      "workflow_artifact": 1
+    },
+    "statusCounts": {
+      "completed": 204,
+      "failed": 1
+    },
+    "durationMsByTool": {
+      "workflow_artifact": 441,
+      "web_search": 5072,
+      "fetch_content": 322262,
+      "grep": 41,
+      "read": 6
+    },
+    "resultStringCharsByTool": {
+      "workflow_artifact": 333488,
+      "web_search": 20203,
+      "fetch_content": 1099869,
+      "grep": 55126,
+      "read": 56314
+    },
+    "failedCallFingerprints": {
+      "workflow_artifact:action+source+artifact+maxChars": 1
+    },
+    "summaryAggregate": {
+      "totalCalls": 205,
+      "callsByTool": {
+        "workflow_artifact": 27,
+        "web_search": 25,
+        "fetch_content": 147,
+        "grep": 3,
+        "read": 3
+      },
+      "errorsByTool": {
+        "workflow_artifact": 1
+      },
+      "statusCounts": {
+        "completed": 204,
+        "failed": 1,
+        "incomplete": 0
+      }
+    }
+  },
+  "modelTelemetry": {
+    "available": true,
+    "resultFiles": 27,
+    "usageRecords": 27,
+    "contextLengthExceeded": 0,
+    "providers": {
+      "openai-codex": 27
+    },
+    "models": {
+      "gpt-5.5": 27
+    },
+    "usage": {
+      "input": 202150,
+      "output": 75457,
+      "cacheRead": 329728,
+      "cacheWrite": 0,
+      "totalTokens": 607335,
+      "cost": {
+        "input": 1.01075,
+        "output": 2.26371,
+        "cacheRead": 0.164864,
+        "cacheWrite": 0,
+        "total": 3.439324
+      }
+    }
+  },
+  "authoritative": {
+    "controls": {
+      "plan": ".pi/workflows/workflow_mqx3sm1d_e12d90/tasks/task-1/control.json",
+      "normalize": ".pi/workflows/workflow_mqx3sm1d_e12d90/tasks/task-3/control.json",
+      "audit": ".pi/workflows/workflow_mqx3sm1d_e12d90/tasks/task-5/control.json",
+      "finalAudit": ".pi/workflows/workflow_mqx3sm1d_e12d90/tasks/task-6/control.json",
+      "final": ".pi/workflows/workflow_mqx3sm1d_e12d90/tasks/task-7/control.json"
+    },
+    "audit": {
+      "claimCount": 16,
+      "claimCounts": {
+        "total": 16,
+        "verified": 13,
+        "partially_supported": 3,
+        "unsupported": 0,
+        "conflicting": 0,
+        "unverified": 0,
+        "other": 0
+      },
+      "claimIds": [
+        "claim-001",
+        "claim-002",
+        "claim-003",
+        "claim-004",
+        "claim-005",
+        "claim-006",
+        "claim-007",
+        "claim-008",
+        "claim-009",
+        "claim-010",
+        "claim-011",
+        "claim-012",
+        "claim-013",
+        "claim-014",
+        "claim-015",
+        "claim-016"
+      ],
+      "sourceRefJoinFailures": 0,
+      "remainingGapCount": 0,
+      "claimEvidenceGapCount": 0
+    },
+    "normalize": {
+      "verificationCandidateCount": 16,
+      "verificationCandidateIds": [
+        "claim-001",
+        "claim-002",
+        "claim-003",
+        "claim-004",
+        "claim-005",
+        "claim-006",
+        "claim-007",
+        "claim-008",
+        "claim-009",
+        "claim-010",
+        "claim-011",
+        "claim-012",
+        "claim-013",
+        "claim-014",
+        "claim-015",
+        "claim-016"
+      ]
+    },
+    "finalAudit": {
+      "claimIndexCount": 16,
+      "claimIndexCounts": {
+        "total": 16,
+        "verified": 13,
+        "partially_supported": 3,
+        "unsupported": 0,
+        "conflicting": 0,
+        "unverified": 0,
+        "other": 0
+      },
+      "coverageCounts": {
+        "total": 16,
+        "verified": 13,
+        "partially_supported": 3,
+        "unsupported": 0,
+        "conflicting": 0
+      }
+    },
+    "finalRender": {
+      "claimSummary": {
+        "total": 16,
+        "verified": 13,
+        "partially_supported": 3,
+        "unsupported": 0,
+        "conflicting": 0
+      }
+    },
+    "factSlots": {
+      "planned": 13,
+      "normalized": 13,
+      "final": 13,
+      "missingFromNormalize": [],
+      "missingFromFinal": []
+    }
+  },
+  "executive": {
+    "path": ".pi/workflows/workflow_mqx3sm1d_e12d90/tasks/task-7/control.json",
+    "chars": 2251,
+    "words": 291,
+    "sourceUrlCount": 0,
+    "sourceUrls": [],
+    "recommendationCount": 3,
+    "recommendationChecks": [
+      {
+        "text": "Implement a phased RAG quality loop: tracing → curated regression set → offline/CI evals → sampled online evals → dashboards/alerts → human review → dataset updates.",
+        "hasVisibleUrl": false,
+        "hasEvidenceLabel": false
+      },
+      {
+        "text": "Track retrieval metrics in distinct buckets: recall/context recall, context precision/relevancy, and rank metrics such as MRR/MAP/nDCG when ordering matters.",
+        "hasVisibleUrl": false,
+        "hasEvidenceLabel": false
+      },
+      {
+        "text": "Use faithfulness/groundedness and citation checks as separate gates rather than a single quality score.",
+        "hasVisibleUrl": false,
+        "hasEvidenceLabel": false
+      }
+    ],
+    "openGapSignals": {
+      "finalAuditRemainingGaps": 5,
+      "finalControlRenderedGapBullets": 2,
+      "truncated": false
+    },
+    "pathLeak": true,
+    "claimSummary": {
+      "total": 16,
+      "verified": 13,
+      "partially_supported": 3,
+      "unsupported": 0,
+      "conflicting": 0
+    },
+    "factSlotSummary": {
+      "total": 13,
+      "filled": 10,
+      "partial": 3,
+      "missingOrConflicting": 0
+    }
+  },
+  "qualityChecks": {
+    "passed": false,
+    "failed": [
+      "visible-recommendation-citation-or-label",
+      "no-local-cache-paths-in-final-control"
+    ],
+    "warnings": [],
+    "checks": [
+      {
+        "id": "audit-final-count-consistency",
+        "status": "pass",
+        "details": {
+          "auditCounts": {
+            "total": 16,
+            "verified": 13,
+            "partially_supported": 3,
+            "unsupported": 0,
+            "conflicting": 0,
+            "unverified": 0,
+            "other": 0
+          },
+          "finalCounts": {
+            "total": 16,
+            "verified": 13,
+            "partially_supported": 3,
+            "unsupported": 0,
+            "conflicting": 0
+          }
+        }
+      },
+      {
+        "id": "planned-slots-preserved-in-normalize",
+        "status": "pass",
+        "details": {
+          "missing": []
+        }
+      },
+      {
+        "id": "planned-slots-preserved-in-final",
+        "status": "pass",
+        "details": {
+          "missing": []
+        }
+      },
+      {
+        "id": "source-ref-join-failures-zero",
+        "status": "pass",
+        "details": {
+          "sourceRefJoinFailures": 0
+        }
+      },
+      {
+        "id": "visible-recommendation-citation-or-label",
+        "status": "fail",
+        "details": {
+          "uncitedRecommendations": [
+            {
+              "text": "Implement a phased RAG quality loop: tracing → curated regression set → offline/CI evals → sampled online evals → dashboards/alerts → human review → dataset updates.",
+              "hasVisibleUrl": false,
+              "hasEvidenceLabel": false
+            },
+            {
+              "text": "Track retrieval metrics in distinct buckets: recall/context recall, context precision/relevancy, and rank metrics such as MRR/MAP/nDCG when ordering matters.",
+              "hasVisibleUrl": false,
+              "hasEvidenceLabel": false
+            },
+            {
+              "text": "Use faithfulness/groundedness and citation checks as separate gates rather than a single quality score.",
+              "hasVisibleUrl": false,
+              "hasEvidenceLabel": false
+            }
+          ]
+        }
+      },
+      {
+        "id": "open-gaps-visible-in-executive",
+        "status": "pass",
+        "details": {
+          "hasOpenGaps": true,
+          "renderedGapBullets": 2
+        }
+      },
+      {
+        "id": "no-truncated-executive-with-open-gaps",
+        "status": "pass",
+        "details": {
+          "hasOpenGaps": true,
+          "truncated": false
+        }
+      },
+      {
+        "id": "no-local-cache-paths-in-final-control",
+        "status": "fail",
+        "details": {
+          "pathLeak": true
+        }
+      }
+    ]
+  },
+  "goldenSnapshot": {
+    "schema": "deep-research-eval-golden-v1",
+    "auditClaimCounts": {
+      "total": 16,
+      "verified": 13,
+      "partially_supported": 3,
+      "unsupported": 0,
+      "conflicting": 0,
+      "unverified": 0,
+      "other": 0
+    },
+    "auditClaimIds": [
+      "claim-001",
+      "claim-002",
+      "claim-003",
+      "claim-004",
+      "claim-005",
+      "claim-006",
+      "claim-007",
+      "claim-008",
+      "claim-009",
+      "claim-010",
+      "claim-011",
+      "claim-012",
+      "claim-013",
+      "claim-014",
+      "claim-015",
+      "claim-016"
+    ],
+    "normalizedCandidateIds": [
+      "claim-001",
+      "claim-002",
+      "claim-003",
+      "claim-004",
+      "claim-005",
+      "claim-006",
+      "claim-007",
+      "claim-008",
+      "claim-009",
+      "claim-010",
+      "claim-011",
+      "claim-012",
+      "claim-013",
+      "claim-014",
+      "claim-015",
+      "claim-016"
+    ],
+    "plannedFactSlotCount": 13,
+    "missingFromNormalize": [],
+    "missingFromFinal": [],
+    "sourceRefJoinFailures": 0,
+    "finalClaimSummary": {
+      "total": 16,
+      "verified": 13,
+      "partially_supported": 3,
+      "unsupported": 0,
+      "conflicting": 0
+    },
+    "finalFactSlotSummary": {
+      "total": 13,
+      "filled": 10,
+      "partial": 3,
+      "missingOrConflicting": 0
+    },
+    "qualityFailedChecks": [
+      "visible-recommendation-citation-or-label",
+      "no-local-cache-paths-in-final-control"
+    ]
+  },
+  "goldenComparison": {
+    "available": false,
+    "path": null,
+    "passed": "unknown",
+    "differences": []
+  },
+  "webSourceCache": {
+    "exists": false,
+    "files": "unknown"
+  },
+  "legacyFetchCache": {
+    "exists": true,
+    "files": 85
+  }
+}
