@@ -44,3 +44,9 @@ Additional quality invariants:
 - Reliability: pass.
 - Speed: fail.
 - Next action: revise the final-audit approach to reduce model-visible scaffold duplication, or revert this scaffold if no smaller no-regression variant is kept.
+
+## Follow-up compact editorial packet probe
+
+An uncommitted follow-up tried reading `$.editorialPacket` instead of the full scaffold draft. P1 completed as `workflow_mqxgz7sh_6cbb29` with quality checks passing, but it still failed the quality-no-regression bar for this workstream because it introduced 5 failed tool calls and lowered the P1 verifier outcome to 12 verified / 4 partial. Final-audit span was still 5.44m, so this did not solve the speed bottleneck.
+
+Conclusion: reject the scaffold/editorial-packet direction for now; it is not a reliable no-regression speed lever.
