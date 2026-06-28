@@ -7,6 +7,7 @@ This directory versions the small, reusable evaluation harness and summary artif
 - `scripts/run-workflow.mjs` — run one workflow and wait for completion.
 - `scripts/extract-metrics.mjs` — extract artifact-based metrics from a workflow run.
 - `scripts/run-abba.mjs` — run the 3-prompt AB/BA benchmark against two prepared roots.
+- `scripts/run-current-smoke.mjs` — run or summarize current-only P1/P2/P3 smoke checks and fail on guardrail regressions.
 - `scripts/summarize.mjs` — summarize per-run metrics into `ABBA_SUMMARY.md` and `benchmark-aggregate.json`.
 - `BENCHMARK_PROMPTS.md` — benchmark prompts.
 - `HUMAN_SCORE_SHEET.md` — rubric template for human/domain scoring.
@@ -35,6 +36,20 @@ node internal/eval/deep-research-web-source-20260626/scripts/run-abba.mjs
 ```
 
 The script records metrics after each run so partial benchmark progress is inspectable.
+
+## Current-only smoke guardrails
+
+For a cheaper current-root smoke before AB/BA, run all benchmark prompts (or set `EVAL_PROMPTS=p1,p3` for a subset):
+
+```bash
+EVAL_REPO_ROOT=/path/to/pi-workflow \
+EVAL_CURRENT_ROOT=/path/to/current-root \
+EVAL_OUT_DIR=/path/to/output/current-smoke \
+EVAL_VERIFIED_FLOORS='{"p1":13,"p2":11,"p3":16}' \
+node internal/eval/deep-research-web-source-20260626/scripts/run-current-smoke.mjs
+```
+
+The smoke exits non-zero if any selected prompt is not completed, `qualityChecks.passed` is not true, failed tool calls are non-zero, planned fact slots are missing from normalize/final, source-ref joins fail, or verified claims fall below the configured floor. Use `--metrics-only` plus `EVAL_SMOKE_LABELS` to re-summarize already extracted metrics.
 
 ## Current interpretation
 
