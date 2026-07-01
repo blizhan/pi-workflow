@@ -1,0 +1,503 @@
+{
+  "schema": "deep-research-eval-metrics-v2",
+  "label": "p3-baseline-AB",
+  "root": "/Users/toby/pi/pi-subagent-flow-web-source-context/.tmp/deep-research-abba-20260626/roots/baseline-515adb6",
+  "runId": "workflow_mqv7hfer_1e7e57",
+  "status": "completed",
+  "createdAt": "2026-06-26T17:29:32.739Z",
+  "updatedAt": "2026-06-26T17:40:34.407Z",
+  "wallClockMs": 661668,
+  "wallClockMinutes": 11.03,
+  "taskCount": 27,
+  "taskSummary": {
+    "total": 27,
+    "pending": 0,
+    "running": 0,
+    "blocked": 0,
+    "completed": 27,
+    "failed": 0,
+    "skipped": 0,
+    "interrupted": 0
+  },
+  "statusCounts": {
+    "completed": 27
+  },
+  "outputRetries": 0,
+  "launchRetries": 0,
+  "resumeEvents": 0,
+  "taskTiming": {
+    "byStage": {
+      "plan": {
+        "taskCount": 1,
+        "earliestStart": "2026-06-26T17:29:32.772Z",
+        "latestEnd": "2026-06-26T17:31:00.164Z",
+        "spanMs": 87392,
+        "spanMinutes": 1.46,
+        "maxTaskDurationMs": 87392,
+        "maxTaskDurationMinutes": 1.46,
+        "slowestTaskId": "task-1"
+      },
+      "research-questions": {
+        "taskCount": 6,
+        "earliestStart": "2026-06-26T17:31:00.895Z",
+        "latestEnd": "2026-06-26T17:33:45.362Z",
+        "spanMs": 164467,
+        "spanMinutes": 2.74,
+        "maxTaskDurationMs": 164467,
+        "maxTaskDurationMinutes": 2.74,
+        "slowestTaskId": "task-8"
+      },
+      "normalize-claims": {
+        "taskCount": 1,
+        "earliestStart": "2026-06-26T17:33:46.053Z",
+        "latestEnd": "2026-06-26T17:36:10.334Z",
+        "spanMs": 144281,
+        "spanMinutes": 2.4,
+        "maxTaskDurationMs": 144281,
+        "maxTaskDurationMinutes": 2.4,
+        "slowestTaskId": "task-3"
+      },
+      "verify-claims": {
+        "taskCount": 16,
+        "earliestStart": "2026-06-26T17:36:11.170Z",
+        "latestEnd": "2026-06-26T17:37:26.500Z",
+        "spanMs": 75330,
+        "spanMinutes": 1.26,
+        "maxTaskDurationMs": 74690,
+        "maxTaskDurationMinutes": 1.24,
+        "slowestTaskId": "task-27"
+      },
+      "audit-claims": {
+        "taskCount": 1,
+        "earliestStart": "2026-06-26T17:37:27.148Z",
+        "latestEnd": "2026-06-26T17:37:27.158Z",
+        "spanMs": 10,
+        "spanMinutes": 0,
+        "maxTaskDurationMs": 10,
+        "maxTaskDurationMinutes": 0,
+        "slowestTaskId": "task-5"
+      },
+      "final-audit": {
+        "taskCount": 1,
+        "earliestStart": "2026-06-26T17:37:27.165Z",
+        "latestEnd": "2026-06-26T17:40:33.698Z",
+        "spanMs": 186533,
+        "spanMinutes": 3.11,
+        "maxTaskDurationMs": 186533,
+        "maxTaskDurationMinutes": 3.11,
+        "slowestTaskId": "task-6"
+      },
+      "final": {
+        "taskCount": 1,
+        "earliestStart": "2026-06-26T17:40:34.401Z",
+        "latestEnd": "2026-06-26T17:40:34.407Z",
+        "spanMs": 6,
+        "spanMinutes": 0,
+        "maxTaskDurationMs": 6,
+        "maxTaskDurationMinutes": 0,
+        "slowestTaskId": "task-7"
+      }
+    }
+  },
+  "toolTelemetry": {
+    "available": true,
+    "jsonlFiles": 24,
+    "summaryFiles": 24,
+    "totalCalls": 163,
+    "callsByTool": {
+      "workflow_artifact": 23,
+      "web_search": 14,
+      "fetch_content": 114,
+      "grep": 7,
+      "read": 5
+    },
+    "errorsByTool": {
+      "workflow_artifact": 2
+    },
+    "statusCounts": {
+      "completed": 161,
+      "failed": 2
+    },
+    "durationMsByTool": {
+      "workflow_artifact": 334,
+      "web_search": 2969,
+      "fetch_content": 90288,
+      "grep": 109,
+      "read": 30
+    },
+    "resultStringCharsByTool": {
+      "workflow_artifact": 325210,
+      "web_search": 16927,
+      "fetch_content": 1921753,
+      "grep": 65602,
+      "read": 94709
+    },
+    "failedCallFingerprints": {
+      "workflow_artifact:action+source+artifact+maxChars": 2
+    },
+    "summaryAggregate": {
+      "totalCalls": 163,
+      "callsByTool": {
+        "workflow_artifact": 23,
+        "web_search": 14,
+        "fetch_content": 114,
+        "grep": 7,
+        "read": 5
+      },
+      "errorsByTool": {
+        "workflow_artifact": 2
+      },
+      "statusCounts": {
+        "completed": 161,
+        "failed": 2,
+        "incomplete": 0
+      }
+    }
+  },
+  "modelTelemetry": {
+    "available": true,
+    "resultFiles": 25,
+    "usageRecords": 25,
+    "contextLengthExceeded": 0,
+    "providers": {
+      "openai-codex": 25
+    },
+    "models": {
+      "gpt-5.5": 25
+    },
+    "usage": {
+      "input": 300672,
+      "output": 76431,
+      "cacheRead": 378368,
+      "cacheWrite": 0,
+      "totalTokens": 755471,
+      "cost": {
+        "input": 1.50336,
+        "output": 2.29293,
+        "cacheRead": 0.189184,
+        "cacheWrite": 0,
+        "total": 3.985474
+      }
+    }
+  },
+  "authoritative": {
+    "controls": {
+      "plan": ".pi/workflows/workflow_mqv7hfer_1e7e57/tasks/task-1/control.json",
+      "normalize": ".pi/workflows/workflow_mqv7hfer_1e7e57/tasks/task-3/control.json",
+      "audit": ".pi/workflows/workflow_mqv7hfer_1e7e57/tasks/task-5/control.json",
+      "finalAudit": ".pi/workflows/workflow_mqv7hfer_1e7e57/tasks/task-6/control.json",
+      "final": ".pi/workflows/workflow_mqv7hfer_1e7e57/tasks/task-7/control.json"
+    },
+    "audit": {
+      "claimCount": 16,
+      "claimCounts": {
+        "total": 16,
+        "verified": 13,
+        "partially_supported": 3,
+        "unsupported": 0,
+        "conflicting": 0,
+        "unverified": 0,
+        "other": 0
+      },
+      "claimIds": [
+        "claim-001",
+        "claim-002",
+        "claim-003",
+        "claim-004",
+        "claim-005",
+        "claim-006",
+        "claim-007",
+        "claim-008",
+        "claim-009",
+        "claim-010",
+        "claim-011",
+        "claim-012",
+        "claim-013",
+        "claim-014",
+        "claim-015",
+        "claim-016"
+      ],
+      "sourceRefJoinFailures": 0,
+      "remainingGapCount": 0,
+      "claimEvidenceGapCount": 0
+    },
+    "normalize": {
+      "verificationCandidateCount": 16,
+      "verificationCandidateIds": [
+        "claim-001",
+        "claim-002",
+        "claim-003",
+        "claim-004",
+        "claim-005",
+        "claim-006",
+        "claim-007",
+        "claim-008",
+        "claim-009",
+        "claim-010",
+        "claim-011",
+        "claim-012",
+        "claim-013",
+        "claim-014",
+        "claim-015",
+        "claim-016"
+      ]
+    },
+    "finalAudit": {
+      "claimIndexCount": 16,
+      "claimIndexCounts": {
+        "total": 16,
+        "verified": 13,
+        "partially_supported": 3,
+        "unsupported": 0,
+        "conflicting": 0,
+        "unverified": 0,
+        "other": 0
+      },
+      "coverageCounts": {
+        "total": 16,
+        "verified": 13,
+        "partially_supported": 3,
+        "unsupported": 0,
+        "conflicting": 0
+      }
+    },
+    "finalRender": {
+      "claimSummary": {
+        "total": 16,
+        "verified": 13,
+        "partially_supported": 3,
+        "unsupported": 0,
+        "conflicting": 0
+      }
+    },
+    "factSlots": {
+      "planned": 14,
+      "normalized": 14,
+      "final": 14,
+      "missingFromNormalize": [],
+      "missingFromFinal": []
+    }
+  },
+  "executive": {
+    "path": ".pi/workflows/workflow_mqv7hfer_1e7e57/tasks/task-7/control.json",
+    "chars": 3212,
+    "words": 360,
+    "sourceUrlCount": 5,
+    "sourceUrls": [
+      "https://docs.docker.com/ai/sandboxes/security/",
+      "https://docs.github.com/en/actions/security-for-github-actions/security-guides/security-hardening-for-github-actions",
+      "https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect",
+      "https://docs.docker.com/ai/sandboxes/security/isolation/",
+      "https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/autoscaling-with-self-hosted-runners"
+    ],
+    "recommendationCount": 3,
+    "recommendationChecks": [
+      {
+        "text": "Adopt a two-tier execution policy: normal coding-assistant use may run in a hardened container/devcontainer with no host Docker socket and narrow writable paths; high-risk autonomous runs that execute package managers, Docker, cloud… (docs.docker.com: https://docs.docker.com/ai/sandboxes/security/isolation/)",
+        "hasVisibleUrl": true,
+        "hasEvidenceLabel": false
+      },
+      {
+        "text": "In CI, run agent-generated or untrusted code on hosted ephemeral runners by default; if self-hosting, use ephemeral/JIT runners or isolated non-privileged Docker/VM runners and avoid persistent shell runners for untrusted jobs. (docs.github.com: https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/autoscaling-with-self-hosted-runners)",
+        "hasVisibleUrl": true,
+        "hasEvidenceLabel": false
+      },
+      {
+        "text": "Set credential policy before expanding agent autonomy: minimum repository token permissions, OIDC/temporary cloud credentials instead of long-lived secrets, protected/masked variables where applicable, no secrets in CLI arguments, and a documented rotate/delete-log procedure…",
+        "hasVisibleUrl": false,
+        "hasEvidenceLabel": false
+      }
+    ],
+    "openGapSignals": {
+      "finalAuditRemainingGaps": 5,
+      "finalControlRenderedGapBullets": 2,
+      "truncated": false
+    },
+    "pathLeak": true,
+    "claimSummary": {
+      "total": 16,
+      "verified": 13,
+      "partially_supported": 3,
+      "unsupported": 0,
+      "conflicting": 0
+    },
+    "factSlotSummary": {
+      "total": 14,
+      "filled": 12,
+      "partial": 2,
+      "missingOrConflicting": 0
+    }
+  },
+  "qualityChecks": {
+    "passed": false,
+    "failed": [
+      "visible-recommendation-citation-or-label",
+      "no-local-cache-paths-in-final-control"
+    ],
+    "warnings": [],
+    "checks": [
+      {
+        "id": "audit-final-count-consistency",
+        "status": "pass",
+        "details": {
+          "auditCounts": {
+            "total": 16,
+            "verified": 13,
+            "partially_supported": 3,
+            "unsupported": 0,
+            "conflicting": 0,
+            "unverified": 0,
+            "other": 0
+          },
+          "finalCounts": {
+            "total": 16,
+            "verified": 13,
+            "partially_supported": 3,
+            "unsupported": 0,
+            "conflicting": 0
+          }
+        }
+      },
+      {
+        "id": "planned-slots-preserved-in-normalize",
+        "status": "pass",
+        "details": {
+          "missing": []
+        }
+      },
+      {
+        "id": "planned-slots-preserved-in-final",
+        "status": "pass",
+        "details": {
+          "missing": []
+        }
+      },
+      {
+        "id": "source-ref-join-failures-zero",
+        "status": "pass",
+        "details": {
+          "sourceRefJoinFailures": 0
+        }
+      },
+      {
+        "id": "visible-recommendation-citation-or-label",
+        "status": "fail",
+        "details": {
+          "uncitedRecommendations": [
+            {
+              "text": "Set credential policy before expanding agent autonomy: minimum repository token permissions, OIDC/temporary cloud credentials instead of long-lived secrets, protected/masked variables where applicable, no secrets in CLI arguments, and a documented rotate/delete-log procedure…",
+              "hasVisibleUrl": false,
+              "hasEvidenceLabel": false
+            }
+          ]
+        }
+      },
+      {
+        "id": "open-gaps-visible-in-executive",
+        "status": "pass",
+        "details": {
+          "hasOpenGaps": true,
+          "renderedGapBullets": 2
+        }
+      },
+      {
+        "id": "no-truncated-executive-with-open-gaps",
+        "status": "pass",
+        "details": {
+          "hasOpenGaps": true,
+          "truncated": false
+        }
+      },
+      {
+        "id": "no-local-cache-paths-in-final-control",
+        "status": "fail",
+        "details": {
+          "pathLeak": true
+        }
+      }
+    ]
+  },
+  "goldenSnapshot": {
+    "schema": "deep-research-eval-golden-v1",
+    "auditClaimCounts": {
+      "total": 16,
+      "verified": 13,
+      "partially_supported": 3,
+      "unsupported": 0,
+      "conflicting": 0,
+      "unverified": 0,
+      "other": 0
+    },
+    "auditClaimIds": [
+      "claim-001",
+      "claim-002",
+      "claim-003",
+      "claim-004",
+      "claim-005",
+      "claim-006",
+      "claim-007",
+      "claim-008",
+      "claim-009",
+      "claim-010",
+      "claim-011",
+      "claim-012",
+      "claim-013",
+      "claim-014",
+      "claim-015",
+      "claim-016"
+    ],
+    "normalizedCandidateIds": [
+      "claim-001",
+      "claim-002",
+      "claim-003",
+      "claim-004",
+      "claim-005",
+      "claim-006",
+      "claim-007",
+      "claim-008",
+      "claim-009",
+      "claim-010",
+      "claim-011",
+      "claim-012",
+      "claim-013",
+      "claim-014",
+      "claim-015",
+      "claim-016"
+    ],
+    "plannedFactSlotCount": 14,
+    "missingFromNormalize": [],
+    "missingFromFinal": [],
+    "sourceRefJoinFailures": 0,
+    "finalClaimSummary": {
+      "total": 16,
+      "verified": 13,
+      "partially_supported": 3,
+      "unsupported": 0,
+      "conflicting": 0
+    },
+    "finalFactSlotSummary": {
+      "total": 14,
+      "filled": 12,
+      "partial": 2,
+      "missingOrConflicting": 0
+    },
+    "qualityFailedChecks": [
+      "visible-recommendation-citation-or-label",
+      "no-local-cache-paths-in-final-control"
+    ]
+  },
+  "goldenComparison": {
+    "available": false,
+    "path": null,
+    "passed": "unknown",
+    "differences": []
+  },
+  "webSourceCache": {
+    "exists": false,
+    "files": "unknown"
+  },
+  "legacyFetchCache": {
+    "exists": true,
+    "files": 58
+  }
+}

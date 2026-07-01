@@ -1,0 +1,709 @@
+{
+  "digest": "Standard-depth audit found practical AI inference carbon reporting is feasible as bounded intensity estimates: self-hosted telemetry can be measured more credibly; managed API reporting remains proxy/modelled due to unverified per-request energy/carbon fields.",
+  "finalReport": {
+    "summary": "Working conclusion: for a small SaaS, report AI inference carbon as a bounded software-intensity estimate, not as precise per-request truth or an organization inventory. If using managed AI APIs, start with request/model/token/region/customer logs plus clearly labelled modeled estimates. If self-hosting, instrument GPU/CPU energy and allocate shared/idle infrastructure using an SCI-style boundary and functional unit. Public comparative provider/model claims should be avoided unless methods, boundaries, and functional units are aligned and substantiated.",
+    "researchMetadata": {
+      "taskType": "practical technical research and recommendation",
+      "expectedFinalShape": "bounded research handoff with recommendations, implementation plan, caveats, and claim verdict index",
+      "researchQuestions": 6,
+      "factSlots": {
+        "planned": 12,
+        "filled": 9,
+        "partial": 3,
+        "missing": 0
+      },
+      "claimsVerified": 15,
+      "sourcePolicy": "Primary standards, cloud/provider docs, hardware/runtime docs, and reputable methodologies were prioritized; audit-claims verdicts are authoritative."
+    },
+    "coverageSummary": {
+      "depth": "standard",
+      "researchQuestions": 6,
+      "rawClaimsApprox": 24,
+      "verificationCandidates": 16,
+      "preserved": 8,
+      "unverifiedButRelevant": 8,
+      "coverageGaps": 5,
+      "verified": 15,
+      "partiallySupported": 1,
+      "unsupported": 0,
+      "conflicting": 0
+    },
+    "factSlotCoverage": [
+      {
+        "slotId": "slot-001",
+        "status": "filled",
+        "bestValue": "AWS, Google Cloud, and Azure expose delayed monthly cloud carbon dashboards/exports/APIs with granularity varying by provider; these are not per-request inference telemetry.",
+        "evidenceStatus": "verified",
+        "sourceUrls": [
+          "https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/ccft-overview.html",
+          "https://cloud.google.com/carbon-footprint/docs/export",
+          "https://cloud.google.com/carbon-footprint/docs/data-schema",
+          "https://learn.microsoft.com/en-us/azure/carbon-optimization/overview",
+          "https://learn.microsoft.com/en-us/rest/api/carbon/"
+        ],
+        "parentImpact": "Use provider carbon tools for cloud-level/monthly context, not request-level AI attribution."
+      },
+      {
+        "slotId": "slot-002",
+        "status": "partial",
+        "bestValue": "No per-request managed AI energy/carbon telemetry was verified in inspected docs; negative absence was not exhaustively proven across all providers.",
+        "evidenceStatus": "partially_supported",
+        "sourceUrls": [
+          "https://platform.openai.com/docs/api-reference/responses",
+          "https://docs.aws.amazon.com/bedrock/latest/userguide/monitoring-cw.html",
+          "https://learn.microsoft.com/en-us/azure/carbon-optimization/overview"
+        ],
+        "parentImpact": "Managed API reports must be labelled proxy/modelled, not measured per-request emissions."
+      },
+      {
+        "slotId": "slot-003",
+        "status": "filled",
+        "bestValue": "Self-hosted inference can measure NVIDIA GPU power/energy via DCGM, CPU package/domain energy via Linux powercap/RAPL, and AMD GPU power/energy via ROCm SMI, within hardware-specific boundaries.",
+        "evidenceStatus": "verified",
+        "sourceUrls": [
+          "https://docs.nvidia.com/datacenter/dcgm/latest/dcgm-api/dcgm-api-field-ids.html",
+          "https://docs.kernel.org/power/powercap/powercap.html",
+          "https://rocm.docs.amd.com/projects/rocm_smi_lib/en/latest/how-to/use-python.html"
+        ],
+        "parentImpact": "Supports a higher-credibility measured option for self-hosted inference."
+      },
+      {
+        "slotId": "slot-004",
+        "status": "filled",
+        "bestValue": "Inference energy depends on model/task, hardware, token lengths, batching, KV cache, quantization, utilization, concurrency, and latency; runtime systems expose many relevant logs/metrics.",
+        "evidenceStatus": "verified",
+        "sourceUrls": [
+          "https://arxiv.org/html/2311.16863v3",
+          "https://arxiv.org/abs/2310.03003",
+          "https://docs.vllm.ai/en/stable/usage/metrics.html"
+        ],
+        "parentImpact": "Defines what the SaaS should log before estimating or optimizing."
+      },
+      {
+        "slotId": "slot-005",
+        "status": "partial",
+        "bestValue": "When granular API energy is unavailable, modeled best estimates are allowed if disclosed; CCF-style methods use billing/usage, kWh factors, PUE, grid factors, and embodied emissions, but managed GenAI token/spend proxies remain lower-confidence analogies.",
+        "evidenceStatus": "verified for general modeled-estimate allowance; partial for managed GenAI-specific factors",
+        "sourceUrls": [
+          "https://sci.greensoftware.foundation/",
+          "https://www.cloudcarbonfootprint.org/docs/methodology",
+          "https://github.com/mlco2/codecarbon"
+        ],
+        "parentImpact": "Proxy estimates are acceptable for internal directional metrics if caveated."
+      },
+      {
+        "slotId": "slot-006",
+        "status": "filled",
+        "bestValue": "Convert energy to operational emissions with O=E×I using kWh and region-specific carbon intensity; include PUE and embodied emissions only if inside the chosen boundary.",
+        "evidenceStatus": "verified",
+        "sourceUrls": [
+          "https://sci.greensoftware.foundation/",
+          "https://www.cloudcarbonfootprint.org/docs/methodology"
+        ],
+        "parentImpact": "Establishes units and conversion method."
+      },
+      {
+        "slotId": "slot-007",
+        "status": "filled",
+        "bestValue": "Define boundary and functional unit; include reserved/provisioned and significant idle/supporting infrastructure; allocate embodied emissions by time/resource share and active power by measured resource-use proxies where available.",
+        "evidenceStatus": "verified with GPU-attribution maturity caveat",
+        "sourceUrls": [
+          "https://sci.greensoftware.foundation/",
+          "https://github.com/sustainable-computing-io/kepler/blob/main/docs/developer/power-attribution-guide.md",
+          "https://github.com/sustainable-computing-io/kepler/blob/main/docs/developer/proposal/EP-003-GPU-Power-Monitoring.md"
+        ],
+        "parentImpact": "Prevents undercounting shared/idle capacity in SaaS reporting."
+      },
+      {
+        "slotId": "slot-008",
+        "status": "filled",
+        "bestValue": "Separate organization inventories from product/software intensity: GHG Corporate/Scope 2 for inventories, GHG Product/ISO 14067 for product footprints, SCI for software carbon intensity rates.",
+        "evidenceStatus": "verified",
+        "sourceUrls": [
+          "https://ghgprotocol.org/corporate-standard",
+          "https://ghgprotocol.org/scope-2-guidance",
+          "https://ghgprotocol.org/product-standard",
+          "https://www.iso.org/standard/71206.html",
+          "https://sci.greensoftware.foundation/"
+        ],
+        "parentImpact": "Avoids treating request-level AI estimates as formal corporate emissions totals."
+      },
+      {
+        "slotId": "slot-009",
+        "status": "filled",
+        "bestValue": "Disclose measured vs modeled inputs, point-estimate limitations, boundary choices, location/carbon-factor sensitivity, and scenario ranges where possible.",
+        "evidenceStatus": "verified",
+        "sourceUrls": [
+          "https://www.cloudcarbonfootprint.org/docs/methodology",
+          "https://sci.greensoftware.foundation/",
+          "https://arxiv.org/abs/2104.10350",
+          "https://arxiv.org/abs/2211.02001"
+        ],
+        "parentImpact": "Supports anti-false-precision guidance."
+      },
+      {
+        "slotId": "slot-010",
+        "status": "partial",
+        "bestValue": "Synthesis ranking: managed API proxy logs are lowest effort/lowest credibility; self-hosted telemetry is higher effort/higher credibility; hybrid combines provider dashboards, usage logs, and measured self-hosted components.",
+        "evidenceStatus": "synthesis from verified sources",
+        "sourceUrls": [
+          "https://sci.greensoftware.foundation/",
+          "https://www.cloudcarbonfootprint.org/docs/methodology",
+          "https://docs.vllm.ai/en/stable/usage/metrics.html"
+        ],
+        "parentImpact": "Useful decision framing, but not a directly sourced benchmark."
+      },
+      {
+        "slotId": "slot-011",
+        "status": "filled",
+        "bestValue": "Report kWh, kg/gCO2e, gCO2e/request or per 1k tokens, model/provider/region/date, boundary, functional unit, methodology, allocation basis, assumptions, and measured/modelled confidence.",
+        "evidenceStatus": "verified plus preserved implementation synthesis",
+        "sourceUrls": [
+          "https://sci.greensoftware.foundation/",
+          "https://docs.vllm.ai/en/stable/usage/metrics.html",
+          "https://arxiv.org/html/2311.16863v3"
+        ],
+        "parentImpact": "Gives dashboard/disclosure schema."
+      },
+      {
+        "slotId": "slot-012",
+        "status": "filled",
+        "bestValue": "Make comparative carbon claims only with clear, substantiated, fair comparisons and aligned methodology, boundaries, and functional units.",
+        "evidenceStatus": "verified",
+        "sourceUrls": [
+          "https://sci.greensoftware.foundation/",
+          "https://www.gov.uk/government/publications/green-claims-code-making-environmental-claims/environmental-claims-on-goods-and-services",
+          "https://www.ecfr.gov/current/title-16/chapter-I/subchapter-B/part-260"
+        ],
+        "parentImpact": "Constrains external marketing and provider/model comparison claims."
+      }
+    ],
+    "mainFindings": [
+      {
+        "finding": "Major cloud carbon dashboards are useful for monthly/account/project/resource context but do not solve per-request AI inference attribution.",
+        "evidenceStatus": "verified/partial for managed AI negative claim",
+        "sourceUrls": [
+          "https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/ccft-overview.html",
+          "https://cloud.google.com/carbon-footprint/docs/export",
+          "https://learn.microsoft.com/en-us/azure/carbon-optimization/overview"
+        ],
+        "confidence": "high for cloud dashboards; medium for absence of managed AI request telemetry"
+      },
+      {
+        "finding": "Self-hosted inference can be instrumented with hardware energy telemetry, but readings are scoped to devices/packages/domains rather than automatically representing whole-service emissions.",
+        "evidenceStatus": "verified",
+        "sourceUrls": [
+          "https://docs.nvidia.com/datacenter/dcgm/latest/dcgm-api/dcgm-api-field-ids.html",
+          "https://docs.kernel.org/power/powercap/powercap.html",
+          "https://rocm.docs.amd.com/projects/rocm_smi_lib/en/latest/how-to/use-python.html"
+        ],
+        "confidence": "high"
+      },
+      {
+        "finding": "SCI-style reporting is the best practical framing: define software boundary, functional unit, energy, carbon intensity, embodied allocation, and disclose methodology.",
+        "evidenceStatus": "verified",
+        "sourceUrls": [
+          "https://sci.greensoftware.foundation/"
+        ],
+        "confidence": "high"
+      },
+      {
+        "finding": "API-only estimates can be modelled, but should be presented as estimates with assumptions and sensitivity, not measured emissions.",
+        "evidenceStatus": "verified for modeling allowance; partial for GenAI-specific factors",
+        "sourceUrls": [
+          "https://sci.greensoftware.foundation/",
+          "https://www.cloudcarbonfootprint.org/docs/methodology"
+        ],
+        "confidence": "medium-high"
+      },
+      {
+        "finding": "External comparative carbon claims between AI models/providers are risky without aligned methods and substantiation.",
+        "evidenceStatus": "verified application of standards/regulatory guidance",
+        "sourceUrls": [
+          "https://sci.greensoftware.foundation/",
+          "https://www.gov.uk/government/publications/green-claims-code-making-environmental-claims/environmental-claims-on-goods-and-services",
+          "https://www.ecfr.gov/current/title-16/chapter-I/subchapter-B/part-260"
+        ],
+        "confidence": "high"
+      }
+    ],
+    "recommendations": [
+      {
+        "recommendation": "Use a three-tier disclosure: measured self-hosted components, modeled managed-API components, and monthly cloud-provider carbon context. Label each tier separately.",
+        "evidenceStatus": "verified plus synthesis",
+        "support": [
+          "SCI methodology at https://sci.greensoftware.foundation/",
+          "Cloud Carbon Footprint methodology at https://www.cloudcarbonfootprint.org/docs/methodology",
+          "Provider carbon dashboards from AWS/GCP/Azure docs"
+        ],
+        "confidence": "high"
+      },
+      {
+        "recommendation": "For managed AI APIs, log provider, model/version, region if known, request timestamp, customer/tenant, prompt tokens, output tokens, latency, cache/batch indicators if available, and cost/usage fields; publish only modeled ranges or internal directional metrics unless provider-specific energy factors are obtained.",
+        "evidenceStatus": "partial for lack of provider telemetry; verified for variables and disclosure principles",
+        "support": [
+          "vLLM metrics docs for analogous runtime fields",
+          "SCI modeled-estimate allowance",
+          "audited partial finding that inspected managed API docs did not verify per-request carbon fields"
+        ],
+        "confidence": "medium"
+      },
+      {
+        "recommendation": "For self-hosted inference, collect GPU/CPU energy telemetry and request/runtime metrics, then allocate energy to a functional unit such as request or 1k tokens with explicit treatment of idle/reserved capacity.",
+        "evidenceStatus": "verified",
+        "support": [
+          "NVIDIA DCGM field docs",
+          "Linux powercap/RAPL docs",
+          "AMD ROCm SMI docs",
+          "SCI boundary/functional unit rules"
+        ],
+        "confidence": "high"
+      },
+      {
+        "recommendation": "Do not market a provider or model as greener unless the comparison uses identical or clearly aligned boundaries, functional units, and methods and is legally reviewable.",
+        "evidenceStatus": "verified",
+        "support": [
+          "SCI baseline comparison requirements",
+          "UK Green Claims Code",
+          "FTC Green Guides"
+        ],
+        "confidence": "high"
+      },
+      {
+        "recommendation": "Dashboard fields should include kWh, gCO2e, gCO2e/request or per 1k tokens, model/provider/region/date, measured-vs-modeled status, boundary, allocation basis, carbon factor source/date, assumptions, and uncertainty/range.",
+        "evidenceStatus": "verified plus preserved implementation synthesis",
+        "support": [
+          "SCI",
+          "vLLM metrics docs",
+          "AI energy literature"
+        ],
+        "confidence": "high"
+      }
+    ],
+    "actionPlan": [
+      {
+        "step": 1,
+        "action": "Choose the reporting boundary and functional unit before collecting numbers, e.g. inference service per request or per 1k tokens.",
+        "evidenceStatus": "verified",
+        "source": "SCI software boundary and functional-unit guidance",
+        "decisionImpact": "Prevents later metrics from mixing incompatible scopes."
+      },
+      {
+        "step": 2,
+        "action": "Implement usage logging for all inference paths: provider/model, token counts, latency, tenant/customer, region/location where available, and request outcome.",
+        "evidenceStatus": "verified/synthesis",
+        "source": "Runtime metrics docs and AI inference energy factors evidence",
+        "decisionImpact": "Creates the denominator and attribution keys needed for any estimate."
+      },
+      {
+        "step": 3,
+        "action": "If self-hosted, add hardware telemetry collectors for GPU/CPU energy and align samples with request/runtime logs.",
+        "evidenceStatus": "verified",
+        "source": "NVIDIA DCGM, Linux powercap/RAPL, AMD ROCm SMI docs",
+        "decisionImpact": "Improves credibility from proxy to measured energy for covered hardware."
+      },
+      {
+        "step": 4,
+        "action": "If using managed APIs, build a proxy calculator with explicit modeled status and scenario ranges; do not claim measured per-request CO2e.",
+        "evidenceStatus": "partially_supported plus verified modeling guidance",
+        "source": "SCI modeled best-estimate allowance and audit caveat on managed API telemetry absence",
+        "decisionImpact": "Allows internal tracking while controlling green-claim risk."
+      },
+      {
+        "step": 5,
+        "action": "For external reporting, include a methodology note and avoid cross-provider/model comparisons unless legal/standards criteria are met.",
+        "evidenceStatus": "verified",
+        "source": "SCI, UK Green Claims Code, FTC Green Guides",
+        "decisionImpact": "Reduces compliance and reputational risk."
+      }
+    ],
+    "caveatedFindings": [
+      {
+        "finding": "Major managed AI APIs did not show verified per-request energy/kWh/CO2e fields in inspected primary docs, but this is a negative claim and was not exhaustively proven across all schemas/providers.",
+        "status": "partially_supported",
+        "whyItMatters": "It determines whether managed API carbon can be measured directly or only estimated."
+      },
+      {
+        "finding": "Small-SaaS effort/credibility ranking is a synthesis, not a directly sourced benchmark.",
+        "status": "partial",
+        "whyItMatters": "The parent should adapt it to team size, hosting model, compliance needs, and customer expectations."
+      },
+      {
+        "finding": "GPU per-workload attribution in Kubernetes/Kepler evidence includes draft/experimental GPU proposal material.",
+        "status": "verified with caveat",
+        "whyItMatters": "Do not present GPU pod/process attribution as mature without local validation."
+      }
+    ],
+    "contestedAreas": [],
+    "notableUnsupportedClaims": [],
+    "unverifiedButRelevant": [
+      {
+        "claim": "Managed API SaaS can start with request/customer/model/region/tokens/latency logs plus modeled SCI-style estimates, but credibility is low for precise per-request claims.",
+        "evidenceStatus": "preserved synthesis",
+        "sourceUrls": [
+          "https://sci.greensoftware.foundation/",
+          "https://github.com/mlco2/codecarbon",
+          "https://arxiv.org/abs/1910.09700"
+        ]
+      },
+      {
+        "claim": "Self-hosted SaaS can gain higher credibility by measuring GPU/CPU/node energy and allocating measured/idle energy over requests or customers, at higher engineering effort.",
+        "evidenceStatus": "preserved synthesis",
+        "sourceUrls": [
+          "https://sci.greensoftware.foundation/",
+          "https://github.com/sustainable-computing-io/kepler/blob/main/docs/developer/power-attribution-guide.md",
+          "https://www.cloudcarbonfootprint.org/docs/methodology/"
+        ]
+      },
+      {
+        "claim": "vLLM exposes concrete metrics useful for an implementation schema, including token, cache, latency, and request metrics.",
+        "evidenceStatus": "preserved detail under broader verified claim",
+        "sourceUrls": [
+          "https://docs.vllm.ai/en/stable/usage/metrics.html"
+        ]
+      },
+      {
+        "claim": "Training/lifecycle case studies show location and boundary choices can materially change AI carbon estimates, but exact numeric examples were preserved rather than used as thresholds.",
+        "evidenceStatus": "preserved case-study evidence",
+        "sourceUrls": [
+          "https://arxiv.org/abs/2104.10350",
+          "https://arxiv.org/abs/2211.02001"
+        ]
+      }
+    ],
+    "parentDecisionNotes": [
+      {
+        "note": "Decide whether the product needs internal directional metrics, customer-facing disclosure, or formal accounting.",
+        "whyItMatters": "The evidence supports bounded intensity estimates, but formal inventories/product CFPs require different standards and assurance.",
+        "evidenceStatus": "verified",
+        "suggestedParentDecision": "Use SCI-style intensity for feature/request reporting; use GHG/ISO pathways only for formal corporate/product claims."
+      },
+      {
+        "note": "Decide managed API versus self-hosted measurement posture.",
+        "whyItMatters": "Managed API is lower effort but likely proxy-only; self-hosted can measure device energy but adds engineering and allocation complexity.",
+        "evidenceStatus": "verified plus partial/synthesis",
+        "suggestedParentDecision": "Start with managed API proxy metrics if speed matters; choose self-hosted or hybrid only if higher credibility justifies operational cost."
+      },
+      {
+        "note": "Resolve whether external comparative claims are required.",
+        "whyItMatters": "Comparisons require aligned methodology and substantiation; otherwise they create green-claim risk.",
+        "evidenceStatus": "verified",
+        "suggestedParentDecision": "Avoid public greener-than comparisons in the first version; publish methodology and ranges instead."
+      },
+      {
+        "note": "Treat missing managed-provider per-request carbon evidence as a blocking gap for precise API per-request claims, but not for internal modeled estimates.",
+        "whyItMatters": "Completeness conflicts with verification strictness: useful proxy tracking can proceed, but precise claims cannot.",
+        "evidenceStatus": "partially_supported",
+        "suggestedParentDecision": "Ask providers directly or inspect full API schemas before promising measured managed-API CO2e."
+      }
+    ],
+    "researchScopeCoverage": [
+      {
+        "scope": "cloud/provider telemetry",
+        "status": "covered with partial managed-AI negative claim"
+      },
+      {
+        "scope": "self-hosted hardware telemetry",
+        "status": "covered"
+      },
+      {
+        "scope": "runtime/model factors",
+        "status": "covered"
+      },
+      {
+        "scope": "allocation and shared infrastructure",
+        "status": "covered with GPU attribution maturity caveat"
+      },
+      {
+        "scope": "standards/reporting categories",
+        "status": "covered"
+      },
+      {
+        "scope": "uncertainty and green-claim limits",
+        "status": "covered"
+      },
+      {
+        "scope": "small-SaaS feasibility",
+        "status": "covered as synthesis, not benchmark"
+      }
+    ],
+    "remainingGaps": {
+      "blocking": [
+        {
+          "gap": "No exhaustive proof that all major managed AI APIs lack per-request energy/carbon fields.",
+          "whyItMatters": "Blocks any precise statement that managed API inference emissions are directly unavailable everywhere.",
+          "wouldChange": "Provider-specific fields or factors would allow stronger managed API reporting and less proxy uncertainty."
+        },
+        {
+          "gap": "No primary provider per-token or per-request carbon factors were found for closed managed AI APIs.",
+          "whyItMatters": "Blocks exact per-token carbon thresholds or hard customer-facing API emissions numbers.",
+          "wouldChange": "Audited provider factors would enable more specific calculators."
+        }
+      ],
+      "nonBlocking": [
+        {
+          "gap": "Small-SaaS implementation ranking is synthesized from evidence rather than measured cost/effort benchmarks.",
+          "whyItMatters": "Recommendations should be adapted to local team capacity."
+        },
+        {
+          "gap": "Specific universal confidence intervals for AI inference estimates were not established.",
+          "whyItMatters": "Use scenarios/ranges rather than generic numeric error bars."
+        },
+        {
+          "gap": "Kepler GPU per-process/pod attribution evidence is draft/experimental.",
+          "whyItMatters": "Validate locally before relying on it for externally reported GPU workload allocation."
+        }
+      ]
+    }
+  },
+  "claimVerdictIndex": {
+    "claims": [
+      {
+        "id": "claim-001",
+        "status": "verified",
+        "confidence": 0.97,
+        "sourceUrls": [
+          "https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/ccft-overview.html"
+        ],
+        "factSlotIds": [
+          "slot-001"
+        ],
+        "support": "AWS CCFT supports monthly delayed carbon data by month, Region, service values, CSV export, and deprecation timing.",
+        "caveat": "Service breakdown wording differs slightly.",
+        "correctionOrCounterclaim": ""
+      },
+      {
+        "id": "claim-002",
+        "status": "verified",
+        "confidence": 0.98,
+        "sourceUrls": [
+          "https://cloud.google.com/carbon-footprint/docs/export",
+          "https://cloud.google.com/carbon-footprint/docs/data-schema"
+        ],
+        "factSlotIds": [
+          "slot-001"
+        ],
+        "support": "Google Cloud supports monthly BigQuery export with billing/project/service/location/model/scopes/kgCO2e fields.",
+        "caveat": "Some project fields may be null; covers selected billing accounts/services.",
+        "correctionOrCounterclaim": ""
+      },
+      {
+        "id": "claim-003",
+        "status": "verified",
+        "confidence": 0.95,
+        "sourceUrls": [
+          "https://learn.microsoft.com/en-us/azure/carbon-optimization/overview",
+          "https://learn.microsoft.com/en-us/rest/api/carbon/carbon-service/query-carbon-emission-reports?view=rest-carbon-2025-04-01"
+        ],
+        "factSlotIds": [
+          "slot-001"
+        ],
+        "support": "Azure Carbon optimization supports portal/CSV/REST monthly emissions by subscription/resource dimensions.",
+        "caveat": "REST API is Preview.",
+        "correctionOrCounterclaim": ""
+      },
+      {
+        "id": "claim-004",
+        "status": "partially_supported",
+        "confidence": 0.68,
+        "sourceUrls": [
+          "https://platform.openai.com/docs/api-reference/responses",
+          "https://docs.aws.amazon.com/bedrock/latest/userguide/monitoring-cw.html",
+          "https://learn.microsoft.com/en-us/azure/carbon-optimization/overview"
+        ],
+        "factSlotIds": [
+          "slot-002"
+        ],
+        "support": "Inspected primary docs showed usage/product metrics and monthly/resource-level cloud carbon tools, not per-request AI energy/carbon fields.",
+        "caveat": "Negative API-surface claim has extraction gaps and was not exhaustive.",
+        "correctionOrCounterclaim": "Use narrower wording: verification did not find primary evidence of per-request AI inference energy/kWh/CO2e fields across inspected docs."
+      },
+      {
+        "id": "claim-005",
+        "status": "verified",
+        "confidence": 0.98,
+        "sourceUrls": [
+          "https://docs.nvidia.com/datacenter/dcgm/latest/dcgm-api/dcgm-api-field-ids.html",
+          "https://raw.githubusercontent.com/NVIDIA/DCGM/master/dcgmlib/dcgm_fields.h"
+        ],
+        "factSlotIds": [
+          "slot-003"
+        ],
+        "support": "NVIDIA DCGM exposes board power watts and total energy consumption mJ fields.",
+        "caveat": "Legacy/alias naming exists.",
+        "correctionOrCounterclaim": ""
+      },
+      {
+        "id": "claim-006",
+        "status": "verified",
+        "confidence": 0.98,
+        "sourceUrls": [
+          "https://docs.kernel.org/power/powercap/powercap.html"
+        ],
+        "factSlotIds": [
+          "slot-003"
+        ],
+        "support": "Linux powercap/RAPL exposes energy_uj and max_energy_range_uj and documents no instantaneous power_uw for Intel RAPL example.",
+        "caveat": "Platform/domain availability varies.",
+        "correctionOrCounterclaim": ""
+      },
+      {
+        "id": "claim-007",
+        "status": "verified",
+        "confidence": 0.94,
+        "sourceUrls": [
+          "https://rocm.docs.amd.com/projects/rocm_smi_lib/en/latest/how-to/use-python.html"
+        ],
+        "factSlotIds": [
+          "slot-003"
+        ],
+        "support": "ROCm SMI exposes GPU power and energy accumulator; scope is GPU/HBM graphics package.",
+        "caveat": "Docs imply, rather than explicitly state, not whole-host energy.",
+        "correctionOrCounterclaim": ""
+      },
+      {
+        "id": "claim-008",
+        "status": "verified",
+        "confidence": 0.86,
+        "sourceUrls": [
+          "https://arxiv.org/html/2311.16863v3",
+          "https://arxiv.org/abs/2310.03003",
+          "https://docs.vllm.ai/en/stable/usage/metrics.html"
+        ],
+        "factSlotIds": [
+          "slot-004"
+        ],
+        "support": "Studies/runtime docs support key model, hardware, token, batching, cache, utilization, and latency factors.",
+        "caveat": "No single source proves every factor independently.",
+        "correctionOrCounterclaim": ""
+      },
+      {
+        "id": "claim-009",
+        "status": "verified",
+        "confidence": 0.94,
+        "sourceUrls": [
+          "https://sci.greensoftware.foundation/",
+          "https://www.cloudcarbonfootprint.org/docs/methodology"
+        ],
+        "factSlotIds": [
+          "slot-005",
+          "slot-009",
+          "slot-010"
+        ],
+        "support": "SCI permits modeled estimates where real data is unavailable; CCF estimates from usage/billing, factors, PUE, grid, embodied emissions.",
+        "caveat": "Both emphasize limited accuracy when granular data is absent.",
+        "correctionOrCounterclaim": ""
+      },
+      {
+        "id": "claim-010",
+        "status": "verified",
+        "confidence": 0.98,
+        "sourceUrls": [
+          "https://sci.greensoftware.foundation/"
+        ],
+        "factSlotIds": [
+          "slot-006",
+          "slot-008"
+        ],
+        "support": "SCI operational emissions use O=E×I with kWh and region-specific gCO2eq/kWh; market-based measures excluded from grid intensity.",
+        "caveat": "Fetched page lacked publication/version date.",
+        "correctionOrCounterclaim": ""
+      },
+      {
+        "id": "claim-011",
+        "status": "verified",
+        "confidence": 0.98,
+        "sourceUrls": [
+          "https://sci.greensoftware.foundation/"
+        ],
+        "factSlotIds": [
+          "slot-006",
+          "slot-007"
+        ],
+        "support": "SCI embodied emissions allocation uses TE, time share, and resource share.",
+        "caveat": "TE is hardware LCA emissions.",
+        "correctionOrCounterclaim": ""
+      },
+      {
+        "id": "claim-012",
+        "status": "verified",
+        "confidence": 0.98,
+        "sourceUrls": [
+          "https://sci.greensoftware.foundation/"
+        ],
+        "factSlotIds": [
+          "slot-007",
+          "slot-011"
+        ],
+        "support": "SCI requires boundary and functional unit and includes reserved/provisioned hardware and significant supporting/idle infrastructure.",
+        "caveat": "Functional-unit examples are not mandatory choices.",
+        "correctionOrCounterclaim": ""
+      },
+      {
+        "id": "claim-013",
+        "status": "verified",
+        "confidence": 0.94,
+        "sourceUrls": [
+          "https://github.com/sustainable-computing-io/kepler/blob/main/docs/developer/power-attribution-guide.md",
+          "https://github.com/sustainable-computing-io/kepler/blob/main/docs/developer/proposal/EP-003-GPU-Power-Monitoring.md"
+        ],
+        "factSlotIds": [
+          "slot-007",
+          "slot-010"
+        ],
+        "support": "Kepler docs describe active/idle power attribution by CPU-time ratios; GPU attribution proposal is draft/experimental.",
+        "caveat": "GPU evidence is not stable GA documentation.",
+        "correctionOrCounterclaim": ""
+      },
+      {
+        "id": "claim-014",
+        "status": "verified",
+        "confidence": 0.95,
+        "sourceUrls": [
+          "https://ghgprotocol.org/corporate-standard",
+          "https://www.iso.org/standard/71206.html",
+          "https://sci.greensoftware.foundation/"
+        ],
+        "factSlotIds": [
+          "slot-008"
+        ],
+        "support": "Standards split corporate inventories, product footprints, and software intensity rates.",
+        "caveat": "SCI is not a corporate total or product CFP standard.",
+        "correctionOrCounterclaim": ""
+      },
+      {
+        "id": "claim-015",
+        "status": "verified",
+        "confidence": 0.9,
+        "sourceUrls": [
+          "https://www.cloudcarbonfootprint.org/docs/methodology",
+          "https://sci.greensoftware.foundation/",
+          "https://arxiv.org/abs/2104.10350",
+          "https://arxiv.org/abs/2211.02001"
+        ],
+        "factSlotIds": [
+          "slot-009"
+        ],
+        "support": "CCF point estimates, SCI modeled estimates, and AI studies support uncertainty/boundary disclosure.",
+        "caveat": "'Should' is synthesized reporting advice.",
+        "correctionOrCounterclaim": "Disclose assumptions, boundaries, methodology, modeled-vs-measured data, and sensitivity rather than exact point estimates."
+      },
+      {
+        "id": "claim-016",
+        "status": "verified",
+        "confidence": 0.91,
+        "sourceUrls": [
+          "https://sci.greensoftware.foundation/",
+          "https://www.gov.uk/government/publications/green-claims-code-making-environmental-claims/environmental-claims-on-goods-and-services",
+          "https://www.ecfr.gov/current/title-16/chapter-I/subchapter-B/part-260"
+        ],
+        "factSlotIds": [
+          "slot-012"
+        ],
+        "support": "SCI and green-claims guidance require aligned methodology and clear, fair, substantiated, qualified environmental comparisons.",
+        "caveat": "AI provider/model comparison is an application of general rules.",
+        "correctionOrCounterclaim": ""
+      }
+    ]
+  }
+}
